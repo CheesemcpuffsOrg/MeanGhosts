@@ -16,6 +16,6 @@ public class TestSound : MonoBehaviour
 
         yield return new WaitForSeconds(3f);
 
-        StartCoroutine(PlaySound());
+        //StartCoroutine(PlaySound());
     }
 }

@@ -15,7 +15,7 @@ MonoBehaviour:
   name: Test
   clip: {fileID: 8300000, guid: b88fe3b4e3ff75f4cb3c9a0360e376dc, type: 3}
   group: {fileID: -9123715879687149167, guid: d8dd63bf224bdc8468fb34784cf4b2fa, type: 2}
-  volume: 0.11
+  volume: 1
   pitch: 1
   pan: 0
   spatialBlend: 1

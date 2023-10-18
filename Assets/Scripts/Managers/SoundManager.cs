@@ -9,7 +9,7 @@ public class SoundManager : MonoBehaviour
     public static SoundManager SoundManagerInstance;
 
     //for storing currently used sounds
-    private AudioScriptableObject[] sounds;
+    [SerializeField]private AudioScriptableObject[] sounds;
 
     private List<AudioScriptableObject> arrayStorage = new List<AudioScriptableObject>();
 
