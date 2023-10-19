@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 760b1e9d61e78084891ed16194867649, type: 3}
-  m_Name: BackgroundMusic
+  m_Name: BGMusic
   m_EditorClassIdentifier: 
   name: BGMusic
-  clip: {fileID: 8300000, guid: d62dc456b23cc5a46acf2977573cfc9c, type: 3}
-  group: {fileID: -41284633283198992, guid: d8dd63bf224bdc8468fb34784cf4b2fa, type: 2}
-  volume: 1
-  pitch: 0.75
+  clip: {fileID: 8300000, guid: e08faed865e282344b0101eb5bea6e50, type: 3}
+  group: {fileID: -9123715879687149167, guid: d8dd63bf224bdc8468fb34784cf4b2fa, type: 2}
+  volume: 0.2
+  pitch: 1
   pan: 0
   spatialBlend: 0
-  loop: 1
+  loop: 0
   source: {fileID: 0}
