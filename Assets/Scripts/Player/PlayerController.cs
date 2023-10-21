@@ -12,18 +12,20 @@ public class PlayerController : MonoBehaviour
 
     public ControlScheme controlScheme;
 
-    [SerializeField]Vector2 currentMoveInput;
+    Vector2 currentMoveInput;
     Vector2 smoothCurrentMoveInput;
     Vector2 currentMovementSmoothVelocity;
     [SerializeField] float speed;
-    [SerializeField] float rotationSpeed;
+    //float rotationSpeed;
     [SerializeField] GameObject flashLight;
     bool flashLightState = false;
 
     Rigidbody2D rb;
 
-    [SerializeField]bool isMoving = false;
-    [SerializeField] bool footsteps = false;
+    bool isMoving = false;
+    bool footsteps = false;
+    [SerializeField]bool invisible = false;
+    [SerializeField]bool safe = false;
 
     public UnityEvent interactEvent;
 
@@ -38,6 +40,7 @@ public class PlayerController : MonoBehaviour
         controlScheme.Player.Interact.performed += Interact;
         rb = GetComponent<Rigidbody2D>();
         flashLight.SetActive(false);
+        invisible = true;
     }
 
     private void FixedUpdate()
@@ -89,13 +92,23 @@ public class PlayerController : MonoBehaviour
 
         flashLightState = !flashLightState;
 
-        if(flashLightState)
+        if (flashLightState)
         {
             flashLight.SetActive(true);
+            if(!safe )
+            {
+                invisible = false;
+            }
+            
         }
-        else
+        else 
         {
             flashLight.SetActive(false);
+            if(!safe )
+            {
+                invisible = true;
+            }
+            
         }
     }
 
@@ -119,6 +132,19 @@ public class PlayerController : MonoBehaviour
     public void HeldObject(GameObject holdme)
     {
         heldObject = holdme;
+    }
+
+    void PlayerInvisible()
+    {
+        safe = !safe;
+        if (safe)
+        {
+            invisible = true;
+        }
+        else
+        {
+            invisible = false;
+        }
     }
 
    /* void PlayerRotation()

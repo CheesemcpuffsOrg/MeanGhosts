@@ -72,6 +72,7 @@ public class GameManager : MonoBehaviour
     {
         int removeItem = 0;
         int removeSpawnPoint = 0;
+        GameObject spawnPoint = null;
 
         foreach (GameObject obj in items)
         {
@@ -80,18 +81,19 @@ public class GameManager : MonoBehaviour
                 for(int i = 0; i < itemSpawnPoints.Length; i++)
                 {
                     removeSpawnPoint = Random.Range(0, itemSpawnPoints.Length);
-                    Debug.Log(removeSpawnPoint);
-                    if (itemSpawnPoints != null)
+                    if(itemSpawnPoints[removeSpawnPoint] != null)
                     {
-                        GameObject spawnPoint = itemSpawnPoints[removeSpawnPoint];
-                        GameObject newObj = Instantiate(obj);
-                        newObj.transform.position = spawnPoint.transform.position;
-                        items[removeItem] = null;
-                        itemSpawnPoints[removeSpawnPoint] = null;
-                        removeItem += 1;
+                        spawnPoint = itemSpawnPoints[removeSpawnPoint];
+                        Debug.Log(removeSpawnPoint);
+                        break;
                     }
-                    break;
                 }
+                    
+                GameObject newObj = Instantiate(obj);
+                newObj.transform.position = spawnPoint.transform.position;
+                items[removeItem] = null;
+                itemSpawnPoints[removeSpawnPoint] = null;
+                removeItem += 1; 
             }
         }
     }
@@ -100,6 +102,7 @@ public class GameManager : MonoBehaviour
     {
         int removeItem = 0;
         int removeSpawnPoint = 0;
+        GameObject spawnPoint = null; 
 
         foreach (GameObject obj in audioTapes)
         {
@@ -109,17 +112,18 @@ public class GameManager : MonoBehaviour
                 {
                     removeSpawnPoint = Random.Range(0, audioTapesSpawnPoints.Length);
                     Debug.Log(removeSpawnPoint);
-                    if (audioTapesSpawnPoints != null)
+                    if (audioTapesSpawnPoints[removeSpawnPoint] != null)
                     {
-                        GameObject spawnPoint = audioTapesSpawnPoints[removeSpawnPoint];
-                        GameObject newObj = Instantiate(obj);
-                        newObj.transform.position = spawnPoint.transform.position;
-                        audioTapes[removeItem] = null;
-                        audioTapesSpawnPoints[removeSpawnPoint] = null;
-                        removeItem += 1;
+                        spawnPoint = audioTapesSpawnPoints[removeSpawnPoint];
+                        break;
                     }
-                    break;
                 }
+
+                GameObject newObj = Instantiate(obj);
+                newObj.transform.position = spawnPoint.transform.position;
+                audioTapes[removeItem] = null;
+                audioTapesSpawnPoints[removeSpawnPoint] = null;
+                removeItem += 1;
             }
         }
     }
