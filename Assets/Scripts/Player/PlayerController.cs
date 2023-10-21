@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using static UnityEngine.Rendering.DebugUI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -14,6 +16,7 @@ public class PlayerController : MonoBehaviour
     Vector2 smoothCurrentMoveInput;
     Vector2 currentMovementSmoothVelocity;
     [SerializeField] float speed;
+    [SerializeField] float rotationSpeed;
     [SerializeField] GameObject flashLight;
     bool flashLightState = false;
 
@@ -22,12 +25,17 @@ public class PlayerController : MonoBehaviour
     [SerializeField]bool isMoving = false;
     [SerializeField] bool footsteps = false;
 
+    public UnityEvent interactEvent;
+
+    public GameObject heldObject;
+
     private void Awake()
     {
         controlScheme = new ControlScheme();
         controlScheme.Player.Move.performed += Movement;
         controlScheme.Player.Move.canceled += MovementStopped;
         controlScheme.Player.Flashlight.performed += FlashLight;
+        controlScheme.Player.Interact.performed += Interact;
         rb = GetComponent<Rigidbody2D>();
         flashLight.SetActive(false);
     }
@@ -37,6 +45,8 @@ public class PlayerController : MonoBehaviour
         SmoothMovement();
 
         PlayFootsteps();
+
+       // PlayerRotation();
     }
 
     void SmoothMovement()
@@ -88,6 +98,49 @@ public class PlayerController : MonoBehaviour
             flashLight.SetActive(false);
         }
     }
+
+    void Interact(InputAction.CallbackContext interact)
+    {
+
+        interactEvent.Invoke();
+
+        if (heldObject != null)
+        {
+           // heldObject.SetActive(true);
+           // heldObject.transform.position = new Vector2(transform.position.x, transform.position.y - 0.5f);
+        }
+        else
+        {
+            
+        }
+        
+    }
+
+    public void HeldObject(GameObject holdme)
+    {
+        heldObject = holdme;
+    }
+
+   /* void PlayerRotation()
+    {
+        Vector2 movementDirection = new Vector2(smoothCurrentMoveInput.x, smoothCurrentMoveInput.y);
+
+      //  if (currentMoveInput.x == 1 || currentMoveInput.x == -1 || currentMoveInput.y == 1 || currentMoveInput.y == -1)
+      //  {
+
+        if(movementDirection != Vector2.zero)
+        {
+            Quaternion toRotation = Quaternion.LookRotation(Vector3.forward, movementDirection);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
+        }
+            
+       // }
+        *//*else
+        {
+            transform.rotation = Quaternion.Euler(transform.eulerAngles.x, transform.eulerAngles.y, transform.eulerAngles.z);
+        }*//*
+
+    }*/
 
     private void OnEnable()
     {

@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
-using UnityEditor.Timeline;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
 
@@ -66,6 +65,11 @@ public class AIIdleState : AIState
         {
             walkPointSet = false;
         }
+    }
+
+    void ChasePlayer()
+    {
+
     }
 
     

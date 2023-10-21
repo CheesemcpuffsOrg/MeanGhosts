@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,17 +14,27 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] int chooseSound;
 
-    Camera cam;
-    float camHeight, camWidth;
+    /*Camera cam;
+    float camHeight, camWidth;*/
+
+    public GameObject[] items;
+    [SerializeField] GameObject[] itemSpawnPoints;
+
+    public GameObject[] audioTapes;
+    [SerializeField] GameObject[] audioTapesSpawnPoints;
 
     private void Start()
     {
         StartCoroutine(RandomAmbientSound()); 
+
+        PlaceItems();
+
+        PlaceAudioTapes();
         
-        cam = Camera.main;
+       /* cam = Camera.main;
         cam.aspect = 4 / 3f;
         camHeight = 2 * cam.orthographicSize;
-        camWidth = camHeight * cam.aspect;
+        camWidth = camHeight * cam.aspect;*/
     }
 
     void Update()
@@ -53,7 +65,62 @@ public class GameManager : MonoBehaviour
             SoundManager.SoundManagerInstance.PlayOneShotSound("BloodScream");
         }
         
-
         StartCoroutine(RandomAmbientSound());
+    }
+
+    void PlaceItems()
+    {
+        int removeItem = 0;
+        int removeSpawnPoint = 0;
+
+        foreach (GameObject obj in items)
+        {
+            if (obj != null)
+            {
+                for(int i = 0; i < itemSpawnPoints.Length; i++)
+                {
+                    removeSpawnPoint = Random.Range(0, itemSpawnPoints.Length);
+                    Debug.Log(removeSpawnPoint);
+                    if (itemSpawnPoints != null)
+                    {
+                        GameObject spawnPoint = itemSpawnPoints[removeSpawnPoint];
+                        GameObject newObj = Instantiate(obj);
+                        newObj.transform.position = spawnPoint.transform.position;
+                        items[removeItem] = null;
+                        itemSpawnPoints[removeSpawnPoint] = null;
+                        removeItem += 1;
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
+    void PlaceAudioTapes()
+    {
+        int removeItem = 0;
+        int removeSpawnPoint = 0;
+
+        foreach (GameObject obj in audioTapes)
+        {
+            if (obj != null)
+            {
+                for (int i = 0; i < audioTapesSpawnPoints.Length; i++)
+                {
+                    removeSpawnPoint = Random.Range(0, audioTapesSpawnPoints.Length);
+                    Debug.Log(removeSpawnPoint);
+                    if (audioTapesSpawnPoints != null)
+                    {
+                        GameObject spawnPoint = audioTapesSpawnPoints[removeSpawnPoint];
+                        GameObject newObj = Instantiate(obj);
+                        newObj.transform.position = spawnPoint.transform.position;
+                        audioTapes[removeItem] = null;
+                        audioTapesSpawnPoints[removeSpawnPoint] = null;
+                        removeItem += 1;
+                    }
+                    break;
+                }
+            }
+        }
     }
 }
