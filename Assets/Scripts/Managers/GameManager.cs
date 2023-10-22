@@ -28,6 +28,8 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]float timer;
 
+    bool pause = false;
+
     private void Awake()
     {
         GameManagerInstance = this;
@@ -143,6 +145,21 @@ public class GameManager : MonoBehaviour
                 removeItem += 1;
             }
         }
+    }
+
+    public void Pause()
+    {
+        pause = !pause;
+
+        if(pause == false)
+        {
+            Time.timeScale = 1;
+        }
+        else
+        {
+            Time.timeScale = 0;
+        }
+        
     }
 
     public void GameOver()

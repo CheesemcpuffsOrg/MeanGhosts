@@ -40,6 +40,7 @@ public class PlayerController : MonoBehaviour
         controlScheme.Player.Move.canceled += MovementStopped;
         controlScheme.Player.Flashlight.performed += FlashLight;
         controlScheme.Player.Interact.performed += Interact;
+        controlScheme.Player.Pause.performed += Pause;
         rb = GetComponent<Rigidbody2D>();
         flashLight.SetActive(false);
         invisible = true;
@@ -109,7 +110,8 @@ public class PlayerController : MonoBehaviour
             if(!safe )
             {
                 invisible = false;
-            }   
+            }
+            UIManagers.UIManagersInstance.DisableLampText();
         }
         else 
         {
@@ -170,10 +172,17 @@ public class PlayerController : MonoBehaviour
         {
             heldObject.transform.position = new Vector2(transform.position.x, transform.position.y - 1);
             heldObject.GetComponent<SpriteRenderer>().enabled = true;
+            heldObject.GetComponent<Collider2D>().enabled = true;
             heldObject = null;
             SoundManager.SoundManagerInstance.PlayOneShotSound("PickUp");
+            UIManagers.UIManagersInstance.DisableItemImage();
         }
         
+    }
+
+    void Pause(InputAction.CallbackContext pause)
+    {
+        GameManager.GameManagerInstance.Pause();
     }
 
     /* void PlayerRotation()

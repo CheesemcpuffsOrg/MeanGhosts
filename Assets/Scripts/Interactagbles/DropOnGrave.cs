@@ -5,37 +5,76 @@ using UnityEngine.SocialPlatforms.Impl;
 
 public class DropOnGrave : InteractableObjs
 {
-    GameObject heldObject;
+    [SerializeField]GameObject heldObject;
 
-    GameObject objectOnGrave;
+    public GameObject objectOnGrave;
 
     [SerializeField] string itemName;
 
     [SerializeField]GameObject ghost;
 
-    public override void Interact()
+    bool standingOnGrave;
+
+    private void Update()
+    {
+        if(standingOnGrave && player.GetComponent<PlayerController>().heldObject != null && objectOnGrave == null)
+        {
+            UIManagers.UIManagersInstance.PlaceItemShowText();
+        }
+    }
+
+    protected override void Interact()
     {
         base.Interact();
 
         heldObject = player.GetComponent<PlayerController>().heldObject;
+        
 
-        if (heldObject != null)
+        if (heldObject != null && objectOnGrave == null)
         {
+            UIManagers.UIManagersInstance.PlaceItemHideText();
             heldObject.GetComponent<SpriteRenderer>().enabled = true;
+            heldObject.GetComponent<Collider2D>().enabled = true;
             heldObject.transform.position = new Vector2(transform.position.x, transform.position.y - 1.5f);
             heldObject.transform.parent = this.transform;
             objectOnGrave = heldObject;
-            player.GetComponent<PlayerController>().heldObject = null;
             SoundManager.SoundManagerInstance.PlayOneShotSound("PickUp");
+            player.GetComponent<PlayerController>().heldObject = null;
+            UIManagers.UIManagersInstance.DisableItemImage();
+            
 
             // Debug.Log(objectOnGrave.gameObject.name);
 
             if (objectOnGrave.gameObject.name == itemName) 
             {
                 GameManager.GameManagerInstance.score = GameManager.GameManagerInstance.score + 1;
-                ghost.SetActive(false);
-              //  Debug.Log(GameManager.GameManagerInstance.score);
+                ghost.GetComponent<SpriteRenderer>().enabled = false;
+                ghost.GetComponent<Collider2D>().enabled = false;
+                //  Debug.Log(GameManager.GameManagerInstance.score);
             }
         } 
+    }
+
+    private new void OnTriggerEnter2D(Collider2D collision)
+    {
+        base.OnTriggerEnter2D(collision);
+
+        UIManagers.UIManagersInstance.GraveName(ghost.name);
+        player.GetComponent<PlayerController>().canInteract = true;
+        standingOnGrave = true; ;
+
+    }
+
+    private new void OnTriggerExit2D(Collider2D collision)
+    {
+        base.OnTriggerExit2D(collision);
+
+        UIManagers.UIManagersInstance.GraveName(ghost.name);
+        if (player.GetComponent<PlayerController>().heldObject != null && objectOnGrave == null)
+        {
+            UIManagers.UIManagersInstance.PlaceItemHideText();
+        }
+        player.GetComponent<PlayerController>().canInteract = false;
+        standingOnGrave = false;
     }
 }

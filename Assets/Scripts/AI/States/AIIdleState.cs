@@ -15,6 +15,8 @@ public class AIIdleState : AIState
 
     [SerializeField]bool walkPointSet = false;
 
+    float agroRangeAdjusted;
+
     public override void EnterState(AIStateManager state)
     {
         destPoint = this.transform.position;
@@ -88,7 +90,31 @@ public class AIIdleState : AIState
 
     void SwitchToChaseState(AIStateManager state)
     {
-        if (Vector3.Distance(this.transform.position, controller.player.transform.position) < controller.stats.agroRange && controller.player.GetComponent<PlayerController>().invisible == false)
+
+        switch (GameManager.GameManagerInstance.score)
+        {
+            case 0:
+                agroRangeAdjusted = controller.stats.agroRange;
+                break;
+            case 1:
+                agroRangeAdjusted = controller.stats.agroRange + 15;
+                break;
+            case 2:
+                agroRangeAdjusted = controller.stats.agroRange + 30;
+                break;
+            case 3:
+                agroRangeAdjusted = controller.stats.agroRange + 45;
+                break;
+            case 4:
+                agroRangeAdjusted = controller.stats.agroRange + 60;
+                break;
+            case 5:
+                agroRangeAdjusted = controller.stats.agroRange + 400;
+                break;
+
+        }
+
+        if (Vector3.Distance(this.transform.position, controller.player.transform.position) < agroRangeAdjusted && controller.player.GetComponent<PlayerController>().invisible == false)
         {
             state.SwitchToTheNextState(state.ChaseState);
         }
