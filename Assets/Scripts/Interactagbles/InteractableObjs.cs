@@ -12,6 +12,7 @@ public class InteractableObjs : MonoBehaviour
         {
             other.GetComponent<PlayerController>().interactEvent.AddListener(Interact);
             player = other.gameObject;
+            player.GetComponent<PlayerController>().canInteract = true; 
         }
     }
 
@@ -20,6 +21,7 @@ public class InteractableObjs : MonoBehaviour
         if (other.tag == "Player")
         {
             other.GetComponent<PlayerController>().interactEvent.RemoveListener(Interact);
+            player.GetComponent<PlayerController>().canInteract =false;
         }
     }
 

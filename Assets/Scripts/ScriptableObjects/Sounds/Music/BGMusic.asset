@@ -19,5 +19,5 @@ MonoBehaviour:
   pitch: 1
   pan: 0
   spatialBlend: 0
-  loop: 0
+  loop: 1
   source: {fileID: 0}

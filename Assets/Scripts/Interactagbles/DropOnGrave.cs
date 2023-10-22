@@ -11,6 +11,8 @@ public class DropOnGrave : InteractableObjs
 
     [SerializeField] string itemName;
 
+    [SerializeField]GameObject ghost;
+
     public override void Interact()
     {
         base.Interact();
@@ -19,17 +21,19 @@ public class DropOnGrave : InteractableObjs
 
         if (heldObject != null)
         {
-            heldObject.SetActive(true);
-            heldObject.transform.position = new Vector2(transform.position.x, transform.position.y - 1);
+            heldObject.GetComponent<SpriteRenderer>().enabled = true;
+            heldObject.transform.position = new Vector2(transform.position.x, transform.position.y - 1.5f);
             heldObject.transform.parent = this.transform;
             objectOnGrave = heldObject;
             player.GetComponent<PlayerController>().heldObject = null;
+            SoundManager.SoundManagerInstance.PlayOneShotSound("PickUp");
 
-           // Debug.Log(objectOnGrave.gameObject.name);
+            // Debug.Log(objectOnGrave.gameObject.name);
 
-            if(objectOnGrave.gameObject.name == itemName) 
+            if (objectOnGrave.gameObject.name == itemName) 
             {
                 GameManager.GameManagerInstance.score = GameManager.GameManagerInstance.score + 1;
+                ghost.SetActive(false);
               //  Debug.Log(GameManager.GameManagerInstance.score);
             }
         } 

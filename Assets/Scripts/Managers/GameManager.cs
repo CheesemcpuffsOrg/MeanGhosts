@@ -26,6 +26,8 @@ public class GameManager : MonoBehaviour
 
     public int score = 0;
 
+    [SerializeField]float timer;
+
     private void Awake()
     {
         GameManagerInstance = this;
@@ -53,6 +55,8 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("Game Win");
         }
+
+        timer += Time.deltaTime;
     }
 
     IEnumerator RandomAmbientSound()

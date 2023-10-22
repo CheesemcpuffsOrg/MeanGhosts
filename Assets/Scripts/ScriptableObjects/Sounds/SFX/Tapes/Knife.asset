@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Knife
   m_EditorClassIdentifier: 
   name: Knife
-  clip: {fileID: 8300000, guid: 33cf9b2e35d060344bbe20d07fed172a, type: 3}
+  clip: {fileID: 8300000, guid: 3f33ef29dcfde2247b71e3444800d9d5, type: 3}
   group: {fileID: -9123715879687149167, guid: d8dd63bf224bdc8468fb34784cf4b2fa, type: 2}
   volume: 1
   pitch: 1

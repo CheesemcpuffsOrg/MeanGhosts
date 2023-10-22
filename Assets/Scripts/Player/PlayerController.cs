@@ -25,11 +25,13 @@ public class PlayerController : MonoBehaviour
     bool isMoving = false;
     bool footsteps = false;
     public bool invisible = false;
-    [SerializeField]bool safe = false;
+    public bool safe = false;
 
     public UnityEvent interactEvent;
 
     public GameObject heldObject;
+
+    public bool canInteract;
 
     private void Awake()
     {
@@ -57,7 +59,16 @@ public class PlayerController : MonoBehaviour
         smoothCurrentMoveInput = Vector2.SmoothDamp(smoothCurrentMoveInput, currentMoveInput, ref currentMovementSmoothVelocity, 0.1f);
 
         rb.velocity = smoothCurrentMoveInput * speed;
-        
+
+        if (currentMoveInput.x > 0)
+        {
+            GetComponent<SpriteRenderer>().flipX = false;
+        }
+        else if (currentMoveInput.x < 0)
+        {
+            GetComponent<SpriteRenderer>().flipX = true;
+        }
+
     }
 
     void Movement(InputAction.CallbackContext move)
@@ -98,8 +109,7 @@ public class PlayerController : MonoBehaviour
             if(!safe )
             {
                 invisible = false;
-            }
-            
+            }   
         }
         else 
         {
@@ -107,8 +117,7 @@ public class PlayerController : MonoBehaviour
             if(!safe )
             {
                 invisible = true;
-            }
-            
+            } 
         }
     }
 
@@ -117,16 +126,6 @@ public class PlayerController : MonoBehaviour
 
         interactEvent.Invoke();
 
-        if (heldObject != null)
-        {
-           // heldObject.SetActive(true);
-           // heldObject.transform.position = new Vector2(transform.position.x, transform.position.y - 0.5f);
-        }
-        else
-        {
-            
-        }
-        
     }
 
     public void HeldObject(GameObject holdme)
@@ -147,26 +146,56 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-   /* void PlayerRotation()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        Vector2 movementDirection = new Vector2(smoothCurrentMoveInput.x, smoothCurrentMoveInput.y);
-
-      //  if (currentMoveInput.x == 1 || currentMoveInput.x == -1 || currentMoveInput.y == 1 || currentMoveInput.y == -1)
-      //  {
-
-        if(movementDirection != Vector2.zero)
+        if(collision.gameObject.tag == "SafeZone")
         {
-            Quaternion toRotation = Quaternion.LookRotation(Vector3.forward, movementDirection);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
+            PlayerInvisible();
+            interactEvent.AddListener(SafeZoneDrop);
         }
-            
-       // }
-        *//*else
-        {
-            transform.rotation = Quaternion.Euler(transform.eulerAngles.x, transform.eulerAngles.y, transform.eulerAngles.z);
-        }*//*
+    }
 
-    }*/
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "SafeZone")
+        {
+            PlayerInvisible();
+            interactEvent.RemoveListener(SafeZoneDrop);
+        }
+    }
+
+    void SafeZoneDrop()
+    {
+        if(heldObject != null && !canInteract)
+        {
+            heldObject.transform.position = new Vector2(transform.position.x, transform.position.y - 1);
+            heldObject.GetComponent<SpriteRenderer>().enabled = true;
+            heldObject = null;
+            SoundManager.SoundManagerInstance.PlayOneShotSound("PickUp");
+        }
+        
+    }
+
+    /* void PlayerRotation()
+     {
+         Vector2 movementDirection = new Vector2(smoothCurrentMoveInput.x, smoothCurrentMoveInput.y);
+
+       //  if (currentMoveInput.x == 1 || currentMoveInput.x == -1 || currentMoveInput.y == 1 || currentMoveInput.y == -1)
+       //  {
+
+         if(movementDirection != Vector2.zero)
+         {
+             Quaternion toRotation = Quaternion.LookRotation(Vector3.forward, movementDirection);
+             transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
+         }
+
+        // }
+         *//*else
+         {
+             transform.rotation = Quaternion.Euler(transform.eulerAngles.x, transform.eulerAngles.y, transform.eulerAngles.z);
+         }*//*
+
+     }*/
 
     private void OnEnable()
     {
