@@ -6,4 +6,6 @@ using UnityEngine;
 public class AIScriptableObjects : ScriptableObject
 {
     public float speed;
+    public float chaseSpeed;
+    public float agroRange;
 }

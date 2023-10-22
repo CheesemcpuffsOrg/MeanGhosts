@@ -23,6 +23,11 @@ public class GameManager : MonoBehaviour
     public GameObject[] audioTapes;
     [SerializeField] GameObject[] audioTapesSpawnPoints;
 
+    private void Awake()
+    {
+        GameManagerInstance = this;
+    }
+
     private void Start()
     {
         StartCoroutine(RandomAmbientSound()); 
@@ -126,5 +131,10 @@ public class GameManager : MonoBehaviour
                 removeItem += 1;
             }
         }
+    }
+
+    public void GameOver()
+    {
+        Debug.Log("GameOver");
     }
 }

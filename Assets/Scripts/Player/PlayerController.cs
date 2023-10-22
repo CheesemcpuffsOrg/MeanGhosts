@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
 
     bool isMoving = false;
     bool footsteps = false;
-    [SerializeField]bool invisible = false;
+    public bool invisible = false;
     [SerializeField]bool safe = false;
 
     public UnityEvent interactEvent;

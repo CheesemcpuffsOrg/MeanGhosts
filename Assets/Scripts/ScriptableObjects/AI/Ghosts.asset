@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: Ghosts
   m_EditorClassIdentifier: 
   speed: 3
+  chaseSpeed: 6
+  agroRange: 20

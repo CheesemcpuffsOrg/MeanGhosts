@@ -23,6 +23,8 @@ public class AIIdleState : AIState
     public override void UpdateState(AIStateManager state)
     {
         IdleMovement();
+
+        SwitchToChaseState(state);
     }
 
     public override void ExitState(AIStateManager state)
@@ -36,10 +38,27 @@ public class AIIdleState : AIState
 
         Vector2 previousLoc = destPoint;
 
-        float x = Random.Range(-100f, 100f);
-        float y = Random.Range(-100f, 100f);
+        float x = 0;
+        float y = 0;
 
-        destPoint = new Vector2(wanderZone.y + y, wanderZone.x + x);
+        for(int i = 0; i < 100; i++)
+        {
+            x = Random.Range(-200f, 200f);
+            if(x > 40f || x < -40f)
+            {
+                break;
+            }
+        }
+        for (int i = 0; i < 100; i++)
+        {
+            y = Random.Range(-150f, 150f);
+            if (y > 40f || y < -40f)
+            {
+                break;
+            }
+        }
+
+        destPoint = new Vector2(wanderZone.x + x, wanderZone.y + y);
 
         float curveX = (((1 - bezierTime) * (1 - bezierTime)) * transform.root.position.x) + (2 * bezierTime * (1 - bezierTime) * previousLoc.x) + ((bezierTime * bezierTime) * destPoint.x);
         float curveY = (((1 - bezierTime) * (1 - bezierTime)) * transform.root.position.y) + (2 * bezierTime * (1 - bezierTime) * previousLoc.y) + ((bezierTime * bezierTime) * destPoint.y);
@@ -67,9 +86,12 @@ public class AIIdleState : AIState
         }
     }
 
-    void ChasePlayer()
+    void SwitchToChaseState(AIStateManager state)
     {
-
+        if (Vector3.Distance(this.transform.position, controller.player.transform.position) < controller.stats.agroRange && controller.player.GetComponent<PlayerController>().invisible == false)
+        {
+            state.SwitchToTheNextState(state.ChaseState);
+        }
     }
 
     

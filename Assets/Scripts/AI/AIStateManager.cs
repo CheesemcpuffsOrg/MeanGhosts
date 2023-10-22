@@ -8,6 +8,7 @@ public class AIStateManager : MonoBehaviour
 
     public AIState currentState;
     public AIIdleState IdleState;
+    public AIChaseState ChaseState;
 
     bool delayDone = false;
 
