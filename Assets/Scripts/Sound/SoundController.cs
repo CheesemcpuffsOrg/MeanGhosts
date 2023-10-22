@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class SoundController : MonoBehaviour
 {
@@ -10,9 +11,18 @@ public class SoundController : MonoBehaviour
 
     private AudioSource[] allAudio;
 
+    [SerializeField]bool[] doNotPlay;
+
     private void Awake()
     {
         GenerateAudioComponentList();
+
+        //generate the true false array
+        doNotPlay = new bool[sounds.Length];
+        for (int i = 0; i < sounds.Length; i++)
+        {
+            doNotPlay[i] = false;
+        }
 
         SoundManager.stopAllAudio += StopAudio;
 
@@ -63,8 +73,28 @@ public class SoundController : MonoBehaviour
     //play a one shot that does not need to be interrupted, can have mutiple instances
     public void PlayOneShotSound(int index)
     {
-        if (allAudio[index] == null)
+        if (doNotPlay[index] == false)
+        {
+            if (allAudio[index] == null)
+                return;
+            allAudio[index].PlayOneShot(allAudio[index].clip, allAudio[index].volume);
+        }
+        else
+        {
             return;
-        allAudio[index].PlayOneShot(allAudio[index].clip, allAudio[index].volume);
+        }
+        
+    }
+
+    public void CheckIfPlaying(int index)
+    {
+        if (allAudio[index].isPlaying == true)
+        {
+            doNotPlay[index] = true;
+        }
+        else if (allAudio[index].isPlaying == false)
+        {
+            doNotPlay[index] = false;
+        }
     }
 }

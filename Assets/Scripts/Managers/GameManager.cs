@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
@@ -22,6 +23,8 @@ public class GameManager : MonoBehaviour
 
     public GameObject[] audioTapes;
     [SerializeField] GameObject[] audioTapesSpawnPoints;
+
+    public int score = 0;
 
     private void Awake()
     {
@@ -45,6 +48,11 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         Darkness.settings.SetDarkness(lightLevel);
+
+        if(score == 6)
+        {
+            Debug.Log("Game Win");
+        }
     }
 
     IEnumerator RandomAmbientSound()
@@ -89,7 +97,7 @@ public class GameManager : MonoBehaviour
                     if(itemSpawnPoints[removeSpawnPoint] != null)
                     {
                         spawnPoint = itemSpawnPoints[removeSpawnPoint];
-                        Debug.Log(removeSpawnPoint);
+                        //Debug.Log(removeSpawnPoint);
                         break;
                     }
                 }
@@ -116,7 +124,7 @@ public class GameManager : MonoBehaviour
                 for (int i = 0; i < audioTapesSpawnPoints.Length; i++)
                 {
                     removeSpawnPoint = Random.Range(0, audioTapesSpawnPoints.Length);
-                    Debug.Log(removeSpawnPoint);
+                    //Debug.Log(removeSpawnPoint);
                     if (audioTapesSpawnPoints[removeSpawnPoint] != null)
                     {
                         spawnPoint = audioTapesSpawnPoints[removeSpawnPoint];

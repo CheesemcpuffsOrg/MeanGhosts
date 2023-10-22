@@ -26,6 +26,6 @@ public class InteractableObjs : MonoBehaviour
     public virtual void Interact()
     {
         //this is inherited
-        Debug.Log("Interact");
+       // Debug.Log("Interact");
     }
 }

@@ -5,12 +5,21 @@ using UnityEngine;
 
 public class PickUps : InteractableObjs
 {
+    [SerializeField] string graveName; 
 
     public override void Interact()
     {
         base.Interact();
 
-        this.gameObject.SetActive(false);
+        
         player.GetComponent<PlayerController>().HeldObject(this.gameObject);
+
+        if(gameObject.transform.parent != null && gameObject.transform.parent.name == graveName)
+        {
+            GameManager.GameManagerInstance.score = GameManager.GameManagerInstance.score - 1;
+           // Debug.Log(GameManager.GameManagerInstance.score);
+        }
+
+        this.gameObject.SetActive(false);
     }
 }
