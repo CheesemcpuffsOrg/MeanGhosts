@@ -24,7 +24,11 @@ public class PickUps : InteractableObjs
 
         if(player.GetComponent<PlayerController>().heldObject == null)
         {
-            this.GetComponent<SpriteRenderer>().enabled = false;
+            SpriteRenderer[] renderers = this.GetComponentsInChildren<SpriteRenderer>();
+            foreach(SpriteRenderer renderer in renderers)
+            {
+                renderer.enabled = false;
+            }
             this.GetComponent<Collider2D>().enabled = false;
             player.GetComponent<PlayerController>().HeldObject(this.gameObject);
             SoundManager.SoundManagerInstance.PlayOneShotSound("PickUp");

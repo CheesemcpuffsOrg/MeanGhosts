@@ -20,6 +20,15 @@ public class SoundManager : MonoBehaviour
     private void Awake()
     {
         SoundManagerInstance = this;
+
+        /*GameObject[] objs = GameObject.FindGameObjectsWithTag("music");
+
+        if (objs.Length > 1)
+        {
+            Destroy(this.gameObject);
+        }
+
+        DontDestroyOnLoad(this.gameObject);*/
     }
 
     private void Start()

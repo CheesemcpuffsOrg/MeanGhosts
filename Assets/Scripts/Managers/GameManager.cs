@@ -3,12 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.SocialPlatforms.Impl;
 using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager GameManagerInstance;
+
+    GameObject player;
 
     [Range(0f, 1f)]
     [SerializeField] float lightLevel;
@@ -26,13 +29,15 @@ public class GameManager : MonoBehaviour
 
     public int score = 0;
 
-    [SerializeField]float timer;
+    public float timer;
 
     bool pause = false;
 
     private void Awake()
     {
         GameManagerInstance = this;
+
+        player = GameObject.Find("Player");
     }
 
     private void Start()
@@ -55,7 +60,10 @@ public class GameManager : MonoBehaviour
 
         if(score == 6)
         {
-            Debug.Log("Game Win");
+            UIManagers.UIManagersInstance.Winner();
+            player.GetComponent<PlayerController>().OnDisable();
+            player.GetComponent<PlayerController>().flashLight.SetActive(false);
+            player.GetComponent<PlayerController>().flashLightState = false;  
         }
 
         timer += Time.deltaTime;
@@ -151,19 +159,33 @@ public class GameManager : MonoBehaviour
     {
         pause = !pause;
 
-        if(pause == false)
+        UIManagers.UIManagersInstance.PauseText();
+
+        if (pause == false)
         {
             Time.timeScale = 1;
+            /*player.GetComponent<PlayerController>().flashLight.SetActive(true);
+            player.GetComponent<PlayerController>().flashLightState = true;*/
         }
         else
         {
             Time.timeScale = 0;
+            player.GetComponent<PlayerController>().flashLight.SetActive(false);
+            player.GetComponent<PlayerController>().flashLightState = false;
         }
-        
+
     }
 
     public void GameOver()
     {
-        Debug.Log("GameOver");
+        Time.timeScale = 0;
+        player.GetComponent<PlayerController>().flashLight.SetActive(false);
+        player.GetComponent<PlayerController>().flashLightState = false;
+        UIManagers.UIManagersInstance.GameOver();
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);   
     }
 }

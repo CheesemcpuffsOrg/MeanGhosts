@@ -33,7 +33,11 @@ public class DropOnGrave : InteractableObjs
         if (heldObject != null && objectOnGrave == null)
         {
             UIManagers.UIManagersInstance.PlaceItemHideText();
-            heldObject.GetComponent<SpriteRenderer>().enabled = true;
+            SpriteRenderer[] renderers = heldObject.GetComponentsInChildren<SpriteRenderer>();
+            foreach (SpriteRenderer renderer in renderers)
+            {
+                renderer.enabled = true;
+            }
             heldObject.GetComponent<Collider2D>().enabled = true;
             heldObject.transform.position = new Vector2(transform.position.x, transform.position.y - 1.5f);
             heldObject.transform.parent = this.transform;

@@ -10,9 +10,13 @@ public class AIController : MonoBehaviour
 
     Vector2 spawn;
 
+    public Animator anim;
+
     // Start is called before the first frame update
     void Start()
     {
+        anim = GetComponent<Animator>();
+
         player = GameObject.FindWithTag("Player");
 
         spawn = new Vector2(transform.position.x, transform.position.y);

@@ -27,7 +27,21 @@ public class AIChaseState : AIState
 
     void ChasePlayer(AIStateManager state)
     {
-        if(controller.player.GetComponent<PlayerController>().invisible == false) 
+
+        if (GameManager.GameManagerInstance.score > 2)
+        {
+            controller.anim.SetBool("isScary", true);
+            if (transform.right.x > 0)
+            {
+                controller.GetComponent<SpriteRenderer>().flipX = true;
+            }
+            else if (transform.right.x < 0)
+            {
+                controller.GetComponent<SpriteRenderer>().flipX = false;
+            }
+        }
+
+        if (controller.player.GetComponent<PlayerController>().invisible == false) 
         {
             transform.root.position = Vector2.MoveTowards(transform.position, controller.player.transform.position, controller.stats.chaseSpeed * Time.deltaTime);
         }

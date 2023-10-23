@@ -4,14 +4,16 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Unity.VisualScripting;
+using static Unity.Burst.Intrinsics.X86;
 
 public class UIManagers : MonoBehaviour
 {
     public static UIManagers UIManagersInstance;
     
-    [SerializeField] TMP_Text lampText, pickUpItemText, placeItemText, playTapeText;
+    [SerializeField] TMP_Text lampText, pickUpItemText, placeItemText, playTapeText, pauseText, gameOver, winner;
     TMP_Text graveNameText;
     Image itemImage;
+    [SerializeField] GameObject restartButton;
 
     private void Awake()
     {
@@ -89,6 +91,39 @@ public class UIManagers : MonoBehaviour
     public void DisableItemImage()
     {
         itemImage.enabled = false;
+    }
+
+    public void PauseText()
+    {
+        if (pauseText.enabled == true)
+        {
+            pauseText.enabled = false;
+        }
+        else
+        {
+            pauseText.enabled = true;
+        }
+    }
+
+    public void GameOver()
+    {
+        gameOver.enabled = true;
+        restartButton.SetActive(true);
+    }
+
+    public void Winner()
+    {
+        winner.enabled = true;
+        float timer = GameManager.GameManagerInstance.timer;
+        int minutes = Mathf.FloorToInt(timer / 60);
+        int seconds = Mathf.FloorToInt(timer % 60);
+        winner.text = "Good job! You defeated the ghosts.<br> Your time was: " + string.Format("{0:00}:{1:00}", minutes, seconds);
+        restartButton.SetActive(true);
+    }
+
+    public void ResetGame()
+    {
+        GameManager.GameManagerInstance.RestartGame();
     }
 
 }

@@ -15,10 +15,12 @@ public class AIIdleState : AIState
 
     [SerializeField]bool walkPointSet = false;
 
-    float agroRangeAdjusted;
+    [SerializeField]float agroRangeAdjusted;
 
     public override void EnterState(AIStateManager state)
     {
+        controller.anim.SetBool("isScary", false);
+
         destPoint = this.transform.position;
     }
 

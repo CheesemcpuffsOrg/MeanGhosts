@@ -17,8 +17,8 @@ public class PlayerController : MonoBehaviour
     Vector2 currentMovementSmoothVelocity;
     [SerializeField] float speed;
     //float rotationSpeed;
-    [SerializeField] GameObject flashLight;
-    bool flashLightState = false;
+    public GameObject flashLight;
+    public bool flashLightState = false;
 
     Rigidbody2D rb;
 
@@ -33,8 +33,11 @@ public class PlayerController : MonoBehaviour
 
     public bool canInteract;
 
+    Animator anim;
+
     private void Awake()
     {
+        anim = GetComponent<Animator>();
         controlScheme = new ControlScheme();
         controlScheme.Player.Move.performed += Movement;
         controlScheme.Player.Move.canceled += MovementStopped;
@@ -69,6 +72,8 @@ public class PlayerController : MonoBehaviour
         {
             GetComponent<SpriteRenderer>().flipX = true;
         }
+
+        anim.SetBool("isWalking", isMoving);
 
     }
 
@@ -171,7 +176,11 @@ public class PlayerController : MonoBehaviour
         if(heldObject != null && !canInteract)
         {
             heldObject.transform.position = new Vector2(transform.position.x, transform.position.y - 1);
-            heldObject.GetComponent<SpriteRenderer>().enabled = true;
+            SpriteRenderer[] renderers = heldObject.GetComponentsInChildren<SpriteRenderer>();
+            foreach (SpriteRenderer renderer in renderers)
+            {
+                renderer.enabled = true;
+            }
             heldObject.GetComponent<Collider2D>().enabled = true;
             heldObject = null;
             SoundManager.SoundManagerInstance.PlayOneShotSound("PickUp");
@@ -206,12 +215,12 @@ public class PlayerController : MonoBehaviour
 
      }*/
 
-    private void OnEnable()
+    public void OnEnable()
     {
         controlScheme.Enable();
     }
 
-    private void OnDisable()
+    public void OnDisable()
     {
         controlScheme.Disable();
     }
