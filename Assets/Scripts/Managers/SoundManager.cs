@@ -12,6 +12,7 @@ public class SoundManager : MonoBehaviour
     [SerializeField]private AudioScriptableObject[] sounds;
 
     private List<AudioScriptableObject> arrayStorage = new List<AudioScriptableObject>();
+    private List<AudioSource> audioStorage = new List<AudioSource>();
 
     //private AudioSource[] allAudio;
 
@@ -29,6 +30,9 @@ public class SoundManager : MonoBehaviour
         }
 
         DontDestroyOnLoad(this.gameObject);*/
+
+        PopulateAudioManager();
+
     }
 
     private void Start()
@@ -36,24 +40,25 @@ public class SoundManager : MonoBehaviour
         sounds = arrayStorage.ToArray();//store all the list values to an array
     }
 
+    void PopulateAudioManager()
+    {
+        for (int i = 0; i < 32; i++)
+        {
+            this.gameObject.AddComponent<AudioSource>();
+        }
+
+        foreach (AudioSource s in GetComponents<AudioSource>())
+        {
+            s.GetComponents<AudioSource>();
+            audioStorage.Add(s);
+        }
+    }
+
     //The sound disks call this to add their sounds to the audio list
     public void GenerateAudioComponentList(AudioScriptableObject[] audioList)
     {
         arrayStorage.AddRange(audioList);//add all the array values to a list
-        //create all the audio sources
-        foreach (AudioScriptableObject s in audioList)
-        {
-            s.source = this.gameObject.AddComponent<AudioSource>();
-            s.source.clip = s.clip;
-
-            s.source.outputAudioMixerGroup = s.group;
-            s.source.volume = s.volume;
-            s.source.pitch = s.pitch;
-            s.source.loop = s.loop;
-            s.source.panStereo = s.pan;
-        }
     }
-
 
     //stops all audio when called
     public void StopAllAudio()
@@ -61,13 +66,67 @@ public class SoundManager : MonoBehaviour
         stopAllAudio();
     }
 
-    //plays single instance of Audio
-    public void PlaySound(string name)
+    public int PlaySound(string name)
     {
         AudioScriptableObject s = Array.Find(sounds, sound => sound.name == name);
-        if (s == null)
-            return;
-        s.source.Play();
+
+        int i;
+
+        for (i = 0; i <= audioStorage.Count; i++)
+        {
+            if (audioStorage[i].isPlaying == false)
+            {
+                AudioSource audioSource = audioStorage[i];
+
+                audioSource.clip = s.clip;
+
+                audioSource.outputAudioMixerGroup = s.group;
+                audioSource.volume = s.volume;
+                audioSource.pitch = s.pitch;
+                audioSource.loop = s.loop;
+                audioSource.panStereo = s.pan;
+                audioSource.Play();
+                return i;
+            }
+        }
+        return i;
+        
+    }
+
+    public void StopSound(int arrayNumber)
+    {
+        AudioSource audioSource = audioStorage[arrayNumber];
+
+        audioSource.Stop();
+    }
+
+    public void PlayOneShotSound(string name)
+    {
+        AudioScriptableObject s = Array.Find(sounds, sound => sound.name == name);
+
+        for (int i = 0; i < audioStorage.Count; i++)
+        {
+            if (audioStorage[i].isPlaying == false)
+            {
+                AudioSource audioSource = audioStorage[i];
+
+                audioSource.clip = s.clip;
+
+                audioSource.outputAudioMixerGroup = s.group;
+                audioSource.volume = s.volume;
+                audioSource.pitch = s.pitch;
+                audioSource.loop = s.loop;
+                audioSource.panStereo = s.pan;
+                audioSource.PlayOneShot(s.clip, s.volume);
+
+                return;
+            }
+        }
+    }
+
+    public void PlaySoundAtLoation(string name, GameObject obj)
+    {
+
     }
 
     //plays single instance of menu Audio
@@ -80,15 +139,6 @@ public class SoundManager : MonoBehaviour
         s.source.Play();
     }
 
-    //Stops single instance of Audio
-    public void StopSound(string name)
-    {
-        AudioScriptableObject s = Array.Find(sounds, sound => sound.name == name);
-        if (s == null)
-            return;
-        s.source.Stop();
-    }
-
     //Stops single instance of menu Audio
     public void StopSoundMenu(string name)
     {
@@ -97,15 +147,6 @@ public class SoundManager : MonoBehaviour
             return;
         s.source.ignoreListenerPause = true;
         s.source.Stop();
-    }
-
-    //play a one shot that does not need to be interrupted, can have mutiple instances
-    public void PlayOneShotSound(string name)
-    {
-        AudioScriptableObject s = Array.Find(sounds, sound => sound.name == name);
-        if (s == null)
-            return;
-        s.source.PlayOneShot(s.clip, s.volume);
     }
 
     //play a one shot that does not need to be interrupted in the menu, can have mutiple instances

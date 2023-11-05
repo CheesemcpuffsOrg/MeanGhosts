@@ -27,6 +27,8 @@ public class PlayerController : MonoBehaviour
     public bool invisible = false;
     public bool safe = false;
 
+    int footstepsSFX;
+
     public UnityEvent interactEvent;
 
     public GameObject heldObject;
@@ -93,12 +95,12 @@ public class PlayerController : MonoBehaviour
 
         if(isMoving && !footsteps)
         {
-            SoundManager.SoundManagerInstance.PlaySound("Footsteps");
+            footstepsSFX = SoundManager.SoundManagerInstance.PlaySound("Footsteps");
             footsteps = true;
         }
         else if(!isMoving && footsteps)
         {
-            SoundManager.SoundManagerInstance.StopSound("Footsteps");
+            SoundManager.SoundManagerInstance.StopSound(footstepsSFX);
             footsteps = false;
         }
     }
@@ -183,7 +185,7 @@ public class PlayerController : MonoBehaviour
             }
             heldObject.GetComponent<Collider2D>().enabled = true;
             heldObject = null;
-            SoundManager.SoundManagerInstance.PlayOneShotSound("PickUp");
+          //  SoundManager.SoundManagerInstance.PlayOneShotSound("PickUp");
             UIManagers.UIManagersInstance.DisableItemImage();
         }
         

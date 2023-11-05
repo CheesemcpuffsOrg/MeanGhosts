@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 
@@ -42,14 +43,15 @@ public class DropOnGrave : InteractableObjs
             heldObject.transform.position = new Vector2(transform.position.x, transform.position.y - 1.5f);
             heldObject.transform.parent = this.transform;
             objectOnGrave = heldObject;
-            SoundManager.SoundManagerInstance.PlayOneShotSound("PickUp");
+            string objectOnGraveName = objectOnGrave.name.Replace("(Clone)", string.Empty);
+          //  SoundManager.SoundManagerInstance.PlayOneShotSound("PickUp");
             player.GetComponent<PlayerController>().heldObject = null;
             UIManagers.UIManagersInstance.DisableItemImage();
             
 
             // Debug.Log(objectOnGrave.gameObject.name);
 
-            if (objectOnGrave.gameObject.name == itemName) 
+            if (objectOnGraveName == itemName) 
             {
                 GameManager.GameManagerInstance.score = GameManager.GameManagerInstance.score + 1;
                 ghost.GetComponent<SpriteRenderer>().enabled = false;

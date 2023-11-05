@@ -10,10 +10,10 @@ public class UIManagers : MonoBehaviour
 {
     public static UIManagers UIManagersInstance;
     
-    [SerializeField] TMP_Text lampText, pickUpItemText, placeItemText, playTapeText, pauseText, gameOver, winner;
+    [SerializeField] TMP_Text lampText, pickUpItemText, placeItemText, playTapeText, pauseText, gameOver, winner, volume;
     TMP_Text graveNameText;
     Image itemImage;
-    [SerializeField] GameObject restartButton;
+    [SerializeField] GameObject restartButton, slider;
 
     private void Awake()
     {
@@ -98,10 +98,16 @@ public class UIManagers : MonoBehaviour
         if (pauseText.enabled == true)
         {
             pauseText.enabled = false;
+
+            slider.SetActive(false);
+            volume.enabled = false;
         }
         else
         {
             pauseText.enabled = true;
+
+            slider.SetActive(true);
+            volume.enabled = true;
         }
     }
 

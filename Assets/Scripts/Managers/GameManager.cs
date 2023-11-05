@@ -77,19 +77,19 @@ public class GameManager : MonoBehaviour
 
         if(chooseSound > 0 && chooseSound < 33)
         {
-            SoundManager.SoundManagerInstance.PlayOneShotSound("Owl");
+          //  SoundManager.SoundManagerInstance.PlayOneShotSound("Owl");
         }
         else if (chooseSound > 32 && chooseSound < 65)
         {
-            SoundManager.SoundManagerInstance.PlayOneShotSound("Crickets");
+          //  SoundManager.SoundManagerInstance.PlayOneShotSound("Crickets");
         }
         else if (chooseSound > 64 && chooseSound < 97)
         {
-            SoundManager.SoundManagerInstance.PlayOneShotSound("Frog");
+          //  SoundManager.SoundManagerInstance.PlayOneShotSound("Frog");
         }
         else if(chooseSound > 96 && chooseSound < 101)
         {
-            SoundManager.SoundManagerInstance.PlayOneShotSound("BloodScream");
+           // SoundManager.SoundManagerInstance.PlayOneShotSound("BloodScream");
         }
         
         StartCoroutine(RandomAmbientSound());
@@ -178,7 +178,7 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        Time.timeScale = 0;
+        player.GetComponent<PlayerController>().OnDisable();
         player.GetComponent<PlayerController>().flashLight.SetActive(false);
         player.GetComponent<PlayerController>().flashLightState = false;
         UIManagers.UIManagersInstance.GameOver();

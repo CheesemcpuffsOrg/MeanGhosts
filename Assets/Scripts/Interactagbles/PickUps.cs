@@ -31,8 +31,9 @@ public class PickUps : InteractableObjs
             }
             this.GetComponent<Collider2D>().enabled = false;
             player.GetComponent<PlayerController>().HeldObject(this.gameObject);
-            SoundManager.SoundManagerInstance.PlayOneShotSound("PickUp");
-            UIManagers.UIManagersInstance.EnableItemImage(this.gameObject.name);
+         //   SoundManager.SoundManagerInstance.PlayOneShotSound("PickUp");
+            string sendThis = null;
+            UIManagers.UIManagersInstance.EnableItemImage(sendThis = this.gameObject.name.Replace("(Clone)", string.Empty));
 
         }
 
