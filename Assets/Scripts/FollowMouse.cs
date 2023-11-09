@@ -16,7 +16,7 @@ public class FollowMouse : MonoBehaviour
 
         
 
-        torchLight.transform.right = direction;
+        torchLight.transform.up = direction;
     }
     
 }
