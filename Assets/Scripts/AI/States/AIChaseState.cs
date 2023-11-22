@@ -28,7 +28,7 @@ public class AIChaseState : AIState
     void ChasePlayer(AIStateManager state)
     {
 
-        if (GameManager.GameManagerInstance.score > 2)
+        if (Manager.GameManager.GameManagerInstance.score > 2)
         {
             controller.anim.SetBool("isScary", true);
             if (transform.right.x > 0)
@@ -41,7 +41,7 @@ public class AIChaseState : AIState
             }
         }
 
-        if (controller.player.GetComponent<PlayerController>().invisible == false) 
+        if (controller.player.GetComponent<Player.PlayerController>().invisible == false) 
         {
             transform.root.position = Vector2.MoveTowards(transform.position, controller.player.transform.position, controller.stats.chaseSpeed * Time.deltaTime);
         }
@@ -50,12 +50,12 @@ public class AIChaseState : AIState
             state.SwitchToTheNextState(state.IdleState);
         }
 
-        if (Vector3.Distance(this.transform.position, controller.player.transform.position) < 10 && !scream && GameManager.GameManagerInstance.score > 0)
+        if (Vector3.Distance(this.transform.position, controller.player.transform.position) < 10 && !scream && Manager.GameManager.GameManagerInstance.score > 0)
         {
             GetComponentInParent<SoundController>().PlayOneShotSound(0);
             scream = true;
         }
-        else if (Vector3.Distance(this.transform.position, controller.player.transform.position) < 10 && !scream && GameManager.GameManagerInstance.score == 0 && !scream)
+        else if (Vector3.Distance(this.transform.position, controller.player.transform.position) < 10 && !scream && Manager.GameManager.GameManagerInstance.score == 0 && !scream)
         {
             GetComponentInParent<SoundController>().PlayOneShotSound(1);
             scream = true;

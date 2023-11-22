@@ -33,14 +33,14 @@ public class AIController : MonoBehaviour
         
         if (collision.gameObject.tag == "Player")
         {
-            GameManager.GameManagerInstance.GameOver();
+            Manager.GameManager.GameManagerInstance.GameOver();
         }
 
     }
 
     void PlayerIsSafe()
     {
-        if (player.GetComponent<PlayerController>().safe == true) 
+        if (player.GetComponent<Player.PlayerController>().safe == true) 
         {
             this.transform.position = spawn;
             this.gameObject.GetComponent<AIStateManager>().enabled = false;

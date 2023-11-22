@@ -93,7 +93,7 @@ public class AIIdleState : AIState
     void SwitchToChaseState(AIStateManager state)
     {
 
-        switch (GameManager.GameManagerInstance.score)
+        switch (Manager.GameManager.GameManagerInstance.score)
         {
             case 0:
                 agroRangeAdjusted = controller.stats.agroRange;
@@ -116,7 +116,7 @@ public class AIIdleState : AIState
 
         }
 
-        if (Vector3.Distance(this.transform.position, controller.player.transform.position) < agroRangeAdjusted && controller.player.GetComponent<PlayerController>().invisible == false)
+        if (Vector3.Distance(this.transform.position, controller.player.transform.position) < agroRangeAdjusted && controller.player.GetComponent<Player.PlayerController>().invisible == false)
         {
             state.SwitchToTheNextState(state.ChaseState);
         }

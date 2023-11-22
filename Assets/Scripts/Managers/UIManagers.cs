@@ -120,7 +120,7 @@ public class UIManagers : MonoBehaviour
     public void Winner()
     {
         winner.enabled = true;
-        float timer = GameManager.GameManagerInstance.timer;
+        float timer = Manager.GameManager.GameManagerInstance.timer;
         int minutes = Mathf.FloorToInt(timer / 60);
         int seconds = Mathf.FloorToInt(timer % 60);
         winner.text = "Good job! You defeated the ghosts.<br> Your time was: " + string.Format("{0:00}:{1:00}", minutes, seconds);
@@ -129,7 +129,7 @@ public class UIManagers : MonoBehaviour
 
     public void ResetGame()
     {
-        GameManager.GameManagerInstance.RestartGame();
+        Manager.GameManager.GameManagerInstance.RestartGame();
     }
 
 }
