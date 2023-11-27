@@ -1,17 +1,14 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
-using static UnityEngine.Rendering.DebugUI;
 
+//Joshua 2023/11/27
 
 namespace Player
 {
     public class PlayerController : MonoBehaviour
     {
+        [SerializeField] PlayerSO playerSO;
 
         public ControlScheme controlScheme;
 
@@ -52,6 +49,7 @@ namespace Player
             rb = GetComponent<Rigidbody2D>();
             flashLight.SetActive(false);
             invisible = true;
+            speed = playerSO.speed;
         }
 
         private void FixedUpdate()
@@ -69,14 +67,32 @@ namespace Player
 
             rb.velocity = smoothCurrentMoveInput * speed;
 
-            if (currentMoveInput.x > 0)
+            if (flashLight.transform.rotation.eulerAngles.z > 180)
             {
                 GetComponent<SpriteRenderer>().flipX = false;
+                if (currentMoveInput.x < 0)
+                {
+                    speed = playerSO.speed / 2;
+                }
+                else
+                {
+                    speed = playerSO.speed;
+                }
+
             }
-            else if (currentMoveInput.x < 0)
+            else if (flashLight.transform.rotation.eulerAngles.z < 180)
             {
                 GetComponent<SpriteRenderer>().flipX = true;
+                if (currentMoveInput.x > 0)
+                {
+                    speed = playerSO.speed / 2;
+                }
+                else
+                {
+                    speed = playerSO.speed;
+                }
             }
+            
 
             anim.SetBool("isWalking", isMoving);
 
