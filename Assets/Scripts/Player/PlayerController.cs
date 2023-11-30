@@ -16,8 +16,11 @@ namespace Player
         Vector2 smoothCurrentMoveInput;
         Vector2 currentMovementSmoothVelocity;
         [SerializeField] float speed;
-        //float rotationSpeed;
+
+        [SerializeField] FlashLight flashlight;
+
         public GameObject flashLight;
+
         public bool flashLightState = false;
 
         Rigidbody2D rb;
@@ -46,6 +49,7 @@ namespace Player
             controlScheme.Player.Flashlight.performed += FlashLight;
             controlScheme.Player.Interact.performed += Interact;
             controlScheme.Player.Pause.performed += Pause;
+            controlScheme.Player.BeamControl.performed += BeamControl;
             rb = GetComponent<Rigidbody2D>();
             flashLight.SetActive(false);
             invisible = true;
@@ -212,6 +216,11 @@ namespace Player
         void Pause(InputAction.CallbackContext pause)
         {
             Manager.GameManager.GameManagerInstance.Pause();
+        }
+
+        void BeamControl(InputAction.CallbackContext beam)
+        {
+            flashlight.BeamControl();
         }
 
         /* void PlayerRotation()

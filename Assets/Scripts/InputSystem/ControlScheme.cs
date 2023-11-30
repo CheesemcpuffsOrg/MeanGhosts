@@ -71,6 +71,15 @@ public partial class @ControlScheme : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""BeamControl"",
+                    ""type"": ""Button"",
+                    ""id"": ""97fdc2dd-ed01-431f-8af8-a99290546470"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -260,6 +269,17 @@ public partial class @ControlScheme : IInputActionCollection2, IDisposable
                     ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0f1d7939-33cd-4fe4-9da5-aebea79d9c7a"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""K&B"",
+                    ""action"": ""BeamControl"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -284,6 +304,7 @@ public partial class @ControlScheme : IInputActionCollection2, IDisposable
         m_Player_MoveMouse = m_Player.FindAction("MoveMouse", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
+        m_Player_BeamControl = m_Player.FindAction("BeamControl", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -348,6 +369,7 @@ public partial class @ControlScheme : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_MoveMouse;
     private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_Pause;
+    private readonly InputAction m_Player_BeamControl;
     public struct PlayerActions
     {
         private @ControlScheme m_Wrapper;
@@ -357,6 +379,7 @@ public partial class @ControlScheme : IInputActionCollection2, IDisposable
         public InputAction @MoveMouse => m_Wrapper.m_Player_MoveMouse;
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
         public InputAction @Pause => m_Wrapper.m_Player_Pause;
+        public InputAction @BeamControl => m_Wrapper.m_Player_BeamControl;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -381,6 +404,9 @@ public partial class @ControlScheme : IInputActionCollection2, IDisposable
                 @Pause.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
                 @Pause.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
                 @Pause.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
+                @BeamControl.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBeamControl;
+                @BeamControl.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBeamControl;
+                @BeamControl.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBeamControl;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -400,6 +426,9 @@ public partial class @ControlScheme : IInputActionCollection2, IDisposable
                 @Pause.started += instance.OnPause;
                 @Pause.performed += instance.OnPause;
                 @Pause.canceled += instance.OnPause;
+                @BeamControl.started += instance.OnBeamControl;
+                @BeamControl.performed += instance.OnBeamControl;
+                @BeamControl.canceled += instance.OnBeamControl;
             }
         }
     }
@@ -429,5 +458,6 @@ public partial class @ControlScheme : IInputActionCollection2, IDisposable
         void OnMoveMouse(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
+        void OnBeamControl(InputAction.CallbackContext context);
     }
 }
