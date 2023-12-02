@@ -1,41 +1,57 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
+
+//Joshua 2023/12/02
 
 public class FlashLight : MonoBehaviour
 {
 
-    [SerializeField]GameObject highBeam;
-    [SerializeField]GameObject normalBeam;
+    [SerializeField] Light2D highBeam;
+    [SerializeField] Light2D normalBeam;
 
-    [SerializeField]bool beamControl = false;
+    bool beamControl = false;
+    [SerializeField]bool flashLightSwitch = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        normalBeam.SetActive(true);
-        highBeam.SetActive(false);
+        normalBeam.enabled = false;
+        highBeam.enabled = false;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void FlashLightSwitch()
     {
-        
+        SoundManager.SoundManagerInstance.PlayOneShotSound("Torch");
+
+        flashLightSwitch = !flashLightSwitch;
+
+        if (flashLightSwitch)
+        {
+            normalBeam.enabled = true;
+            highBeam.enabled = false;
+        }
+        else if (!flashLightSwitch)
+        {
+            normalBeam.enabled = false;
+            highBeam.enabled = false;
+        }
     }
 
     public void BeamControl()
     {
         beamControl = !beamControl;
 
-        if(beamControl)
+        if (flashLightSwitch && beamControl)
         {
-            normalBeam.SetActive(false);
-            highBeam.SetActive(true);
+            normalBeam.enabled = false;
+            highBeam.enabled = true;
         }
-        else
+        else if(flashLightSwitch && !beamControl)
         {
-            normalBeam.SetActive(true);
-            highBeam.SetActive(false);
+            normalBeam.enabled = true;
+            highBeam.enabled = false;
         }
     }
 }

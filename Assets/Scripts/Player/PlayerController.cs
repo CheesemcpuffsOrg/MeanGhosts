@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
-//Joshua 2023/11/27
+//Joshua 2023/12/02
 
 namespace Player
 {
@@ -51,7 +51,6 @@ namespace Player
             controlScheme.Player.Pause.performed += Pause;
             controlScheme.Player.BeamControl.performed += BeamControl;
             rb = GetComponent<Rigidbody2D>();
-            flashLight.SetActive(false);
             invisible = true;
             speed = playerSO.speed;
         }
@@ -130,27 +129,10 @@ namespace Player
 
         void FlashLight(InputAction.CallbackContext onoff)
         {
-            SoundManager.SoundManagerInstance.PlayOneShotSound("Torch");
 
-            flashLightState = !flashLightState;
+            flashlight.FlashLightSwitch();
 
-            if (flashLightState)
-            {
-                flashLight.SetActive(true);
-                if (!safe)
-                {
-                    invisible = false;
-                }
-                UIManagers.UIManagersInstance.DisableLampText();
-            }
-            else
-            {
-                flashLight.SetActive(false);
-                if (!safe)
-                {
-                    invisible = true;
-                }
-            }
+            UIManagers.UIManagersInstance.DisableLampText();
         }
 
         void Interact(InputAction.CallbackContext interact)
