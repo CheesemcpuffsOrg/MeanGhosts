@@ -10,11 +10,8 @@ public class FollowMouse : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         Vector2 direction = new Vector2(mousePosition.x - torchLight.transform.position.x, mousePosition.y - torchLight.transform.root.position.y);
-
-        
 
         torchLight.transform.up = direction;
     }

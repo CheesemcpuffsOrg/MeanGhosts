@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.SocialPlatforms.Impl;
 using Random = UnityEngine.Random;
 
+//Joshua 2023/12/06
 
 namespace Manager
 {
@@ -29,6 +30,8 @@ namespace Manager
 
         public GameObject[] audioTapes;
         [SerializeField] GameObject[] audioTapesSpawnPoints;
+
+        [SerializeField] List<ObjectPool<string>> randomSoundPool;
 
         public int score = 0;
 
@@ -76,24 +79,9 @@ namespace Manager
         {
             yield return new WaitForSeconds(Random.Range(15f, 30f));
 
-            chooseSound = Random.Range(1, 101);
+            string soundToPlay = RandomUtility.ObjectPoolCalculator(randomSoundPool).ToString();
 
-            if (chooseSound > 0 && chooseSound < 33)
-            {
-                //  SoundManager.SoundManagerInstance.PlayOneShotSound("Owl");
-            }
-            else if (chooseSound > 32 && chooseSound < 65)
-            {
-                //  SoundManager.SoundManagerInstance.PlayOneShotSound("Crickets");
-            }
-            else if (chooseSound > 64 && chooseSound < 97)
-            {
-                //  SoundManager.SoundManagerInstance.PlayOneShotSound("Frog");
-            }
-            else if (chooseSound > 96 && chooseSound < 101)
-            {
-                // SoundManager.SoundManagerInstance.PlayOneShotSound("BloodScream");
-            }
+            SoundManager.SoundManagerInstance.PlayOneShotSound(soundToPlay);
 
             StartCoroutine(RandomAmbientSound());
         }
