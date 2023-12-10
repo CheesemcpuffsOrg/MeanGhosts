@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+//Joshua 2023/12/10
+
 [System.Serializable]
 public class ObjectPool<T>
 {
@@ -15,31 +17,26 @@ public static class RandomUtility
 {
     public static object ObjectPoolCalculator<T>(List<ObjectPool<T>> list)
     {
-        List<int> weight = new List<int>();
-        List<ObjectPool<T>> objectPools = new List<ObjectPool<T>>();
+        int combinedWeight = 0;
 
-        foreach (ObjectPool<T> item in list)
+        foreach (ObjectPool<T> pool in list)
         {
-            weight.Add(item.weight);
+            combinedWeight += pool.weight;
         }
 
-        int maxWeight = weight.Max();
+        var random = Random.Range(0, combinedWeight);
 
-        int randomWeight = Random.Range(0, maxWeight);
-
-        foreach (ObjectPool<T> item in list)
+        foreach (ObjectPool<T> pool in list)
         {
-            if (item.weight >= randomWeight) 
-            { 
-                objectPools.Add(item);
+            random -= pool.weight;
+
+            if (random <= 0)
+            {
+                return pool.obj;
             }
         }
 
-        int randomObjectPool = Random.Range(0, objectPools.Count);
-
-        ObjectPool<T> result = objectPools[randomObjectPool];
-
-        return result.obj;
+        return null;
     }
 
     public static bool RandomPercentage(int percent)
