@@ -1,3 +1,4 @@
+using AudioSystem;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,6 @@ public class SoundDisk : MonoBehaviour
 
     private void Awake()
     {
-        this.GetComponentInParent<SoundManager>().GenerateAudioComponentList(sounds);
+        this.GetComponentInParent<AudioManager>().GenerateAudioComponentList(sounds);
     }
 }
