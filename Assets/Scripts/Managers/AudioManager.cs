@@ -1,30 +1,37 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
-//Joshua 2023/12/10
+//Joshua 2023/12/11
 
 namespace AudioSystem
 {
     public class AudioManager : MonoBehaviour
     {
-        public static AudioManager AudioManagerInstance;
+        [System.Serializable]
+        private class AudioReference
+        {
+            public string name;
+            public GameObject obj;
+            public AudioSource audioSource;
+        }
 
-        int maxAudioComponents = 32;
+        public static AudioManager AudioManagerInstance;
 
         private AudioScriptableObject[] sounds;
 
         private List<AudioScriptableObject> arrayStorage = new List<AudioScriptableObject>();
         private List<AudioSource> audioStorage = new List<AudioSource>();
-        [SerializeField] private List<GameObject> audioReference;
+        //this has to stay serialized because fucking unity won't let me assign the size at start #coconut.jpg
+        [SerializeField]private List<AudioReference> audioReference = new List<AudioReference>();
+        private List<AudioReference> spatialAudioSources = new List<AudioReference>();
 
 
         private void Awake()
         {
-            audioReference = new List<GameObject>(maxAudioComponents);
-
             AudioManagerInstance = this;
 
             PopulateAudioManager();
@@ -34,8 +41,6 @@ namespace AudioSystem
         private void Start()
         {
             sounds = arrayStorage.ToArray();//store all the list values to an array
-
-            float addition = UnityEngine.Random.Range(0.1f, -0.1f);
         }
 
         /// <summary>
@@ -43,8 +48,8 @@ namespace AudioSystem
         /// </summary>
         void PopulateAudioManager()
         {
-
-            for (int i = 0; i < maxAudioComponents; i++)
+            
+            for (int i = 0; i < 32; i++)
             {
                 this.gameObject.AddComponent<AudioSource>(); 
             }
@@ -53,7 +58,6 @@ namespace AudioSystem
             {
                 s.GetComponents<AudioSource>();
                 audioStorage.Add(s);
-                audioReference.Add(null);
             }
         }
 
@@ -88,9 +92,17 @@ namespace AudioSystem
 
             for (int i = 0; i <= audioStorage.Count; i++)
             {
-                AudioSource audioSource = audioStorage[i];    
+                AudioSource audioSource = audioStorage[i];
 
-                if (audioSource.isPlaying == false && audioSource.name != name)
+                string audioCurrentNameReference = audioReference[i].name;
+                GameObject audioCurrentObjReference = audioReference[i].obj;
+
+                if (audioSource.isPlaying == false && audioCurrentNameReference == name && audioCurrentObjReference == gameObject)
+                {
+                    audioSource.Play();
+                    return;
+                }
+                else if (audioSource.isPlaying == false && audioCurrentNameReference != name)
                 {
                     audioSource.clip = s.clip;
 
@@ -100,16 +112,16 @@ namespace AudioSystem
                     audioSource.loop = s.loop;
                     audioSource.panStereo = s.pan;
                     audioSource.spatialBlend = s.spatialBlend;
+                    audioSource.rolloffMode = s.rolloffMode;
+                    audioSource.minDistance = s.minDistance;
+                    audioSource.maxDistance = s.maxDistance;
                     audioSource.Play();
 
-                    audioReference[i] = gameObject;
+                    audioReference[i].name = name;
+                    audioReference[i].obj = gameObject;
 
                     return;
-                }
-                else if(audioSource.isPlaying == false && audioSource.name == name && audioReference[i] == gameObject)
-                {
-                    audioSource.Play();
-                }
+                } 
             }
             return;
         }
@@ -120,31 +132,45 @@ namespace AudioSystem
         /// <param name="arrayNumber">Number returned from play sound to stop the audio source</param>
         public void StopSound(string name, GameObject gameObject)
         {
-            for(int i = 0; i <= audioStorage.Count; i++)
+
+            for (int i = 0; i <= audioStorage.Count; i++)
             {
-                if (audioStorage[i].name == name && audioReference[i] == gameObject)
+                AudioSource audioSource = audioStorage[i];
+
+                if (audioReference[i].name == name && audioReference[i].obj == gameObject)
                 {
-                    audioStorage[i].Stop();
+                    audioSource.Stop();
                     return;
-                }  
+                }
             }
             return;
+
+
         }
 
         /// <summary>
         /// Play oneshot by calling scriptable object name
         /// </summary>
         /// <param name="name">Scriptable object name</param>
-        public void PlayOneShotSound(string name)
+        public void PlayOneShotSound(string name, GameObject gameObject)
         {
+
             AudioScriptableObject s = Array.Find(sounds, sound => sound.name == name);
 
-            for (int i = 0; i < audioStorage.Count; i++)
+            for (int i = 0; i <= audioStorage.Count; i++)
             {
-                if (audioStorage[i].isPlaying == false)
-                {
-                    AudioSource audioSource = audioStorage[i];
+                AudioSource audioSource = audioStorage[i];
 
+                string audioCurrentNameReference = audioReference[i].name;
+                GameObject audioCurrentObjReference = audioReference[i].obj;
+
+                if (audioSource.isPlaying == false && audioCurrentNameReference == name && audioCurrentObjReference == gameObject)
+                {
+                    audioSource.Play();
+                    return;
+                }
+                else if (audioSource.isPlaying == false && audioCurrentNameReference != name)
+                {
                     audioSource.clip = s.clip;
 
                     audioSource.outputAudioMixerGroup = s.group;
@@ -152,12 +178,67 @@ namespace AudioSystem
                     audioSource.pitch = s.pitch;
                     audioSource.loop = s.loop;
                     audioSource.panStereo = s.pan;
+                    audioSource.spatialBlend = s.spatialBlend;
+                    audioSource.rolloffMode = s.rolloffMode;
+                    audioSource.minDistance = s.minDistance;
+                    audioSource.maxDistance = s.maxDistance;
                     audioSource.PlayOneShot(s.clip, s.volume);
+
+                    audioReference[i].name = name;
+                    audioReference[i].obj = gameObject;
 
                     return;
                 }
             }
             return;
         }
+
+        /// <summary>
+        /// Play sound by calling scriptable object name
+        /// </summary>
+        /// <param name="name">Scriptable object name</param>
+        /// <returns>Int to track audio source being used</returns>
+        public void PlaySoundAtLocation(string name, GameObject gameObject)
+        {
+            AudioScriptableObject s = Array.Find(sounds, sound => sound.name == name);
+
+            AudioSource audioSource = gameObject.AddComponent<AudioSource>();
+
+            audioSource.clip = s.clip;
+
+            audioSource.outputAudioMixerGroup = s.group;
+            audioSource.volume = s.volume;
+            audioSource.pitch = s.pitch;
+            audioSource.loop = s.loop;
+            audioSource.panStereo = s.pan;
+            audioSource.spatialBlend = s.spatialBlend;
+            audioSource.rolloffMode = s.rolloffMode;
+            audioSource.minDistance = s.minDistance;
+            audioSource.maxDistance = s.maxDistance;
+            audioSource.Play();
+
+            AudioReference audioReference = new AudioReference();
+
+            audioReference.name = name;
+            audioReference.obj = gameObject;
+            audioReference.audioSource = audioSource;
+
+            spatialAudioSources.Add(audioReference);
+        }
+
+        public void StopSoundAtLocation(string name, GameObject gameObject)
+        {
+            foreach (var obj in spatialAudioSources)
+            {
+                if (obj.name == name && obj.obj == gameObject)
+                {
+                    obj.audioSource.Stop();
+                }
+            }
+        }
     }
+
+    
+
+
 }

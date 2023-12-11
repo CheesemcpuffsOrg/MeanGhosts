@@ -1,3 +1,4 @@
+using AudioSystem;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -29,8 +30,6 @@ namespace Player
         bool footsteps = false;
         public bool invisible = false;
         public bool safe = false;
-
-        int footstepsSFX;
 
         public UnityEvent interactEvent;
 
@@ -117,12 +116,12 @@ namespace Player
 
             if (isMoving && !footsteps)
             {
-                footstepsSFX = SoundManager.SoundManagerInstance.PlaySound("Footsteps");
+                AudioManager.AudioManagerInstance.PlaySound("Footsteps", this.gameObject);
                 footsteps = true;
             }
             else if (!isMoving && footsteps)
             {
-                SoundManager.SoundManagerInstance.StopSound(footstepsSFX);
+                AudioManager.AudioManagerInstance.StopSound("Footsteps", this.gameObject);
                 footsteps = false;
             }
         }

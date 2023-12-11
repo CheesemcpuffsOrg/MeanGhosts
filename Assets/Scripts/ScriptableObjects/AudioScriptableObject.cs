@@ -13,13 +13,17 @@ public class AudioScriptableObject : ScriptableObject
     public AudioMixerGroup group;
 
     [Range(0f, 1f)]
-    public float volume;
+    public float volume = 1;
     [Range(.1f, 3f)]
-    public float pitch;
+    public float pitch = 1;
     [Range(-1f, 1f)]
-    public float pan;
+    public float pan = 0;
     [Range(0f, 1f)]
     public float spatialBlend;
+
+    public AudioRolloffMode rolloffMode = AudioRolloffMode.Linear;
+    public float minDistance = 1;
+    public float maxDistance = 30;
 
     public bool loop;
 

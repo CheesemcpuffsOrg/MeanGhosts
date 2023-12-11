@@ -1,3 +1,4 @@
+using AudioSystem;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -81,7 +82,7 @@ namespace Manager
 
             string soundToPlay = RandomUtility.ObjectPoolCalculator(randomSoundPool).ToString();
 
-            SoundManager.SoundManagerInstance.PlayOneShotSound(soundToPlay);
+            AudioManager.AudioManagerInstance.PlayOneShotSound(soundToPlay, this.gameObject);
 
             StartCoroutine(RandomAmbientSound());
         }

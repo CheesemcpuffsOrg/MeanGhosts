@@ -19,5 +19,8 @@ MonoBehaviour:
   pitch: 1
   pan: 0
   spatialBlend: 1
+  rolloffMode: 1
+  minDistance: 1
+  maxDistance: 30
   loop: 0
   source: {fileID: 0}

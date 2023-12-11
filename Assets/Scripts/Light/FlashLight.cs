@@ -1,3 +1,4 @@
+using AudioSystem;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,7 +24,7 @@ public class FlashLight : MonoBehaviour
 
     public void FlashLightSwitch()
     {
-        SoundManager.SoundManagerInstance.PlayOneShotSound("Torch");
+        AudioManager.AudioManagerInstance.PlayOneShotSound("Torch", this.gameObject);
 
         flashLightSwitch = !flashLightSwitch;
 
@@ -42,6 +43,8 @@ public class FlashLight : MonoBehaviour
     public void BeamControl()
     {
         beamControl = !beamControl;
+
+        //play electric sound when flashlight changes
 
         if (flashLightSwitch && beamControl)
         {
