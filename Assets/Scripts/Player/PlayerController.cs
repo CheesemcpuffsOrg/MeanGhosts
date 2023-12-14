@@ -116,12 +116,12 @@ namespace Player
 
             if (isMoving && !footsteps)
             {
-                AudioManager.AudioManagerInstance.PlaySound("Footsteps", this.gameObject);
+                AudioManager.AudioManagerInstance.TestPlaySound("Footsteps", this.gameObject);
                 footsteps = true;
             }
             else if (!isMoving && footsteps)
             {
-                AudioManager.AudioManagerInstance.StopSound("Footsteps", this.gameObject);
+                AudioManager.AudioManagerInstance.TestStopSound("Footsteps", this.gameObject);
                 footsteps = false;
             }
         }

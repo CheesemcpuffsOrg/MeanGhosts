@@ -49,7 +49,7 @@ namespace Manager
 
         private void Start()
         {
-            //StartCoroutine(RandomAmbientSound());
+            StartCoroutine(RandomAmbientSound());
 
             PlaceItems();
 
@@ -82,7 +82,7 @@ namespace Manager
 
             string soundToPlay = RandomUtility.ObjectPoolCalculator(randomSoundPool).ToString();
 
-            AudioManager.AudioManagerInstance.PlayOneShotSound(soundToPlay, this.gameObject);
+            AudioManager.AudioManagerInstance.TestPlaySound(soundToPlay, this.gameObject);
 
             StartCoroutine(RandomAmbientSound());
         }

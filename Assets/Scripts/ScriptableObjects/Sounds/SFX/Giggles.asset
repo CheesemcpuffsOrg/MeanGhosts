@@ -19,8 +19,10 @@ MonoBehaviour:
   pitch: 1
   pan: 0
   spatialBlend: 1
+  dopplerLevel: 0
   rolloffMode: 1
   minDistance: 1
   maxDistance: 30
   loop: 0
+  playOnAwake: 0
   source: {fileID: 0}

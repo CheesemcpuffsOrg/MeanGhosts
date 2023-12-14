@@ -15,7 +15,7 @@ namespace Interactable
         {
             /* this.gameObject.GetComponent<SoundController>().CheckIfPlaying(0);
              this.gameObject.GetComponent<SoundController>().PlayOneShotSound(0);*/
-            AudioManager.AudioManagerInstance.PlaySoundAtLocation(nameOfTape, this.gameObject);
+            AudioManager.AudioManagerInstance.TestPlaySound(nameOfTape, this.gameObject);
         }
 
         private void OnTriggerEnter2D(Collider2D collision)

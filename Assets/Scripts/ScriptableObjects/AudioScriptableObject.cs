@@ -28,6 +28,7 @@ public class AudioScriptableObject : ScriptableObject
     public float maxDistance = 30;
 
     public bool loop;
+    public bool playOnAwake = false;
 
     [HideInInspector]
     public AudioSource source;

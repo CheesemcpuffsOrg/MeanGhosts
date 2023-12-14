@@ -14,7 +14,7 @@ public class LevelManager : MonoBehaviour
 
     IEnumerator StartSound()
     {
-        yield return new WaitForSeconds(0.1f);
-        AudioManager.AudioManagerInstance.PlaySound("BGMusic", this.gameObject);
+        yield return new WaitForSeconds(1f);
+        AudioManager.AudioManagerInstance.TestPlaySound("BGMusic", this.gameObject);
     }
 }

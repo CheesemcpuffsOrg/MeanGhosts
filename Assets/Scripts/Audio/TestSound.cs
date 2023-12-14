@@ -9,6 +9,9 @@ public class TestSound : MonoBehaviour
     void Start()
     {
         StartCoroutine(PlaySound());
+
+
+       
     }
 
     IEnumerator PlaySound()
@@ -16,8 +19,18 @@ public class TestSound : MonoBehaviour
 
         yield return new WaitForSeconds(3f);
 
-        AudioManager.AudioManagerInstance.TestPlaySound("Owl", this.gameObject);
+      //  AudioManager.AudioManagerInstance.TestPlaySound("Owl", this.gameObject);
 
-        StartCoroutine(PlaySound());
+        Debug.Log("hello");
+
+        
+
+        //StartCoroutine(PlaySound());
+        NextMethod();
+    }
+
+    void NextMethod()
+    {
+        Debug.Log("hello again");
     }
 }
