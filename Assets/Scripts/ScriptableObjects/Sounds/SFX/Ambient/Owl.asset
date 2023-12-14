@@ -18,6 +18,10 @@ MonoBehaviour:
   volume: 1
   pitch: 1
   pan: 0
-  spatialBlend: 0
+  spatialBlend: 1
+  dopplerLevel: 0
+  rolloffMode: 1
+  minDistance: 1
+  maxDistance: 30
   loop: 0
   source: {fileID: 0}

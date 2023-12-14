@@ -49,7 +49,7 @@ namespace Manager
 
         private void Start()
         {
-            StartCoroutine(RandomAmbientSound());
+            //StartCoroutine(RandomAmbientSound());
 
             PlaceItems();
 

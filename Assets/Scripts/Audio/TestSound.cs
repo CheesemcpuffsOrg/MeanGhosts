@@ -1,3 +1,4 @@
+using AudioSystem;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,10 +13,11 @@ public class TestSound : MonoBehaviour
 
     IEnumerator PlaySound()
     {
-        this.gameObject.GetComponent<SoundController>().PlaySound(0);
 
         yield return new WaitForSeconds(3f);
 
-        //StartCoroutine(PlaySound());
+        AudioManager.AudioManagerInstance.TestPlaySound("Owl", this.gameObject);
+
+        StartCoroutine(PlaySound());
     }
 }

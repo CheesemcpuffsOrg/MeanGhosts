@@ -20,6 +20,8 @@ public class AudioScriptableObject : ScriptableObject
     public float pan = 0;
     [Range(0f, 1f)]
     public float spatialBlend;
+    [Range(0f, 5f)]
+    public float dopplerLevel = 0;
 
     public AudioRolloffMode rolloffMode = AudioRolloffMode.Linear;
     public float minDistance = 1;
