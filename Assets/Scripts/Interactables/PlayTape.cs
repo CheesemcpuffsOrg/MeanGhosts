@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//Joshua - 2023/11/22
+//Joshua - 2023/12/15
 
 namespace Interactable
 {
@@ -13,9 +13,7 @@ namespace Interactable
 
         void IInteractable.Interact()
         {
-            /* this.gameObject.GetComponent<SoundController>().CheckIfPlaying(0);
-             this.gameObject.GetComponent<SoundController>().PlayOneShotSound(0);*/
-            AudioManager.AudioManagerInstance.TestPlaySound(nameOfTape, this.gameObject);
+            AudioManager.AudioManagerInstance.PlaySound(nameOfTape, this.gameObject);
         }
 
         private void OnTriggerEnter2D(Collider2D collision)

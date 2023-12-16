@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 
 //Joshua 2023/12/14
@@ -10,15 +11,14 @@ namespace AudioSystem
 {
     public class AudioManager : MonoBehaviour
     {
-        private class AudioReference
+        /*private class AudioReference
         {
             public string name;
             public GameObject obj;
             public AudioSource audioSource;
-        }
+        }*/
 
-        [System.Serializable]
-        private class TestAudioReference
+        private class AudioReference
         {
             public string name;
             public GameObject requestingObj;
@@ -30,20 +30,18 @@ namespace AudioSystem
 
         private AudioScriptableObject[] sounds;
 
-        private List<AudioScriptableObject> arrayStorage = new List<AudioScriptableObject>();
+        [SerializeField]private List<AudioScriptableObject> arrayStorage = new List<AudioScriptableObject>();
         //private List<AudioSource> audioStorage = new List<AudioSource>();
         //this has to stay serialized because fucking unity won't let me assign the size at start #coconut.jpg
         /*[SerializeField] private List<AudioReference> audioReference = new List<AudioReference>();
         private List<AudioReference> spatialAudioSources = new List<AudioReference>();*/
 
-
         [SerializeField] GameObject audioObj;
-        List<TestAudioReference> testAudioReference = new List<TestAudioReference>();
+        List<AudioReference> audioReference = new List<AudioReference>();
         Queue<GameObject> audioPool = new Queue<GameObject>();
 
         [SerializeField] Transform audioPoolContainer;
         [SerializeField] Transform activeSounds;
-
 
         private void Awake()
         {
@@ -54,7 +52,7 @@ namespace AudioSystem
 
         private void Start()
         {
-            sounds = arrayStorage.ToArray();//store all the list values to an array
+            sounds = arrayStorage.ToArray();//call this on start
         }
 
         /// <summary>
@@ -78,8 +76,7 @@ namespace AudioSystem
         /// <summary>
         /// Stores scriptable objects on the audio manager for easier access
         /// </summary>
-        /// <param name="audioList">Store audio scriptable objects</param>
-        public void GenerateAudioComponentList(AudioScriptableObject[] audioList)
+        public void GenerateAudioList(AudioScriptableObject[] audioList)
         {
             arrayStorage.AddRange(audioList);//add all the array values to a list
         }
@@ -89,15 +86,25 @@ namespace AudioSystem
         /// </summary>
         public void StopAllAudio()
         {
-            /*foreach (AudioSource s in audioStorage)
+            foreach (AudioReference s in audioReference)
             {
-                s.Stop();
-            }*/
+                s.audioSource.transform.SetParent(audioPoolContainer);
+                audioPool.Enqueue(s.audioSource);
+                s.audioSource.GetComponent<AudioSource>().Stop();
+                if (s.clipLength != null)
+                {
+                    StopCoroutine(s.clipLength);
+                }
+                audioReference.Remove(s);
+            }
         }
 
-        public void TestPlaySound(string name, GameObject gameObject)
+        /// <summary>
+        /// Play a sound.
+        /// </summary>
+        public void PlaySound(string soundName, GameObject gameObject)
         {
-            AudioScriptableObject s = Array.Find(sounds, sound => sound.name == name);
+            AudioScriptableObject s = Array.Find(sounds, sound => sound.name == soundName);
 
             AudioSource audioSource = null;
             GameObject obj = null;
@@ -125,7 +132,6 @@ namespace AudioSystem
             audioSource.minDistance = s.minDistance;
             audioSource.maxDistance = s.maxDistance;
             audioSource.dopplerLevel = s.dopplerLevel;
-            audioSource.playOnAwake = s.playOnAwake;
 
             if (audioSource.spatialBlend == 0)
             {
@@ -138,9 +144,9 @@ namespace AudioSystem
                 obj.transform.position = gameObject.transform.position;
             }
 
-            TestAudioReference createdObjReference = new TestAudioReference();
+            AudioReference createdObjReference = new AudioReference();
 
-            createdObjReference.name = name;
+            createdObjReference.name = soundName;
             createdObjReference.requestingObj = gameObject;
             createdObjReference.audioSource = obj;
 
@@ -151,43 +157,58 @@ namespace AudioSystem
 
             createdObjReference.clipLength = clipLength;
 
-            testAudioReference.Add(createdObjReference);
+            audioReference.Add(createdObjReference);
 
             audioSource.Play();
         }
 
-        IEnumerator Countdown(float seconds, TestAudioReference reference)
+        IEnumerator Countdown(float seconds, AudioReference reference)
         {
             yield return new WaitForSeconds(seconds);
 
-            for (int i = 0; i <= testAudioReference.Count; i++)
+            for (int i = 0; i <= audioReference.Count; i++)
             {
-                if (testAudioReference[i].name == reference.name && testAudioReference[i].requestingObj == reference.requestingObj)
+                if (audioReference[i].name == reference.name && audioReference[i].requestingObj == reference.requestingObj)
                 {
-                    testAudioReference[i].audioSource.transform.SetParent(audioPoolContainer);
-                    audioPool.Enqueue(testAudioReference[i].audioSource);
-                    testAudioReference.RemoveAt(i);
+                    audioReference[i].audioSource.transform.SetParent(audioPoolContainer);
+                    audioPool.Enqueue(audioReference[i].audioSource);
+                    audioReference.RemoveAt(i);
                     yield break;
                 }
             }
         }
 
-        //this may need to stop the coroutine, further testing needed
-        public void TestStopSound(string name, GameObject gameObject)
+        /// <summary>
+        /// Stops an active sound.
+        /// </summary>
+        public void StopSound(string soundName, GameObject gameObject)
         {
-            for (int i = 0; i <= testAudioReference.Count; i++)
+            for (int i = 0; i <= audioReference.Count; i++)
             {
-                if (testAudioReference[i].name == name && testAudioReference[i].requestingObj == gameObject)
+                if (audioReference[i].name == soundName && audioReference[i].requestingObj == gameObject)
                 {
-                    testAudioReference[i].audioSource.transform.SetParent(audioPoolContainer);
-                    audioPool.Enqueue(testAudioReference[i].audioSource);
-                    testAudioReference[i].audioSource.GetComponent<AudioSource>().Stop();
-                    //StopCoroutine(testAudioReference[i].clipLength);
-                    testAudioReference.RemoveAt(i);
+                    audioReference[i].audioSource.transform.SetParent(audioPoolContainer);
+                    audioPool.Enqueue(audioReference[i].audioSource);
+                    audioReference[i].audioSource.GetComponent<AudioSource>().Stop();
+                    if (audioReference[i].clipLength != null)
+                    {
+                        StopCoroutine(audioReference[i].clipLength);
+                    }
+                    audioReference.RemoveAt(i);
                     return;
                 }
             }
             Debug.Log("Sound does not exist");
+        }
+
+        /// <summary>
+        /// Allows you to delay the activation of a sound.
+        /// </summary>
+        public IEnumerator DelayedPlaySound(float delay, string name, GameObject gameObject)
+        {
+            yield return new WaitForSeconds(delay);
+
+            PlaySound(name, gameObject);
         }
 
 

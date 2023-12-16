@@ -6,15 +6,15 @@ using UnityEngine;
 public class LevelManager : MonoBehaviour
 {
 
-    // Start is called before the first frame update
-    void Start()
+    public static LevelManager levelManagerInstance;
+
+    private void Awake()
     {
-        StartCoroutine(StartSound());
+        levelManagerInstance = this;
     }
 
-    IEnumerator StartSound()
+    void Start()
     {
-        yield return new WaitForSeconds(1f);
-        AudioManager.AudioManagerInstance.TestPlaySound("BGMusic", this.gameObject);
+        StartCoroutine(AudioManager.AudioManagerInstance.DelayedPlaySound(0.1f, "BGMusic", this.gameObject));
     }
 }

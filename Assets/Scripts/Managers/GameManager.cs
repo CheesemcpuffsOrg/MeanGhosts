@@ -82,7 +82,7 @@ namespace Manager
 
             string soundToPlay = RandomUtility.ObjectPoolCalculator(randomSoundPool).ToString();
 
-            AudioManager.AudioManagerInstance.TestPlaySound(soundToPlay, this.gameObject);
+            AudioManager.AudioManagerInstance.PlaySound(soundToPlay, this.gameObject);
 
             StartCoroutine(RandomAmbientSound());
         }
