@@ -15,6 +15,6 @@ public class LevelManager : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(AudioManager.AudioManagerInstance.DelayedPlaySound(0.1f, "BGMusic", this.gameObject));
+        AudioManager.AudioManagerInstance.DelayedPlaySound(0.1f, "BGMusic", this.gameObject);
     }
 }

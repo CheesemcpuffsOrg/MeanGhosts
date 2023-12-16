@@ -18,6 +18,7 @@ namespace AudioSystem
             public AudioSource audioSource;
         }*/
 
+        [System.Serializable]
         private class AudioReference
         {
             public string name;
@@ -28,7 +29,7 @@ namespace AudioSystem
 
         public static AudioManager AudioManagerInstance;
 
-        private AudioScriptableObject[] sounds;
+        [SerializeField]private AudioScriptableObject[] sounds;
 
         [SerializeField]private List<AudioScriptableObject> arrayStorage = new List<AudioScriptableObject>();
         //private List<AudioSource> audioStorage = new List<AudioSource>();
@@ -37,7 +38,7 @@ namespace AudioSystem
         private List<AudioReference> spatialAudioSources = new List<AudioReference>();*/
 
         [SerializeField] GameObject audioObj;
-        List<AudioReference> audioReference = new List<AudioReference>();
+        [SerializeField]List<AudioReference> audioReference = new List<AudioReference>();
         Queue<GameObject> audioPool = new Queue<GameObject>();
 
         [SerializeField] Transform audioPoolContainer;
@@ -52,7 +53,7 @@ namespace AudioSystem
 
         private void Start()
         {
-            sounds = arrayStorage.ToArray();//call this on start
+            sounds = arrayStorage.ToArray();
         }
 
         /// <summary>
@@ -105,6 +106,12 @@ namespace AudioSystem
         public void PlaySound(string soundName, GameObject gameObject)
         {
             AudioScriptableObject s = Array.Find(sounds, sound => sound.name == soundName);
+
+            if (s == null)
+            {
+                Debug.LogWarning("Sound: " + soundName + " is not set up. Please create a sound disk.");
+                return;
+            }
 
             AudioSource audioSource = null;
             GameObject obj = null;
@@ -183,7 +190,9 @@ namespace AudioSystem
         /// </summary>
         public void StopSound(string soundName, GameObject gameObject)
         {
-            for (int i = 0; i <= audioReference.Count; i++)
+            int i;
+
+            for (i = 0; i < audioReference.Count; i++)
             {
                 if (audioReference[i].name == soundName && audioReference[i].requestingObj == gameObject)
                 {
@@ -198,18 +207,33 @@ namespace AudioSystem
                     return;
                 }
             }
-            Debug.Log("Sound does not exist");
+
+            if (audioReference[i] != null)
+            {
+                Debug.LogWarning("Sound: " + soundName + " is not active.");
+            }
         }
 
         /// <summary>
         /// Allows you to delay the activation of a sound.
         /// </summary>
-        public IEnumerator DelayedPlaySound(float delay, string name, GameObject gameObject)
+        public void DelayedPlaySound(float delay, string name, GameObject gameObject)
+        {
+            StartCoroutine(SoundDelay(delay, name, gameObject));
+        }
+
+        public IEnumerator SoundDelay(float delay, string name, GameObject gameObject)
         {
             yield return new WaitForSeconds(delay);
 
             PlaySound(name, gameObject);
         }
+
+        //need to create method for fade in and fade out, do not put this on the SO, there is more control with a method.
+        //Handle mutiple audio source stacking.
+        //Make one shots if neccesary, don't see a point though.
+
+
 
 
         /* /// <summary>

@@ -7,9 +7,9 @@ public class SoundDisk : MonoBehaviour
 {
     [SerializeField] AudioScriptableObject[] sounds;
 
-    private void Start()
+    private void Awake()
     {
-        AudioManager.AudioManagerInstance.GenerateAudioList(sounds);
+        this.GetComponentInParent<AudioManager>().GenerateAudioList(sounds);
     }
 
 }

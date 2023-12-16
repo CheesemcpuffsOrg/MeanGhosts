@@ -11,26 +11,19 @@ public class TestSound : MonoBehaviour
         StartCoroutine(PlaySound());
 
 
-       
+         AudioManager.AudioManagerInstance.DelayedPlaySound(3f, "Mirror", this.gameObject);
     }
 
     IEnumerator PlaySound()
     {
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(6f);
 
-      //  AudioManager.AudioManagerInstance.TestPlaySound("Owl", this.gameObject);
-
-        Debug.Log("hello");
-
-        
+        AudioManager.AudioManagerInstance.StopSound("Mirror", this.gameObject);
 
         //StartCoroutine(PlaySound());
-        NextMethod();
+
     }
 
-    void NextMethod()
-    {
-        Debug.Log("hello again");
-    }
+
 }
