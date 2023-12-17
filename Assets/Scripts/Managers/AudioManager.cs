@@ -129,7 +129,7 @@ namespace AudioSystem
             GameObject obj = null;
             Coroutine clipLength = null;
 
-            if (audioPool.Count < 5)
+            if (audioPool.Count <= 0)
             {
                 obj = Instantiate(audioObjPrefab);
             }
