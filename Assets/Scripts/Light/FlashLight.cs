@@ -24,7 +24,7 @@ public class FlashLight : MonoBehaviour
 
     public void FlashLightSwitch()
     {
-        AudioManager.AudioManagerInstance.PlaySound("Torch", this.gameObject);
+        AudioManager.AudioManagerInstance.PlaySound("Torch", "PlayerSFX", this.gameObject);
 
         flashLightSwitch = !flashLightSwitch;
 

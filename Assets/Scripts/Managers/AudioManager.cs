@@ -29,16 +29,18 @@ namespace AudioSystem
 
         public static AudioManager AudioManagerInstance;
 
-        [SerializeField]private AudioScriptableObject[] sounds;
+        //[SerializeField]private AudioScriptableObject[] sounds;
+        [SerializeField]private SoundDisk[] soundDisks;
 
-        [SerializeField]private List<AudioScriptableObject> arrayStorage = new List<AudioScriptableObject>();
+        //[SerializeField]private List<AudioScriptableObject> arrayStorage = new List<AudioScriptableObject>();
         //private List<AudioSource> audioStorage = new List<AudioSource>();
         //this has to stay serialized because fucking unity won't let me assign the size at start #coconut.jpg
         /*[SerializeField] private List<AudioReference> audioReference = new List<AudioReference>();
         private List<AudioReference> spatialAudioSources = new List<AudioReference>();*/
 
-        [SerializeField] GameObject audioObj;
-        [SerializeField]List<AudioReference> audioReference = new List<AudioReference>();
+        [SerializeField] GameObject audioObjPrefab;
+        //List<SoundDisk> soundDiskStorage = new List<SoundDisk>();
+        List<AudioReference> audioReference = new List<AudioReference>();
         Queue<GameObject> audioPool = new Queue<GameObject>();
 
         [SerializeField] Transform audioPoolContainer;
@@ -51,10 +53,11 @@ namespace AudioSystem
             //PopulateAudioManager();
         }
 
-        private void Start()
+        /*private void Start()
         {
             sounds = arrayStorage.ToArray();
-        }
+            soundDisks = soundDiskStorage.ToArray();
+        }*/
 
         /// <summary>
         /// This needs to be run on start. Make sure to attach all relevant audio disks to the audio manager.
@@ -77,10 +80,15 @@ namespace AudioSystem
         /// <summary>
         /// Stores scriptable objects on the audio manager for easier access
         /// </summary>
-        public void GenerateAudioList(AudioScriptableObject[] audioList)
+        /*public void GenerateAudioList(AudioScriptableObject[] audioList)
         {
             arrayStorage.AddRange(audioList);//add all the array values to a list
-        }
+        }*/
+
+        /*public void GenerateAudioList(SoundDisk soundDisk)
+        {
+            soundDiskStorage.Add(soundDisk);
+        }*/
 
         /// <summary>
         /// Stops all audio
@@ -103,9 +111,13 @@ namespace AudioSystem
         /// <summary>
         /// Play a sound.
         /// </summary>
-        public void PlaySound(string soundName, GameObject gameObject)
-        {
-            AudioScriptableObject s = Array.Find(sounds, sound => sound.name == soundName);
+        public void PlaySound(string soundName, string soundDiskName, GameObject gameObject)
+        { 
+            SoundDisk disk = Array.Find(soundDisks, obj => obj.name == soundDiskName);
+
+            AudioScriptableObject s = disk.FindSound(soundName);
+
+            //AudioScriptableObject s = Array.Find(sounds, sound => sound.name == soundName);
 
             if (s == null)
             {
@@ -119,7 +131,7 @@ namespace AudioSystem
 
             if (audioPool.Count < 5)
             {
-                obj = Instantiate(audioObj);
+                obj = Instantiate(audioObjPrefab);
             }
             else
             {
@@ -217,16 +229,16 @@ namespace AudioSystem
         /// <summary>
         /// Allows you to delay the activation of a sound.
         /// </summary>
-        public void DelayedPlaySound(float delay, string name, GameObject gameObject)
+        public void DelayedPlaySound(float delay, string name, string soundDiskName, GameObject gameObject)
         {
-            StartCoroutine(SoundDelay(delay, name, gameObject));
+            StartCoroutine(SoundDelay(delay, name, soundDiskName, gameObject));
         }
 
-        public IEnumerator SoundDelay(float delay, string name, GameObject gameObject)
+        public IEnumerator SoundDelay(float delay, string name, string soundDiskName, GameObject gameObject)
         {
             yield return new WaitForSeconds(delay);
 
-            PlaySound(name, gameObject);
+            PlaySound(name, soundDiskName, gameObject);
         }
 
         //need to create method for fade in and fade out, do not put this on the SO, there is more control with a method.

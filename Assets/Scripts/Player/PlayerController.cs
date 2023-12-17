@@ -116,7 +116,7 @@ namespace Player
 
             if (isMoving && !footsteps)
             {
-                AudioManager.AudioManagerInstance.PlaySound("Footsteps", this.gameObject);
+                AudioManager.AudioManagerInstance.PlaySound("Footsteps", "PlayerSFX", this.gameObject);
                 footsteps = true;
             }
             else if (!isMoving && footsteps)

@@ -13,7 +13,7 @@ namespace Interactable
 
         void IInteractable.Interact()
         {
-            AudioManager.AudioManagerInstance.PlaySound(nameOfTape, this.gameObject);
+            AudioManager.AudioManagerInstance.PlaySound(nameOfTape, "Tapes", this.gameObject);
         }
 
         private void OnTriggerEnter2D(Collider2D collision)

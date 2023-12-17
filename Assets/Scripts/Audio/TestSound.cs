@@ -5,13 +5,16 @@ using UnityEngine;
 
 public class TestSound : MonoBehaviour
 {
+
+    [SerializeField] SoundDisk soundDisk;
+
     // Start is called before the first frame update
     void Start()
     {
         StartCoroutine(PlaySound());
 
 
-         AudioManager.AudioManagerInstance.DelayedPlaySound(3f, "Mirror", this.gameObject);
+         AudioManager.AudioManagerInstance.DelayedPlaySound(3f, "Mirror", "Tapes", this.gameObject);
     }
 
     IEnumerator PlaySound()
