@@ -34,6 +34,15 @@ namespace AudioSystem
         {
             AudioManagerInstance = this;
 
+            foreach(SoundDisk soundDisk in soundDisks) 
+            { 
+                if(soundDisk == null)
+                {
+                    Debug.LogError("One or more sound disk is missing from the array.");
+                    break;
+                }
+            }
+
         }
 
         /// <summary>
