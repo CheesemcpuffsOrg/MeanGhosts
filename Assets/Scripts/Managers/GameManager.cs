@@ -32,13 +32,15 @@ namespace Manager
         public GameObject[] audioTapes;
         [SerializeField] GameObject[] audioTapesSpawnPoints;
 
-        [SerializeField] List<ObjectPool<string>> randomSoundPool;
+        [SerializeField] List<ObjectPool<AudioScriptableObject>> randomSoundPool;
 
         public int score = 0;
 
         public float timer;
 
         bool pause = false;
+
+        [SerializeField] SoundDisk soundDisk;
 
         private void Awake()
         {
@@ -80,9 +82,9 @@ namespace Manager
         {
             yield return new WaitForSeconds(Random.Range(15f, 30f));
 
-            string soundToPlay = RandomUtility.ObjectPoolCalculator(randomSoundPool).ToString();
+            AudioScriptableObject soundToPlay = (AudioScriptableObject)RandomUtility.ObjectPoolCalculator(randomSoundPool);
 
-            AudioManager.AudioManagerInstance.PlaySound(soundToPlay, "AmbientSFX", this.gameObject);
+            AudioManager.AudioManagerInstance.PlaySound(soundToPlay, soundDisk, this.gameObject);
 
             StartCoroutine(RandomAmbientSound());
         }

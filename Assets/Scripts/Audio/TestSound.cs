@@ -8,13 +8,15 @@ public class TestSound : MonoBehaviour
 
     [SerializeField] SoundDisk soundDisk;
 
+    [SerializeField] AudioScriptableObject audioScriptableObject;
+
     // Start is called before the first frame update
     void Start()
     {
         StartCoroutine(PlaySound());
 
 
-         AudioManager.AudioManagerInstance.DelayedPlaySound(3f, "Mirror", "Tapes", this.gameObject);
+         AudioManager.AudioManagerInstance.DelayedPlaySound(3f, audioScriptableObject, soundDisk, this.gameObject);
     }
 
     IEnumerator PlaySound()

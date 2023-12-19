@@ -39,6 +39,10 @@ namespace Player
 
         Animator anim;
 
+        [SerializeField] SoundDisk soundDisk;
+
+        [SerializeField] AudioScriptableObject audioScriptableObject;
+
         private void Awake()
         {
             anim = GetComponent<Animator>();
@@ -116,7 +120,7 @@ namespace Player
 
             if (isMoving && !footsteps)
             {
-                AudioManager.AudioManagerInstance.PlaySound("Footsteps", "PlayerSFX", this.gameObject);
+                AudioManager.AudioManagerInstance.PlaySound(audioScriptableObject, soundDisk, this.gameObject);
                 footsteps = true;
             }
             else if (!isMoving && footsteps)

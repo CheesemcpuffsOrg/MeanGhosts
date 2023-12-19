@@ -8,11 +8,6 @@ public class SoundDisk : MonoBehaviour
 {
     [SerializeField] AudioScriptableObject[] sounds;
 
-    /*private void Awake()
-    {
-        this.GetComponentInParent<AudioManager>().GenerateAudioList(sounds);
-    }*/
-
     public AudioScriptableObject FindSound(string soundName)
     {
         AudioScriptableObject s = Array.Find(sounds, sound => sound.name == soundName);
