@@ -12,6 +12,7 @@ namespace AudioSystem
     //add fade in fade out to scriptable object.
     //Handle mutiple audio source stacking.
     //Make one shots if neccesary, don't see a point though.
+    //have method that takes in group of sounds, picks a random sound and passes it through play
 
     public class AudioManager : MonoBehaviour
     {
@@ -204,6 +205,20 @@ namespace AudioSystem
         public IEnumerator SoundDelay(float delay, AudioScriptableObject sound, GameObject gameObject)
         {
             yield return new WaitForSeconds(delay);
+
+            PlaySound(sound, gameObject);
+        }
+
+        /// <summary>
+        /// Plays a random sound from a list.
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="gameObject"></param>
+        public void PlaySoundFromlist(List<AudioScriptableObject> list, GameObject gameObject)
+        {
+            var randomList = RandomUtility.RandomListSort(list);
+
+            var sound = randomList[0];
 
             PlaySound(sound, gameObject);
         }
