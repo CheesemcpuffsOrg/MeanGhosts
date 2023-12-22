@@ -8,6 +8,11 @@ using UnityEngine.Events;
 
 namespace AudioSystem
 {
+
+    //add fade in fade out to scriptable object.
+    //Handle mutiple audio source stacking.
+    //Make one shots if neccesary, don't see a point though.
+
     public class AudioManager : MonoBehaviour
     {
         [System.Serializable]
@@ -21,7 +26,7 @@ namespace AudioSystem
 
         public static AudioManager AudioManagerInstance;
 
-        [SerializeField]private SoundDisk[] soundDisks;
+       // [SerializeField]private SoundDisk[] soundDisks;
         List<AudioReference> audioReference = new List<AudioReference>();
         Queue<GameObject> audioPool = new Queue<GameObject>();
 
@@ -34,14 +39,14 @@ namespace AudioSystem
         {
             AudioManagerInstance = this;
 
-            foreach(SoundDisk soundDisk in soundDisks) 
+            /*foreach(SoundDisk soundDisk in soundDisks) 
             { 
                 if(soundDisk == null)
                 {
                     Debug.LogError("One or more sound disk is missing from the array.");
                     break;
                 }
-            }
+            }*/
 
         }
 
@@ -66,9 +71,22 @@ namespace AudioSystem
         /// <summary>
         /// Play a sound.
         /// </summary>
-        public void PlaySound(AudioScriptableObject sound, SoundDisk soundDisk, GameObject gameObject)
-        { 
-            string soundDiskName = soundDisk.name;
+        public void PlaySound(AudioScriptableObject sound, GameObject gameObject)
+        {
+            Coroutine clipLength = null;
+
+            GameObject obj;
+
+            if (audioPool.Count <= 0)
+            {
+                obj = Instantiate(audioObjPrefab);
+            }
+            else
+            {
+                obj = audioPool.Dequeue();
+            }
+
+            /*string soundDiskName = soundDisk.name;
 
             string soundName = sound.name;
 
@@ -80,39 +98,26 @@ namespace AudioSystem
                 return;
             }
 
-            AudioScriptableObject s = disk.FindSound(soundName);
+            AudioScriptableObject s = disk.FindSound(soundName);*/
 
-            if (s == null)
+            if (sound == null)
             {
-                Debug.LogError("Sound: " + soundName + " does not exist.");
+                Debug.LogError($"You are missing a sound SO from the gameobject {gameObject.name}");
             }
 
-            AudioSource audioSource = null;
-            GameObject obj = null;
-            Coroutine clipLength = null;
+            AudioSource audioSource = obj.GetComponent<AudioSource>();
 
-            if (audioPool.Count <= 0)
-            {
-                obj = Instantiate(audioObjPrefab);
-            }
-            else
-            {
-                obj = audioPool.Dequeue();
-            }
-
-            audioSource = obj.GetComponent<AudioSource>();
-
-            audioSource.clip = s.clip;
-            audioSource.outputAudioMixerGroup = s.group;
-            audioSource.volume = s.volume;
-            audioSource.pitch = s.pitch;
-            audioSource.loop = s.loop;
-            audioSource.panStereo = s.pan;
-            audioSource.spatialBlend = s.spatialBlend;
-            audioSource.rolloffMode = s.rolloffMode;
-            audioSource.minDistance = s.minDistance;
-            audioSource.maxDistance = s.maxDistance;
-            audioSource.dopplerLevel = s.dopplerLevel;
+            audioSource.clip = sound.clip;
+            audioSource.outputAudioMixerGroup = sound.group;
+            audioSource.volume = sound.volume;
+            audioSource.pitch = sound.pitch;
+            audioSource.loop = sound.loop;
+            audioSource.panStereo = sound.pan;
+            audioSource.spatialBlend = sound.spatialBlend;
+            audioSource.rolloffMode = sound.rolloffMode;
+            audioSource.minDistance = sound.minDistance;
+            audioSource.maxDistance = sound.maxDistance;
+            audioSource.dopplerLevel = sound.dopplerLevel;
 
             if (audioSource.spatialBlend == 0)
             {
@@ -127,7 +132,7 @@ namespace AudioSystem
 
             AudioReference createdObjReference = new AudioReference();
 
-            createdObjReference.name = soundName;
+            createdObjReference.name = sound.name;
             createdObjReference.requestingObj = gameObject;
             createdObjReference.audioSource = obj;
 
@@ -162,13 +167,13 @@ namespace AudioSystem
         /// <summary>
         /// Stops an active sound.
         /// </summary>
-        public void StopSound(string soundName, GameObject gameObject)
+        public void StopSound(AudioScriptableObject sound, GameObject gameObject)
         {
             int i;
 
             for (i = 0; i < audioReference.Count; i++)
             {
-                if (audioReference[i].name == soundName && audioReference[i].requestingObj == gameObject)
+                if (audioReference[i].name == sound.name && audioReference[i].requestingObj == gameObject)
                 {
                     audioReference[i].audioSource.transform.SetParent(audioPoolContainer);
                     audioPool.Enqueue(audioReference[i].audioSource);
@@ -184,27 +189,25 @@ namespace AudioSystem
 
             if (audioReference[i] != null)
             {
-                Debug.LogWarning("Sound: " + soundName + " is not active.");
+                Debug.LogWarning("Sound: " + sound + " is not active.");
             }
         }
 
         /// <summary>
         /// Allows you to delay the activation of a sound.
         /// </summary>
-        public void DelayedPlaySound(float delay, AudioScriptableObject sound, SoundDisk soundDisk, GameObject gameObject)
+        public void DelayedPlaySound(float delay, AudioScriptableObject sound, GameObject gameObject)
         {
-            StartCoroutine(SoundDelay(delay, sound, soundDisk, gameObject));
+            StartCoroutine(SoundDelay(delay, sound, gameObject));
         }
 
-        public IEnumerator SoundDelay(float delay, AudioScriptableObject sound, SoundDisk soundDisk, GameObject gameObject)
+        public IEnumerator SoundDelay(float delay, AudioScriptableObject sound, GameObject gameObject)
         {
             yield return new WaitForSeconds(delay);
 
-            PlaySound(sound, soundDisk, gameObject);
+            PlaySound(sound, gameObject);
         }
 
-        //need to create method for fade in and fade out, do not put this on the SO, there is more control with a method.
-        //Handle mutiple audio source stacking.
-        //Make one shots if neccesary, don't see a point though.
+        
     }
 }

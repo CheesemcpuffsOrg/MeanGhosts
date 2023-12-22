@@ -49,4 +49,21 @@ public static class RandomUtility
         }
         return false;
     }
+
+    public static List<T> RandomListSort<T>(List<T> list)
+    {
+        //return list.OrderBy(t => Random.value).ToList();
+
+        var count = list.Count;
+        var last = count - 1;
+        for (var i = 0; i < last; ++i)
+        {
+            var r = UnityEngine.Random.Range(i, count);
+            var tmp = list[i];
+            list[i] = list[r];
+            list[r] = tmp;
+        }
+
+        return list;
+    } 
 }

@@ -13,11 +13,10 @@ public class FlashLight : MonoBehaviour
     [SerializeField] Light2D normalBeam;
 
     bool beamControl = false;
-    [SerializeField]bool flashLightSwitch = false;
+    [SerializeField] bool flashLightSwitch = false;
 
-    [SerializeField] SoundDisk soundDisk;
-
-    [SerializeField] AudioScriptableObject audioScriptableObject;
+    [Header ("Sounds")]
+    [SerializeField] AudioScriptableObject flashLight;
 
     // Start is called before the first frame update
     void Start()
@@ -28,7 +27,7 @@ public class FlashLight : MonoBehaviour
 
     public void FlashLightSwitch()
     {
-        AudioManager.AudioManagerInstance.PlaySound(audioScriptableObject, soundDisk, this.gameObject);
+        AudioManager.AudioManagerInstance.PlaySound(flashLight, this.gameObject);
 
         flashLightSwitch = !flashLightSwitch;
 

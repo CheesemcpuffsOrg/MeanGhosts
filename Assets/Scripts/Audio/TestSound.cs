@@ -5,9 +5,6 @@ using UnityEngine;
 
 public class TestSound : MonoBehaviour
 {
-
-    [SerializeField] SoundDisk soundDisk;
-
     [SerializeField] AudioScriptableObject audioScriptableObject;
 
     // Start is called before the first frame update
@@ -16,7 +13,7 @@ public class TestSound : MonoBehaviour
         StartCoroutine(PlaySound());
 
 
-         AudioManager.AudioManagerInstance.DelayedPlaySound(3f, audioScriptableObject, soundDisk, this.gameObject);
+         AudioManager.AudioManagerInstance.DelayedPlaySound(3f, audioScriptableObject, this.gameObject);
     }
 
     IEnumerator PlaySound()
@@ -24,7 +21,7 @@ public class TestSound : MonoBehaviour
 
         yield return new WaitForSeconds(6f);
 
-        AudioManager.AudioManagerInstance.StopSound("Mirror", this.gameObject);
+        AudioManager.AudioManagerInstance.StopSound(audioScriptableObject, this.gameObject);
 
         //StartCoroutine(PlaySound());
 

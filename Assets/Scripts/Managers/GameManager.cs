@@ -32,6 +32,7 @@ namespace Manager
         public GameObject[] audioTapes;
         [SerializeField] GameObject[] audioTapesSpawnPoints;
 
+        [Header ("Sounds")]
         [SerializeField] List<ObjectPool<AudioScriptableObject>> randomSoundPool;
 
         public int score = 0;
@@ -39,8 +40,6 @@ namespace Manager
         public float timer;
 
         bool pause = false;
-
-        [SerializeField] SoundDisk soundDisk;
 
         private void Awake()
         {
@@ -84,7 +83,7 @@ namespace Manager
 
             AudioScriptableObject soundToPlay = (AudioScriptableObject)RandomUtility.ObjectPoolCalculator(randomSoundPool);
 
-            AudioManager.AudioManagerInstance.PlaySound(soundToPlay, soundDisk, this.gameObject);
+            AudioManager.AudioManagerInstance.PlaySound(soundToPlay, this.gameObject);
 
             StartCoroutine(RandomAmbientSound());
         }

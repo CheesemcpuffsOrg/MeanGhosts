@@ -8,9 +8,8 @@ public class LevelManager : MonoBehaviour
 
     public static LevelManager levelManagerInstance;
 
-    [SerializeField] SoundDisk soundDisk;
-
-    [SerializeField] AudioScriptableObject audioScriptableObject;
+    [Header ("Sounds")]
+    [SerializeField] AudioScriptableObject bgSound;
 
     private void Awake()
     {
@@ -19,6 +18,6 @@ public class LevelManager : MonoBehaviour
 
     void Start()
     {
-        AudioManager.AudioManagerInstance.DelayedPlaySound(0.1f, audioScriptableObject, soundDisk, this.gameObject);
+        AudioManager.AudioManagerInstance.DelayedPlaySound(0.1f, bgSound, this.gameObject);
     }
 }

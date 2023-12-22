@@ -9,13 +9,12 @@ namespace Interactable
 {
     public class PlayTape : MonoBehaviour, IInteractable
     {
-        [SerializeField] SoundDisk soundDisk;
-
-        [SerializeField] AudioScriptableObject audioScriptableObject;
+        [Header ("Sounds")]
+        [SerializeField] AudioScriptableObject tapeAudio;
 
         void IInteractable.Interact()
         {
-            AudioManager.AudioManagerInstance.PlaySound(audioScriptableObject, soundDisk, this.gameObject);
+            AudioManager.AudioManagerInstance.PlaySound(tapeAudio, this.gameObject);
         }
 
         private void OnTriggerEnter2D(Collider2D collision)

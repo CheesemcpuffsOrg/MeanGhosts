@@ -39,9 +39,8 @@ namespace Player
 
         Animator anim;
 
-        [SerializeField] SoundDisk soundDisk;
-
-        [SerializeField] AudioScriptableObject audioScriptableObject;
+        [Header ("Sounds")]
+        [SerializeField] AudioScriptableObject footSteps;
 
         private void Awake()
         {
@@ -120,12 +119,12 @@ namespace Player
 
             if (isMoving && !footsteps)
             {
-                AudioManager.AudioManagerInstance.PlaySound(audioScriptableObject, soundDisk, this.gameObject);
+                AudioManager.AudioManagerInstance.PlaySound(footSteps, this.gameObject);
                 footsteps = true;
             }
             else if (!isMoving && footsteps)
             {
-                AudioManager.AudioManagerInstance.StopSound("Footsteps", this.gameObject);
+                AudioManager.AudioManagerInstance.StopSound(footSteps, this.gameObject);
                 footsteps = false;
             }
         }

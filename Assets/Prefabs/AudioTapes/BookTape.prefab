@@ -17,6 +17,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 3758575608336699058, guid: 057cdf427a7dd0345ad6b9f32539dcdb, type: 3}
     - target: {fileID: 5821012371180903156, guid: cf5e45ace3c1c514ea81482d4c8621c3, type: 3}
+      propertyPath: tapeAudio
+      value: 
+      objectReference: {fileID: 11400000, guid: 9603f84813b1a444a9ea27df0ee7ed8c, type: 2}
+    - target: {fileID: 5821012371180903156, guid: cf5e45ace3c1c514ea81482d4c8621c3, type: 3}
       propertyPath: audioScriptableObject
       value: 
       objectReference: {fileID: 11400000, guid: 9603f84813b1a444a9ea27df0ee7ed8c, type: 2}
