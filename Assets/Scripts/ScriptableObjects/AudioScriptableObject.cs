@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
-[CreateAssetMenu(fileName = "Audio", menuName = "Audio")]
+[CreateAssetMenu(fileName = "Audio", menuName = "ScriptableObject/Audio")]
 public class AudioScriptableObject : ScriptableObject
 {
     public string name;

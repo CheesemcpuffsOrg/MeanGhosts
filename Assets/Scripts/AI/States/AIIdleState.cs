@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
 
@@ -16,6 +17,13 @@ public class AIIdleState : AIState
     [SerializeField]bool walkPointSet = false;
 
     [SerializeField]float agroRangeAdjusted;
+
+    GameObject player;
+
+    private void Start()
+    {
+        
+    }
 
     public override void EnterState(AIStateManager state)
     {

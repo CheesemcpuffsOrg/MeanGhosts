@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 public class SoundController : MonoBehaviour
 {
-    [SerializeField] GameObject audioSources;
+    /*[SerializeField] GameObject audioSources;
 
     [SerializeField] AudioScriptableObject[] sounds;
 
@@ -96,5 +96,5 @@ public class SoundController : MonoBehaviour
         {
             doNotPlay[index] = false;
         }
-    }
+    }*/
 }

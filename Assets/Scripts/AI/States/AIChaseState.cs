@@ -1,3 +1,4 @@
+using AudioSystem;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,10 @@ public class AIChaseState : AIState
     [SerializeField] AIController controller;
 
     bool scream = false;
+
+    [Header("Sounds")]
+    [SerializeField] AudioScriptableObject giggleSFX;
+    [SerializeField] AudioScriptableObject screamSFX;
 
     public override void EnterState(AIStateManager state)
     {
@@ -52,12 +57,12 @@ public class AIChaseState : AIState
 
         if (Vector3.Distance(this.transform.position, controller.player.transform.position) < 10 && !scream && Manager.GameManager.GameManagerInstance.score > 0)
         {
-            GetComponentInParent<SoundController>().PlayOneShotSound(0);
+            AudioManager.AudioManagerInstance.PlaySound(screamSFX, gameObject);
             scream = true;
         }
         else if (Vector3.Distance(this.transform.position, controller.player.transform.position) < 10 && !scream && Manager.GameManager.GameManagerInstance.score == 0 && !scream)
         {
-            GetComponentInParent<SoundController>().PlayOneShotSound(1);
+            AudioManager.AudioManagerInstance.PlaySound(giggleSFX, gameObject);
             scream = true;
         }
         else if (Vector3.Distance(this.transform.position, controller.player.transform.position) > 10)

@@ -12,12 +12,12 @@ public class AIController : MonoBehaviour
 
     public Animator anim;
 
+    [SerializeField] TagScriptableObject playerTag;
+
     // Start is called before the first frame update
     void Start()
     {
-        anim = GetComponent<Animator>();
-
-        player = GameObject.FindWithTag("Player");
+        player = TagExtensions.FindWithTag(gameObject, playerTag);
 
         spawn = new Vector2(transform.position.x, transform.position.y);
     }
