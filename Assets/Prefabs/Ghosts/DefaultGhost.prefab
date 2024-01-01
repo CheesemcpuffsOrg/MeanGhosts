@@ -79,6 +79,52 @@ MonoBehaviour:
   controller: {fileID: 6925159469005380710}
   giggleSFX: {fileID: 11400000, guid: 3e4576a96ae1c05478004d345b44ebb1, type: 2}
   screamSFX: {fileID: 11400000, guid: 05e4f119c1711c84e9b09b1b14f4a86a, type: 2}
+--- !u!1 &2432369053912856096
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7738480761656620723}
+  - component: {fileID: 2054111371770019285}
+  m_Layer: 8
+  m_Name: CaughtState
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7738480761656620723
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2432369053912856096}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6925159469467064015}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2054111371770019285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2432369053912856096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61c838fd07c5db24caf030dd3027c097, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stateManager: {fileID: 6925159469005380709}
+  controller: {fileID: 6925159469005380710}
 --- !u!1 &6925159468932551726
 GameObject:
   m_ObjectHideFlags: 0
@@ -251,9 +297,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e40711f737132014f90f2be6d2e7ae0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentState: {fileID: 0}
-  IdleState: {fileID: 6925159468932551725}
-  ChaseState: {fileID: 1971317277}
+  _CurrentState: {fileID: 0}
+  _IdleState: {fileID: 6925159468932551725}
+  _ChaseState: {fileID: 1971317277}
+  _CaughtState: {fileID: 2054111371770019285}
+  viewPos: {x: 0, y: 0, z: 0}
+  seenByTorch: 0
+  _caught: 0
+  visibleToCamera: 0
 --- !u!114 &6925159469005380710
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -330,6 +381,7 @@ Transform:
   m_Children:
   - {fileID: 6925159468932551724}
   - {fileID: 1971317278}
+  - {fileID: 7738480761656620723}
   m_Father: {fileID: 6925159469005380706}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

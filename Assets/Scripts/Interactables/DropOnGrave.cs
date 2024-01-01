@@ -18,10 +18,14 @@ public class DropOnGrave : InteractableObjs
 
     private void Update()
     {
-        if(standingOnGrave && player.GetComponent<Player.PlayerController>().heldObject != null && objectOnGrave == null)
+        if(player != null)
         {
-            UIManagers.UIManagersInstance.PlaceItemShowText();
+            if (standingOnGrave && player.GetComponent<Player.PlayerController>().heldObject != null && objectOnGrave == null)
+            {
+                UIManagers.UIManagersInstance.PlaceItemShowText();
+            }
         }
+        
     }
 
     protected override void Interact()

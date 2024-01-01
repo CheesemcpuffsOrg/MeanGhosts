@@ -53,7 +53,7 @@ namespace Player
             controlScheme.Player.Pause.performed += Pause;
             controlScheme.Player.BeamControl.performed += BeamControl;
             rb = GetComponent<Rigidbody2D>();
-            invisible = true;
+            //invisible = true;
             speed = playerSO.speed;
         }
 
@@ -131,10 +131,14 @@ namespace Player
 
         void FlashLight(InputAction.CallbackContext onoff)
         {
-
             flashlight.FlashLightSwitch();
 
             UIManagers.UIManagersInstance.DisableLampText();
+        }
+
+        void BeamControl(InputAction.CallbackContext beam)
+        {
+            flashlight.BeamControl();
         }
 
         void Interact(InputAction.CallbackContext interact)
@@ -202,10 +206,7 @@ namespace Player
             Manager.GameManager.GameManagerInstance.Pause();
         }
 
-        void BeamControl(InputAction.CallbackContext beam)
-        {
-            flashlight.BeamControl();
-        }
+        
 
         /* void PlayerRotation()
          {

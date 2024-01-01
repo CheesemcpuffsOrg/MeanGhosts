@@ -5,15 +5,21 @@ using UnityEngine;
 public class TorchBeam : MonoBehaviour
 {
 
-    //[SerializeField] TraitScriptableObject enemyTrait;
+    [SerializeField] TagScriptableObject enemyTag;
 
-    /*private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        List<TraitScriptableObject> trait = collision.GetComponent<ObjectTraits>().traits;
-
-        if (trait.Contains(enemyTrait))
+        if(TagExtensions.HasTag(collision.gameObject, enemyTag))
         {
-
+            collision.GetComponentInChildren<AIStateManager>().SpottedByTorch(true);
         }
-    }*/
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (TagExtensions.HasTag(collision.gameObject, enemyTag))
+        {
+            collision.GetComponentInChildren<AIStateManager>().SpottedByTorch(false);
+        }
+    }
 }

@@ -25,6 +25,11 @@ public class AIChaseState : AIState
         ChasePlayer(state);
     }
 
+    private void GhostVisibilityControl(AIStateManager state)
+    {
+        
+    }
+
     public override void ExitState(AIStateManager state)
     {
         

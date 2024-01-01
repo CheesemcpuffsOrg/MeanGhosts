@@ -12,13 +12,11 @@ public class AIIdleState : AIState
 
     Vector2 wanderZone = new Vector2(0,0);
     [SerializeField] Vector2 destPoint;
-    Vector2 finalDestPoint;
+    //Vector2 finalDestPoint;
 
     [SerializeField]bool walkPointSet = false;
 
     [SerializeField]float agroRangeAdjusted;
-
-    GameObject player;
 
     private void Start()
     {
@@ -36,7 +34,10 @@ public class AIIdleState : AIState
     {
         IdleMovement();
 
-        SwitchToChaseState(state);
+        if (!stateManager.caught)
+        {
+            SwitchToChaseState(state);
+        }  
     }
 
     public override void ExitState(AIStateManager state)
@@ -75,7 +76,7 @@ public class AIIdleState : AIState
         float curveX = (((1 - bezierTime) * (1 - bezierTime)) * transform.root.position.x) + (2 * bezierTime * (1 - bezierTime) * previousLoc.x) + ((bezierTime * bezierTime) * destPoint.x);
         float curveY = (((1 - bezierTime) * (1 - bezierTime)) * transform.root.position.y) + (2 * bezierTime * (1 - bezierTime) * previousLoc.y) + ((bezierTime * bezierTime) * destPoint.y);
 
-        finalDestPoint = new Vector2(curveX, curveY);
+        //finalDestPoint = new Vector2(curveX, curveY);
 
         walkPointSet = true;
     }

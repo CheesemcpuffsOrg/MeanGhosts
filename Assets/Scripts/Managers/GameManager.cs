@@ -157,8 +157,8 @@ namespace Manager
             if (pause == false)
             {
                 Time.timeScale = 1;
-                /*player.GetComponent<PlayerController>().flashLight.SetActive(true);
-                player.GetComponent<PlayerController>().flashLightState = true;*/
+                player.GetComponent<Player.PlayerController>().flashLight.SetActive(true);
+                player.GetComponent<Player.PlayerController>().flashLightState = true;
             }
             else
             {

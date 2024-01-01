@@ -7,9 +7,11 @@ public class InteractableObjs : MonoBehaviour
 {
     public GameObject player;
 
+    [SerializeField] TagScriptableObject playerTag;
+
     protected void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "Player")
+        if (TagExtensions.HasTag(other.gameObject, playerTag))
         {
             //other.GetComponent<PlayerController>().interactEvent.AddListener();
             player = other.gameObject;
@@ -19,7 +21,7 @@ public class InteractableObjs : MonoBehaviour
 
     protected void OnTriggerExit2D(Collider2D other)
     {
-        if (other.tag == "Player")
+        if (TagExtensions.HasTag(other.gameObject, playerTag))
         {
             other.GetComponent<Player.PlayerController>().interactEvent.RemoveListener(Interact);
             
