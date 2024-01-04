@@ -18,6 +18,7 @@ public class AIController : MonoBehaviour
 
     public Animator anim => _anim;
 
+    [Header ("Tags")]
     [SerializeField] TagScriptableObject playerTag;
 
     // Start is called before the first frame update

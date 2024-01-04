@@ -29,7 +29,7 @@ public class AIStateManager : MonoBehaviour
     bool _caught = false;
 
     [SerializeField] int affectLightRange;
-    [SerializeField]bool isWithinRange = false;
+    [SerializeField] bool isWithinRange = false;
 
     [Header("Tags")]
     [SerializeField]TagScriptableObject playerTag;

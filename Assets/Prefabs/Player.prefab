@@ -359,7 +359,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   highBeam: {fileID: 1519881412}
   normalBeam: {fileID: 1316690784}
+  defaultLightIntensity: 0.3
+  defaultHighBeamIntensity: 0.5
   flashLight: {fileID: 11400000, guid: bf12d4d2bb04b2146b9b202233db3710, type: 2}
+  ghostsWithinRange: 0
 --- !u!1 &874866005
 GameObject:
   m_ObjectHideFlags: 0

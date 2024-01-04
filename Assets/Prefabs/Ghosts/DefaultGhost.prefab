@@ -301,10 +301,9 @@ MonoBehaviour:
   _IdleState: {fileID: 6925159468932551725}
   _ChaseState: {fileID: 1971317277}
   _CaughtState: {fileID: 2054111371770019285}
-  viewPos: {x: 0, y: 0, z: 0}
-  seenByTorch: 0
-  _caught: 0
-  visibleToCamera: 0
+  affectLightRange: 20
+  isWithinRange: 0
+  playerTag: {fileID: 11400000, guid: 245989d67fe58824aacae9258831b138, type: 2}
 --- !u!114 &6925159469005380710
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -317,9 +316,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16ae6d3eb4bf45041a2d5508e124c80b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stats: {fileID: 11400000, guid: 0aea49412ae3bd249ae9bf31459829a4, type: 2}
-  player: {fileID: 0}
-  anim: {fileID: 6925159469005380708}
+  _stats: {fileID: 11400000, guid: 0aea49412ae3bd249ae9bf31459829a4, type: 2}
+  _anim: {fileID: 6925159469005380708}
   playerTag: {fileID: 11400000, guid: 245989d67fe58824aacae9258831b138, type: 2}
 --- !u!70 &650324298
 CapsuleCollider2D:
