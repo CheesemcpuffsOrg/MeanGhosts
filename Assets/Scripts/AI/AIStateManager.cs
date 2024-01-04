@@ -1,11 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
+
+//Joshua
 
 public class AIStateManager : MonoBehaviour
 {
-
     public AIState _CurrentState;
     public AIIdleState _IdleState;
     public AIChaseState _ChaseState;
@@ -16,19 +15,32 @@ public class AIStateManager : MonoBehaviour
     public AIChaseState ChaseState => _ChaseState;
     public AICaughtState CaughtState => _CaughtState;
 
+    GameObject player;
+
+    FlashLight flashLight;
+
     Camera cam;
 
-    [SerializeField] private Vector3 viewPos;
+    Vector3 viewPos;
 
     bool _delayDone = false;
-    [SerializeField] bool seenByTorch = false;
-    [SerializeField] bool _caught = false;
-    [SerializeField] bool visibleToCamera = false;
+    bool _seenByTorch = false;
+    bool _visibleToCamera = false;
+    bool _caught = false;
+
+    [SerializeField] int affectLightRange;
+    [SerializeField]bool isWithinRange = false;
+
+    [Header("Tags")]
+    [SerializeField]TagScriptableObject playerTag;
 
     public bool caught => _caught;
 
     private void Start()
     {
+        player = TagExtensions.FindWithTag(gameObject, playerTag);
+        flashLight = player.GetComponentInChildren<FlashLight>();
+
         cam = Camera.main;
 
         StartCoroutine(DelayedStart());
@@ -68,35 +80,59 @@ public class AIStateManager : MonoBehaviour
 
     private void CheckIfCaught()
     {
-        viewPos = cam.WorldToViewportPoint(this.transform.position);
-
-        if (viewPos.x < 1.05f && viewPos.x > -0.05f && viewPos.y < 1.05 && viewPos.y > -0.05f)
+        if (!isWithinRange )
         {
-            visibleToCamera = true;
-        }
-        else
-        {
-            visibleToCamera = false;
-        }
-
-        if (!caught)
-        {
-            if (visibleToCamera && seenByTorch)
+            if (Vector3.Distance(this.transform.position, player.transform.position) < affectLightRange && !caught)
             {
-                _caught = true;
-                SwitchToTheNextState(CaughtState);
+                isWithinRange = true;
+                flashLight.FlickeringTorch(isWithinRange);
+            }
+        }
+        else if(isWithinRange)
+        {
+            if (Vector3.Distance(this.transform.position, player.transform.position) > affectLightRange || caught)
+            {
+                isWithinRange = false;
+                flashLight.FlickeringTorch(isWithinRange);
             }
         }
 
-        if (!visibleToCamera || !seenByTorch)
+        viewPos = cam.WorldToViewportPoint(this.transform.position);
+
+        if (flashLight.flashLightSwitch)
+        {
+            if (viewPos.x < 1.05f && viewPos.x > -0.05f && viewPos.y < 1.05 && viewPos.y > -0.05f)
+            {
+                _visibleToCamera = true;
+            }
+            else
+            {
+                _visibleToCamera = false;
+            }
+
+            if (!caught)
+            {
+                if (_visibleToCamera && _seenByTorch)
+                {
+                    _caught = true;
+                    SwitchToTheNextState(CaughtState);
+                }
+            }
+
+            if (!_visibleToCamera || !_seenByTorch)
+            {
+                _caught = false;
+            }
+        }
+        else
         {
             _caught = false;
-        }
+        } 
     }
 
     public void SpottedByTorch(bool isSpotted)
     {
-        seenByTorch = isSpotted;
+        _seenByTorch = isSpotted;
     }
     #endregion
 }

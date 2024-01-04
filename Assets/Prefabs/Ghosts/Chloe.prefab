@@ -10,15 +10,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6925159469005380706, guid: ba8857bb1bebc7544959ea8697b27632, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6925159469005380706, guid: ba8857bb1bebc7544959ea8697b27632, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -176.08385
       objectReference: {fileID: 0}
     - target: {fileID: 6925159469005380706, guid: ba8857bb1bebc7544959ea8697b27632, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 4.0394874
       objectReference: {fileID: 0}
     - target: {fileID: 6925159469005380706, guid: ba8857bb1bebc7544959ea8697b27632, type: 3}
       propertyPath: m_LocalPosition.z
@@ -52,10 +52,46 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6925159469005380709, guid: ba8857bb1bebc7544959ea8697b27632, type: 3}
+      propertyPath: playerTag
+      value: 
+      objectReference: {fileID: 11400000, guid: 245989d67fe58824aacae9258831b138, type: 2}
+    - target: {fileID: 6925159469005380709, guid: ba8857bb1bebc7544959ea8697b27632, type: 3}
+      propertyPath: controller
+      value: 
+      objectReference: {fileID: 8191527339006696817}
+    - target: {fileID: 6925159469005380709, guid: ba8857bb1bebc7544959ea8697b27632, type: 3}
+      propertyPath: affectLightRange
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6925159469005380710, guid: ba8857bb1bebc7544959ea8697b27632, type: 3}
+      propertyPath: _anim
+      value: 
+      objectReference: {fileID: 8191527339006696819}
+    - target: {fileID: 6925159469005380710, guid: ba8857bb1bebc7544959ea8697b27632, type: 3}
+      propertyPath: _stats
+      value: 
+      objectReference: {fileID: 11400000, guid: 0aea49412ae3bd249ae9bf31459829a4, type: 2}
     - target: {fileID: 6925159469005380711, guid: ba8857bb1bebc7544959ea8697b27632, type: 3}
       propertyPath: m_Name
-      value: DefaultGhost
+      value: Chloe
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: ba8857bb1bebc7544959ea8697b27632, type: 3}
+--- !u!114 &8191527339006696817 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6925159469005380710, guid: ba8857bb1bebc7544959ea8697b27632, type: 3}
+  m_PrefabInstance: {fileID: 1275993613353517335}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16ae6d3eb4bf45041a2d5508e124c80b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!95 &8191527339006696819 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 6925159469005380708, guid: ba8857bb1bebc7544959ea8697b27632, type: 3}
+  m_PrefabInstance: {fileID: 1275993613353517335}
+  m_PrefabAsset: {fileID: 0}

@@ -18,11 +18,6 @@ public class AIIdleState : AIState
 
     [SerializeField]float agroRangeAdjusted;
 
-    private void Start()
-    {
-        
-    }
-
     public override void EnterState(AIStateManager state)
     {
         controller.anim.SetBool("isScary", false);

@@ -4,20 +4,26 @@ using UnityEngine;
 
 public class AIController : MonoBehaviour
 {
-    public AIScriptableObjects stats;
+    [SerializeField]AIScriptableObjects _stats;
 
-    public GameObject player;
+    public AIScriptableObjects stats => _stats;
+
+    GameObject _player;
+
+    public GameObject player => _player;
 
     Vector2 spawn;
 
-    public Animator anim;
+    [SerializeField]Animator _anim;
+
+    public Animator anim => _anim;
 
     [SerializeField] TagScriptableObject playerTag;
 
     // Start is called before the first frame update
     void Start()
     {
-        player = TagExtensions.FindWithTag(gameObject, playerTag);
+        _player = TagExtensions.FindWithTag(gameObject, playerTag);
 
         spawn = new Vector2(transform.position.x, transform.position.y);
     }
