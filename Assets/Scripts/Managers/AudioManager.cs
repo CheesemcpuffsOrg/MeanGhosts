@@ -27,7 +27,6 @@ namespace AudioSystem
 
         public static AudioManager AudioManagerInstance;
 
-       // [SerializeField]private SoundDisk[] soundDisks;
         List<AudioReference> audioReference = new List<AudioReference>();
         Queue<GameObject> audioPool = new Queue<GameObject>();
 
@@ -39,16 +38,6 @@ namespace AudioSystem
         private void Awake()
         {
             AudioManagerInstance = this;
-
-            /*foreach(SoundDisk soundDisk in soundDisks) 
-            { 
-                if(soundDisk == null)
-                {
-                    Debug.LogError("One or more sound disk is missing from the array.");
-                    break;
-                }
-            }*/
-
         }
 
         /// <summary>
@@ -86,20 +75,6 @@ namespace AudioSystem
             {
                 obj = audioPool.Dequeue();
             }
-
-            /*string soundDiskName = soundDisk.name;
-
-            string soundName = sound.name;
-
-            SoundDisk disk = Array.Find(soundDisks, obj => obj.name == soundDiskName);
-
-            if (disk == null)
-            {
-                Debug.LogError("Sound Disk: " + soundName + " is not set up. Please create a sound disk.");
-                return;
-            }
-
-            AudioScriptableObject s = disk.FindSound(soundName);*/
 
             if (sound == null)
             {
@@ -212,8 +187,6 @@ namespace AudioSystem
         /// <summary>
         /// Plays a random sound from a list.
         /// </summary>
-        /// <param name="list"></param>
-        /// <param name="gameObject"></param>
         public void PlaySoundFromlist(List<AudioScriptableObject> list, GameObject gameObject)
         {
             var randomList = RandomUtility.RandomListSort(list);
@@ -221,6 +194,24 @@ namespace AudioSystem
             var sound = randomList[0];
 
             PlaySound(sound, gameObject);
+        }
+
+
+        /// <summary>
+        /// Checks to see if the requested sound exists and is playing
+        /// </summary>
+        public bool CheckIfSoundIsPlaying(AudioScriptableObject sound, GameObject gameObject)
+        {
+            int i;
+
+            for (i = 0; i < audioReference.Count; i++)
+            {
+                if (audioReference[i].name == sound.name && audioReference[i].requestingObj == gameObject)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         

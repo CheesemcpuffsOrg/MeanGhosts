@@ -14,6 +14,14 @@ public class AIController : MonoBehaviour
 
     Vector2 spawn;
 
+    FlashLight _flashLight;
+
+    public FlashLight flashLight => _flashLight;    
+
+    Camera _cam;
+
+    public Camera cam => _cam;
+
     [SerializeField]Animator _anim;
 
     public Animator anim => _anim;
@@ -27,6 +35,10 @@ public class AIController : MonoBehaviour
         _player = TagExtensions.FindWithTag(gameObject, playerTag);
 
         spawn = new Vector2(transform.position.x, transform.position.y);
+
+        _flashLight = player.GetComponentInChildren<FlashLight>();
+
+        _cam = Camera.main;
     }
 
     // Update is called once per frame

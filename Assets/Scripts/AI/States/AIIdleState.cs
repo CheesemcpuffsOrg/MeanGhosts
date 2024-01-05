@@ -9,6 +9,7 @@ public class AIIdleState : AIState
 {
     [SerializeField] AIStateManager stateManager;
     [SerializeField] AIController controller;
+    [SerializeField] AIAnyState anyState;
 
     Vector2 wanderZone = new Vector2(0,0);
     [SerializeField] Vector2 destPoint;
@@ -29,7 +30,7 @@ public class AIIdleState : AIState
     {
         IdleMovement();
 
-        if (!stateManager.caught)
+        if (!anyState.caught)
         {
             SwitchToChaseState(state);
         }  

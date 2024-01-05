@@ -11,7 +11,7 @@ public class TorchBeam : MonoBehaviour
     {
         if(TagExtensions.HasTag(collision.gameObject, enemyTag))
         {
-            collision.GetComponentInChildren<AIStateManager>().SpottedByTorch(true);
+            collision.GetComponentInChildren<AIAnyState>().SpottedByTorch(true);
         }
     }
 
@@ -19,7 +19,7 @@ public class TorchBeam : MonoBehaviour
     {
         if (TagExtensions.HasTag(collision.gameObject, enemyTag))
         {
-            collision.GetComponentInChildren<AIStateManager>().SpottedByTorch(false);
+            collision.GetComponentInChildren<AIAnyState>().SpottedByTorch(false);
         }
     }
 }

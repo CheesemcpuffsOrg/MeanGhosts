@@ -7,6 +7,7 @@ public class AICaughtState : AIState
 
     [SerializeField] AIStateManager stateManager;
     [SerializeField] AIController controller;
+    [SerializeField] AIAnyState anyState;
 
     public override void EnterState(AIStateManager state)
     {
@@ -15,7 +16,7 @@ public class AICaughtState : AIState
 
     public override void UpdateState(AIStateManager state)
     {
-        if (!stateManager.caught)
+        if (!anyState.caught)
         {
             state.SwitchToTheNextState(state.IdleState);
         }
