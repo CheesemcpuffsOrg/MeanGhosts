@@ -61,21 +61,14 @@ public class AIChaseState : AIState
         }
 
         if (Vector3.Distance(this.transform.position, controller.player.transform.position) < 10 && !scream && Manager.GameManager.GameManagerInstance.score > 0)
-        {
-            if(!AudioManager.AudioManagerInstance.CheckIfSoundIsPlaying(screamSFX, gameObject))
-            {
-                AudioManager.AudioManagerInstance.PlaySound(screamSFX, gameObject);
-                scream = true;
-            }
+        {        
+                AudioManager.AudioManagerInstance.PlaySoundIfNotAlreadyPlaying(screamSFX, gameObject);
+                scream = true;   
         }
         else if (Vector3.Distance(this.transform.position, controller.player.transform.position) < 10 && !scream && Manager.GameManager.GameManagerInstance.score == 0 && !scream)
         {
-            if (!AudioManager.AudioManagerInstance.CheckIfSoundIsPlaying(screamSFX, gameObject))
-            {
-                AudioManager.AudioManagerInstance.PlaySound(giggleSFX, gameObject);
-                scream = true;
-            }
-                
+            AudioManager.AudioManagerInstance.PlaySoundIfNotAlreadyPlaying(giggleSFX, gameObject);
+            scream = true;       
         }
         else if (Vector3.Distance(this.transform.position, controller.player.transform.position) > 10)
         {

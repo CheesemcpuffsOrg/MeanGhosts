@@ -15,6 +15,7 @@ public class AIStateManager : MonoBehaviour
     public AIIdleState IdleState => _IdleState;
     public AIChaseState ChaseState => _ChaseState;
     public AICaughtState CaughtState => _CaughtState;
+    public AIAnyState AnyState => _AnyState;
 
     bool _delayDone = false;
     

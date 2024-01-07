@@ -5,9 +5,9 @@ using UnityEngine;
 public class AICaughtState : AIState
 {
 
-    [SerializeField] AIStateManager stateManager;
     [SerializeField] AIController controller;
-    [SerializeField] AIAnyState anyState;
+
+    bool timeToExplode = false;
 
     public override void EnterState(AIStateManager state)
     {
@@ -16,17 +16,28 @@ public class AICaughtState : AIState
 
     public override void UpdateState(AIStateManager state)
     {
-        if (!anyState.caught)
+        if (!state.AnyState.caught)
         {
             state.SwitchToTheNextState(state.IdleState);
+        }
+
+        if(state.AnyState.seenByHighBeam && controller.flashLight.beamControl) 
+        {
+            state.SwitchToTheNextState(state.IdleState);
+            timeToExplode=true;
         }
     }
 
     public override void ExitState(AIStateManager state)
-    { 
-
+    {
+        if(timeToExplode)
+        {
+            transform.root.position = controller.spawn;
+            state.AnyState.SpottedByHighBeam(false);
+            state.AnyState.SpottedByTorch(false);
+            timeToExplode = false;
+        }
+        
     }
-
-    
 
 }

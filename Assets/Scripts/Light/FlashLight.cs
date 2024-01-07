@@ -13,7 +13,7 @@ public class FlashLight : MonoBehaviour
     [SerializeField] Light2D highBeam;
     [SerializeField] Light2D normalBeam;
 
-    bool beamControl = false;
+    bool _beamControl = false;
     bool _flashLightSwitch = false;
     bool flickering = false;
 
@@ -21,6 +21,7 @@ public class FlashLight : MonoBehaviour
     [SerializeField]float defaultHighBeamIntensity;
 
     public bool flashLightSwitch => _flashLightSwitch;
+    public bool beamControl => _beamControl;
 
     [Header ("Sounds")]
     [SerializeField] AudioScriptableObject flashLight;
@@ -54,18 +55,18 @@ public class FlashLight : MonoBehaviour
 
     public void BeamControl()
     {
-        if(!flickering)
+        if(!flickering && _flashLightSwitch)
         {
             AudioManager.AudioManagerInstance.PlaySound(flashLight, this.gameObject);
 
-            beamControl = !beamControl;
+            _beamControl = !_beamControl;
 
-            if (_flashLightSwitch && beamControl)
+            if (_beamControl)
             {
                 normalBeam.intensity = 0;
                 highBeam.intensity = defaultHighBeamIntensity;
             }
-            else if (_flashLightSwitch && !beamControl)
+            else if (!_beamControl)
             {
                 normalBeam.intensity = defaultLightIntensity;
                 highBeam.intensity = 0;
@@ -100,14 +101,14 @@ public class FlashLight : MonoBehaviour
 
     IEnumerator Flicker()
     {
-        beamControl = false;
+        _beamControl = false;
 
         normalBeam.intensity = 0.1f;
         highBeam.intensity = 0;
 
         yield return new WaitForSeconds(Random.Range(.1f,.2f));
 
-        beamControl = false;
+        _beamControl = false;
 
         normalBeam.intensity = defaultLightIntensity;
 

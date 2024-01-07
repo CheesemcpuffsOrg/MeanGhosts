@@ -12,7 +12,8 @@ public class AIController : MonoBehaviour
 
     public GameObject player => _player;
 
-    Vector2 spawn;
+    Vector2 _spawn;
+    public Vector2 spawn => _spawn;
 
     FlashLight _flashLight;
 
@@ -34,7 +35,7 @@ public class AIController : MonoBehaviour
     {
         _player = TagExtensions.FindWithTag(gameObject, playerTag);
 
-        spawn = new Vector2(transform.position.x, transform.position.y);
+        _spawn = new Vector2(transform.position.x, transform.position.y);
 
         _flashLight = player.GetComponentInChildren<FlashLight>();
 
@@ -61,7 +62,7 @@ public class AIController : MonoBehaviour
     {
         if (player.GetComponent<Player.PlayerController>().safe == true) 
         {
-            this.transform.position = spawn;
+            this.transform.position = _spawn;
             this.gameObject.GetComponent<AIStateManager>().enabled = false;
         }
         else

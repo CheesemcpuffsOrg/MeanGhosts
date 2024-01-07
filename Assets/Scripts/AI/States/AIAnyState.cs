@@ -10,6 +10,7 @@ public class AIAnyState : AIState
     Vector3 viewPos;
 
     bool _seenByTorch = false;
+    bool _seenByHighBeam = false;
     bool _visibleToCamera = false;
     bool _caught = false;
 
@@ -17,6 +18,7 @@ public class AIAnyState : AIState
     [SerializeField] bool isWithinRange = false;
 
     public bool caught => _caught;
+    public bool seenByHighBeam => _seenByHighBeam;
 
     public override void EnterState(AIStateManager state)
     {
@@ -88,5 +90,10 @@ public class AIAnyState : AIState
     public void SpottedByTorch(bool isSpotted)
     {
         _seenByTorch = isSpotted;
+    }
+
+    public void SpottedByHighBeam(bool isSpotted)
+    {
+        _seenByHighBeam = isSpotted;
     }
 }
