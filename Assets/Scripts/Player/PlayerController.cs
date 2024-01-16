@@ -19,10 +19,7 @@ namespace Player
         [SerializeField] float speed;
 
         [SerializeField] FlashLight flashlight;
-
         public GameObject flashLight;
-
-        public bool flashLightState = false;
 
         Rigidbody2D rb;
 
@@ -203,7 +200,7 @@ namespace Player
 
         void Pause(InputAction.CallbackContext pause)
         {
-            Manager.GameManager.GameManagerInstance.Pause();
+            GameManager.GameManagerInstance.Pause();
         }
 
         

@@ -12,8 +12,8 @@ public class AIController : MonoBehaviour
 
     public GameObject player => _player;
 
-    Vector2 _spawn;
-    public Vector2 spawn => _spawn;
+    [SerializeField]Transform _spawn;
+    public Transform spawn => _spawn;
 
     FlashLight _flashLight;
 
@@ -35,8 +35,6 @@ public class AIController : MonoBehaviour
     {
         _player = TagExtensions.FindWithTag(gameObject, playerTag);
 
-        _spawn = new Vector2(transform.position.x, transform.position.y);
-
         _flashLight = player.GetComponentInChildren<FlashLight>();
 
         _cam = Camera.main;
@@ -53,7 +51,7 @@ public class AIController : MonoBehaviour
         
         if (collision.gameObject.tag == "Player")
         {
-            Manager.GameManager.GameManagerInstance.GameOver();
+            GameManager.GameManagerInstance.GameOver();
         }
 
     }
@@ -62,7 +60,7 @@ public class AIController : MonoBehaviour
     {
         if (player.GetComponent<Player.PlayerController>().safe == true) 
         {
-            this.transform.position = _spawn;
+            this.transform.position = _spawn.position;
             this.gameObject.GetComponent<AIStateManager>().enabled = false;
         }
         else

@@ -16,17 +16,24 @@ public class FlashLight : MonoBehaviour
     bool _beamControl = false;
     bool _flashLightSwitch = false;
     bool flickering = false;
+    bool torchOnCooldown = false; 
 
-    [SerializeField]float defaultLightIntensity;
-    [SerializeField]float defaultHighBeamIntensity;
+    [SerializeField]float defaultNormalBeamIntensity = 0.3f;
+    [SerializeField]float defaultHighBeamIntensity = 0.5f;
+
+    [SerializeField] float highBeamDuration = 3;
+    [SerializeField] float torchCooldownDuration = 2;
 
     public bool flashLightSwitch => _flashLightSwitch;
     public bool beamControl => _beamControl;
 
+    int ghostsWithinRange = 0;
+
+    List<Coroutine> flickers = new List<Coroutine>();
+
     [Header ("Sounds")]
     [SerializeField] AudioScriptableObject flashLight;
 
-    [SerializeField]int ghostsWithinRange = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -37,22 +44,28 @@ public class FlashLight : MonoBehaviour
 
     public void FlashLightSwitch()
     {
-        AudioManager.AudioManagerInstance.PlaySound(flashLight, this.gameObject);
-
-        _flashLightSwitch = !_flashLightSwitch;
-
-        if (_flashLightSwitch)
+        if(!torchOnCooldown)
         {
-            normalBeam.intensity = defaultLightIntensity;
-            highBeam.intensity = 0;
+            AudioManager.AudioManagerInstance.PlaySound(flashLight, this.gameObject);
+
+            _flashLightSwitch = !_flashLightSwitch;
+
+            if (_flashLightSwitch)
+            {
+                normalBeam.intensity = defaultNormalBeamIntensity;
+                highBeam.intensity = 0;
+            }
+            else if (!_flashLightSwitch)
+            {
+                normalBeam.intensity = 0;
+                highBeam.intensity = 0;
+                _beamControl = false;
+            }
         }
-        else if (!_flashLightSwitch)
-        {
-            normalBeam.intensity = 0;
-            highBeam.intensity = 0;
-        }
+        
     }
 
+    //add cd after use 
     public void BeamControl()
     {
         if(!flickering && _flashLightSwitch)
@@ -65,11 +78,13 @@ public class FlashLight : MonoBehaviour
             {
                 normalBeam.intensity = 0;
                 highBeam.intensity = defaultHighBeamIntensity;
+                StartCoroutine(HighBeamPoweringUp());
             }
             else if (!_beamControl)
             {
-                normalBeam.intensity = defaultLightIntensity;
+                normalBeam.intensity = defaultNormalBeamIntensity;
                 highBeam.intensity = 0;
+                StopCoroutine(HighBeamPoweringUp());
             }
         }
         
@@ -77,26 +92,35 @@ public class FlashLight : MonoBehaviour
 
     public void FlickeringTorch(bool result)
     {
-        if(result)
+        if (!torchOnCooldown)
         {
-            ghostsWithinRange++;
-        }
-        else
-        {
-            ghostsWithinRange--;
+            if (result)
+            {
+                ghostsWithinRange++;
+            }
+            else
+            {
+                ghostsWithinRange--;
+            }
+
+            if (ghostsWithinRange > 0 && _flashLightSwitch)
+            {
+                flickers.Add(StartCoroutine(Flicker()));
+                flickering = true;
+            }
+            else if (ghostsWithinRange <= 0)
+            {
+                foreach (var flicker in flickers)
+                {
+                    StopCoroutine(flicker);
+                }
+
+                normalBeam.intensity = defaultNormalBeamIntensity;
+                flickering = false;
+            }
         }
 
-        if(ghostsWithinRange > 0 && _flashLightSwitch)
-        {
-            StartCoroutine(Flicker());
-            flickering = true;
-        } 
-        else if (ghostsWithinRange <= 0)
-        {
-            StopAllCoroutines();
-            normalBeam.intensity = defaultLightIntensity;
-            flickering = false;
-        }
+        
     }
 
     IEnumerator Flicker()
@@ -110,7 +134,7 @@ public class FlashLight : MonoBehaviour
 
         _beamControl = false;
 
-        normalBeam.intensity = defaultLightIntensity;
+        normalBeam.intensity = defaultNormalBeamIntensity;
 
         yield return new WaitForSeconds(Random.Range(.2f, 3f));
 
@@ -118,5 +142,21 @@ public class FlashLight : MonoBehaviour
         {
             StartCoroutine(Flicker());
         } 
+    }
+
+    IEnumerator HighBeamPoweringUp()
+    {
+        yield return new WaitForSeconds(highBeamDuration);
+
+        torchOnCooldown = true;
+
+        normalBeam.intensity = 0;
+        highBeam.intensity = 0;
+        _flashLightSwitch = false;
+        _beamControl = false;
+
+        yield return new WaitForSeconds(torchCooldownDuration);
+
+        torchOnCooldown = false;
     }
 }

@@ -98,7 +98,7 @@ public class AIIdleState : AIState
     void SwitchToChaseState(AIStateManager state)
     {
 
-        switch (Manager.GameManager.GameManagerInstance.score)
+        switch (GameManager.GameManagerInstance.score)
         {
             case 0:
                 agroRangeAdjusted = controller.stats.agroRange;

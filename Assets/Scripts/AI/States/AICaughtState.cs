@@ -7,7 +7,9 @@ public class AICaughtState : AIState
 
     [SerializeField] AIController controller;
 
-    bool timeToExplode = false;
+    bool highBeamOnGhost = false;
+
+    [SerializeField] float timeUntilExplode = 2;
 
     public override void EnterState(AIStateManager state)
     {
@@ -21,23 +23,31 @@ public class AICaughtState : AIState
             state.SwitchToTheNextState(state.IdleState);
         }
 
+        //add delay period until ghost is detroyed
         if(state.AnyState.seenByHighBeam && controller.flashLight.beamControl) 
         {
+            highBeamOnGhost = true;
             state.SwitchToTheNextState(state.IdleState);
-            timeToExplode=true;
+            StartCoroutine(CaughtByBeam());
+            
         }
     }
 
     public override void ExitState(AIStateManager state)
     {
-        if(timeToExplode)
+        if(highBeamOnGhost)
         {
-            transform.root.position = controller.spawn;
+            transform.root.position = controller.spawn.position;
             state.AnyState.SpottedByHighBeam(false);
             state.AnyState.SpottedByTorch(false);
-            timeToExplode = false;
+            highBeamOnGhost = false;
         }
         
+    }
+
+    IEnumerator CaughtByBeam()
+    {
+        yield return new WaitForSeconds(timeUntilExplode);
     }
 
 }

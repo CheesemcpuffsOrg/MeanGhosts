@@ -15,7 +15,7 @@ public class AIAnyState : AIState
     bool _caught = false;
 
     [SerializeField] int affectLightRange = 20;
-    [SerializeField] bool isWithinRange = false;
+    bool isWithinRange = false;
 
     public bool caught => _caught;
     public bool seenByHighBeam => _seenByHighBeam;

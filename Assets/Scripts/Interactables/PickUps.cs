@@ -39,10 +39,10 @@ public class PickUps : InteractableObjs
 
         if(gameObject.transform.parent != null && gameObject.transform.parent.name.Replace("Grave", string.Empty) == graveName)
         {
-            Manager.GameManager.GameManagerInstance.score = Manager.GameManager.GameManagerInstance.score - 1;
+            GameManager.GameManagerInstance.score = GameManager.GameManagerInstance.score - 1;
             ghost.GetComponent<SpriteRenderer>().enabled = true;
             ghost.GetComponent<Collider2D>().enabled = true;
-            Debug.Log(Manager.GameManager.GameManagerInstance.score);
+            Debug.Log(GameManager.GameManagerInstance.score);
         }
 
         if (this.transform.parent != null)

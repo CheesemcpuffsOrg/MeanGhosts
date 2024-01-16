@@ -57,7 +57,7 @@ public class DropOnGrave : InteractableObjs
 
             if (objectOnGraveName == itemName) 
             {
-                Manager.GameManager.GameManagerInstance.score = Manager.GameManager.GameManagerInstance.score + 1;
+                GameManager.GameManagerInstance.score = GameManager.GameManagerInstance.score + 1;
                 ghost.GetComponent<SpriteRenderer>().enabled = false;
                 ghost.GetComponent<Collider2D>().enabled = false;
                 //  Debug.Log(GameManager.GameManagerInstance.score);

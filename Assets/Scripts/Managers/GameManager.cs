@@ -10,8 +10,7 @@ using Random = UnityEngine.Random;
 
 //Joshua 2023/12/06
 
-namespace Manager
-{
+
     public class GameManager : MonoBehaviour
     {
         public static GameManager GameManagerInstance;
@@ -71,7 +70,7 @@ namespace Manager
                 UIManagers.UIManagersInstance.Winner();
                 player.GetComponent<Player.PlayerController>().OnDisable();
                 player.GetComponent<Player.PlayerController>().flashLight.SetActive(false);
-                player.GetComponent<Player.PlayerController>().flashLightState = false;
+               // player.GetComponent<Player.PlayerController>().flashLightState = false;
             }
 
             timer += Time.deltaTime;
@@ -158,13 +157,13 @@ namespace Manager
             {
                 Time.timeScale = 1;
                 player.GetComponent<Player.PlayerController>().flashLight.SetActive(true);
-                player.GetComponent<Player.PlayerController>().flashLightState = true;
+                //player.GetComponent<Player.PlayerController>().flashLightState = true;
             }
             else
             {
                 Time.timeScale = 0;
                 player.GetComponent<Player.PlayerController>().flashLight.SetActive(false);
-                player.GetComponent<Player.PlayerController>().flashLightState = false;
+                //player.GetComponent<Player.PlayerController>().flashLightState = false;
             }
 
         }
@@ -173,7 +172,7 @@ namespace Manager
         {
             player.GetComponent<Player.PlayerController>().OnDisable();
             player.GetComponent<Player.PlayerController>().flashLight.SetActive(false);
-            player.GetComponent<Player.PlayerController>().flashLightState = false;
+            //player.GetComponent<Player.PlayerController>().flashLightState = false;
             UIManagers.UIManagersInstance.GameOver();
         }
 
@@ -182,5 +181,5 @@ namespace Manager
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
-}
+
 
