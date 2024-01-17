@@ -13,12 +13,13 @@ MonoBehaviour:
   m_Name: sfx_SO_Knife
   m_EditorClassIdentifier: 
   name: Knife
-  clip: {fileID: 8300000, guid: 3f33ef29dcfde2247b71e3444800d9d5, type: 3}
+  clip: {fileID: 8300000, guid: 8a9ba12f85f473d4a9ba2c93c115bdbe, type: 3}
   group: {fileID: -9123715879687149167, guid: d8dd63bf224bdc8468fb34784cf4b2fa, type: 2}
   volume: 1
   pitch: 1
   pan: 0
   spatialBlend: 1
+  dopplerLevel: 0
   rolloffMode: 1
   minDistance: 1
   maxDistance: 10

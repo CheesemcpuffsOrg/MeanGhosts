@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: sfx_SO_Book
   m_EditorClassIdentifier: 
   name: Book
-  clip: {fileID: 8300000, guid: 23c42b4fcd0901243ad80ba57191aa7f, type: 3}
+  clip: {fileID: 8300000, guid: 004be01c27bcf284796a44028a9bfbb1, type: 3}
   group: {fileID: -9123715879687149167, guid: d8dd63bf224bdc8468fb34784cf4b2fa, type: 2}
   volume: 1
   pitch: 1

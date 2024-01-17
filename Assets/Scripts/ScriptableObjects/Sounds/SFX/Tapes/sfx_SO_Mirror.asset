@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: sfx_SO_Mirror
   m_EditorClassIdentifier: 
   name: Mirror
-  clip: {fileID: 8300000, guid: 1f0acb29d33b33b4f8749a7dc2d6a189, type: 3}
+  clip: {fileID: 8300000, guid: 991859f91fd12a841aa944fc41b935f3, type: 3}
   group: {fileID: -9123715879687149167, guid: d8dd63bf224bdc8468fb34784cf4b2fa, type: 2}
   volume: 1
   pitch: 1

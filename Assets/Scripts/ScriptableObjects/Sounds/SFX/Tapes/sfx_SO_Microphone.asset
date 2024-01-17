@@ -13,12 +13,13 @@ MonoBehaviour:
   m_Name: sfx_SO_Microphone
   m_EditorClassIdentifier: 
   name: Mic
-  clip: {fileID: 8300000, guid: 9a57575f014e8ab4bbda86e25822781f, type: 3}
+  clip: {fileID: 8300000, guid: 6692ee20577638d4db65755d7c74b9bc, type: 3}
   group: {fileID: -9123715879687149167, guid: d8dd63bf224bdc8468fb34784cf4b2fa, type: 2}
   volume: 1
   pitch: 1
   pan: 0
   spatialBlend: 1
+  dopplerLevel: 0
   rolloffMode: 1
   minDistance: 1
   maxDistance: 10

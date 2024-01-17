@@ -13,12 +13,13 @@ MonoBehaviour:
   m_Name: sfx_SO_Beret
   m_EditorClassIdentifier: 
   name: Beret
-  clip: {fileID: 8300000, guid: 33cf9b2e35d060344bbe20d07fed172a, type: 3}
+  clip: {fileID: 8300000, guid: 0d9a3fca0c9a4b643830455fa960c7f5, type: 3}
   group: {fileID: -9123715879687149167, guid: d8dd63bf224bdc8468fb34784cf4b2fa, type: 2}
   volume: 1
   pitch: 1
   pan: 0
   spatialBlend: 1
+  dopplerLevel: 0
   rolloffMode: 1
   minDistance: 1
   maxDistance: 10
