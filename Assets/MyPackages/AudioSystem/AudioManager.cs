@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Rendering;
 
 //Joshua 
 
@@ -19,10 +21,11 @@ namespace AudioSystem
         [System.Serializable]
         private class AudioReference
         {
-            public string name;
+            public ScriptableObject objReference;
             public GameObject requestingObj;
             public GameObject audioSource;
             public Coroutine clipLength;
+            public UnityEvent endOfClip;
         }
 
         public static AudioManager AudioManagerInstance;
@@ -34,6 +37,8 @@ namespace AudioSystem
 
         [SerializeField] Transform audioPoolContainer;
         [SerializeField] Transform activeSounds;
+
+        //bool reduceOtherAudios = false;
 
         private void Awake()
         {
@@ -67,13 +72,15 @@ namespace AudioSystem
 
             GameObject obj;
 
-            if (audioPool.Count <= 0)
+            //take obj from audio pool, if there are none create a new object
+            if (audioPool.Count > 0)
             {
-                obj = Instantiate(audioObjPrefab);
+                obj = audioPool.Dequeue();
+                
             }
             else
             {
-                obj = audioPool.Dequeue();
+                obj = Instantiate(audioObjPrefab);
             }
 
             if (sound == null)
@@ -95,6 +102,18 @@ namespace AudioSystem
             audioSource.maxDistance = sound.maxDistance;
             audioSource.dopplerLevel = sound.dopplerLevel;
 
+/*            //this causes specific sounds to play over other sounds
+            if (sound.reduceAllOtherAudioButThis)
+            {
+                reduceOtherAudios = true;
+                foreach (AudioReference s in audioReference)
+                {
+                    var currentVolume = s.audioSource.GetComponent<AudioSource>().volume;
+
+                    s.audioSource.GetComponent<AudioSource>().volume =  currentVolume - (currentVolume * 60/100)
+                }
+            }*/
+
             if (audioSource.spatialBlend == 0)
             {
                 obj.transform.SetParent(activeSounds);
@@ -108,7 +127,7 @@ namespace AudioSystem
 
             AudioReference createdObjReference = new AudioReference();
 
-            createdObjReference.name = sound.name;
+            createdObjReference.objReference = sound;
             createdObjReference.requestingObj = gameObject;
             createdObjReference.audioSource = obj;
 
@@ -118,6 +137,8 @@ namespace AudioSystem
             }
 
             createdObjReference.clipLength = clipLength;
+
+            createdObjReference.endOfClip = new UnityEvent();
 
             audioReference.Add(createdObjReference);
 
@@ -130,9 +151,10 @@ namespace AudioSystem
 
             for (int i = 0; i <= audioReference.Count; i++)
             {
-                if (audioReference[i].name == reference.name && audioReference[i].requestingObj == reference.requestingObj)
+                if (audioReference[i].objReference == reference.objReference && audioReference[i].requestingObj == reference.requestingObj)
                 {
                     audioReference[i].audioSource.transform.SetParent(audioPoolContainer);
+                    audioReference[i].endOfClip.Invoke();
                     audioPool.Enqueue(audioReference[i].audioSource);
                     audioReference.RemoveAt(i);
                     yield break;
@@ -149,7 +171,7 @@ namespace AudioSystem
 
             for (i = 0; i < audioReference.Count; i++)
             {
-                if (audioReference[i].name == sound.name && audioReference[i].requestingObj == gameObject)
+                if (audioReference[i].objReference == sound && audioReference[i].requestingObj == gameObject)
                 {
                     audioReference[i].audioSource.transform.SetParent(audioPoolContainer);
                     audioPool.Enqueue(audioReference[i].audioSource);
@@ -206,7 +228,7 @@ namespace AudioSystem
 
             for (i = 0; i < audioReference.Count; i++)
             {
-                if (audioReference[i].name == sound.name && audioReference[i].requestingObj == gameObject)
+                if (audioReference[i].objReference == sound && audioReference[i].requestingObj == gameObject)
                 {
                     return;
                 }
@@ -214,6 +236,20 @@ namespace AudioSystem
             PlaySound(sound, gameObject);
         }
 
-        
+        /// <summary>
+        /// Fires an event when an audio source stops playing
+        /// </summary>
+        public void FireEventWhenSoundFinished(AudioScriptableObject sound, GameObject gameObject, UnityAction reference)
+        {
+            int i;
+
+            for (i = 0; i < audioReference.Count; i++)
+            {
+                if (audioReference[i].objReference == sound && audioReference[i].requestingObj == gameObject)
+                {
+                    audioReference[i].endOfClip.AddListener(reference);
+                }
+            }
+        }
     }
 }

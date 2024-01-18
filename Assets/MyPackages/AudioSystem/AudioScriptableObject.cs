@@ -6,8 +6,6 @@ using UnityEngine.Audio;
 [CreateAssetMenu(fileName = "Audio", menuName = "ScriptableObject/Audio")]
 public class AudioScriptableObject : ScriptableObject
 {
-    public string name;
-
     public AudioClip clip;
 
     public AudioMixerGroup group;
@@ -19,7 +17,7 @@ public class AudioScriptableObject : ScriptableObject
     [Range(-1f, 1f)]
     public float pan = 0;
     [Range(0f, 1f)]
-    public float spatialBlend;
+    public float spatialBlend = 0;
     [Range(0f, 5f)]
     public float dopplerLevel = 0;
 
@@ -27,7 +25,8 @@ public class AudioScriptableObject : ScriptableObject
     public float minDistance = 1;
     public float maxDistance = 30;
 
-    public bool loop;
+    public bool loop = false;
+    public bool reduceAllOtherAudioButThis = false;
 
     [HideInInspector]
     public AudioSource source;

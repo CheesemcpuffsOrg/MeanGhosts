@@ -2,30 +2,30 @@ using AudioSystem;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class TestSound : MonoBehaviour
 {
     [SerializeField] AudioScriptableObject audioScriptableObject;
 
+    
+
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(PlaySound());
 
+        AudioManager.AudioManagerInstance.PlaySound(audioScriptableObject, this.gameObject);
 
-         AudioManager.AudioManagerInstance.DelayedPlaySound(3f, audioScriptableObject, this.gameObject);
+        AudioManager.AudioManagerInstance.FireEventWhenSoundFinished(audioScriptableObject, this.gameObject, DoTheThing);
+
     }
 
-    IEnumerator PlaySound()
+    public void DoTheThing()
     {
-
-        yield return new WaitForSeconds(6f);
-
-        AudioManager.AudioManagerInstance.StopSound(audioScriptableObject, this.gameObject);
-
-        //StartCoroutine(PlaySound());
-
+        Debug.Log("Do the thing");
     }
+
+
 
 
 }
