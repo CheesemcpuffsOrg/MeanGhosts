@@ -123,9 +123,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61c838fd07c5db24caf030dd3027c097, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stateManager: {fileID: 6925159469005380709}
   controller: {fileID: 6925159469005380710}
-  anyState: {fileID: 3756639680995385612}
+  aiStateManager: {fileID: 6925159469005380709}
+  timeUntilExplode: 2
+  poofPA: {fileID: 2990887196051449723, guid: 1a728e840d39dbe42bae067a8fc1b4ea, type: 3}
 --- !u!1 &6925159468932551726
 GameObject:
   m_ObjectHideFlags: 0
@@ -317,6 +318,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stats: {fileID: 11400000, guid: 0aea49412ae3bd249ae9bf31459829a4, type: 2}
+  _spawn: {fileID: 0}
   _anim: {fileID: 6925159469005380708}
   playerTag: {fileID: 11400000, guid: 245989d67fe58824aacae9258831b138, type: 2}
 --- !u!70 &650324298
@@ -431,4 +433,3 @@ MonoBehaviour:
   controller: {fileID: 6925159469005380710}
   stateManager: {fileID: 6925159469005380709}
   affectLightRange: 20
-  isWithinRange: 0

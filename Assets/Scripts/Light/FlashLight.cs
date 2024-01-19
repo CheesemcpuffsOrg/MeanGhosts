@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.ShaderGraph;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Rendering.Universal;
 
 //Joshua 2023/12/02
@@ -27,9 +28,13 @@ public class FlashLight : MonoBehaviour
     public bool flashLightSwitch => _flashLightSwitch;
     public bool beamControl => _beamControl;
 
+    //UnityEvent flashLightIsActive = new UnityEvent();
+    public UnityEvent highBeamIsActive { get; } = new UnityEvent();
+
     int ghostsWithinRange = 0;
 
     List<Coroutine> flickers = new List<Coroutine>();
+    Coroutine highBeamPoweringUp;
 
     [Header ("Sounds")]
     [SerializeField] AudioScriptableObject flashLight;
@@ -60,6 +65,7 @@ public class FlashLight : MonoBehaviour
                 normalBeam.intensity = 0;
                 highBeam.intensity = 0;
                 _beamControl = false;
+                StopCoroutine(highBeamPoweringUp);
             }
         }
         
@@ -78,13 +84,14 @@ public class FlashLight : MonoBehaviour
             {
                 normalBeam.intensity = 0;
                 highBeam.intensity = defaultHighBeamIntensity;
-                StartCoroutine(HighBeamPoweringUp());
+                highBeamPoweringUp = StartCoroutine(HighBeamPoweringUp());
+                highBeamIsActive.Invoke();
             }
             else if (!_beamControl)
             {
                 normalBeam.intensity = defaultNormalBeamIntensity;
                 highBeam.intensity = 0;
-                StopCoroutine(HighBeamPoweringUp());
+                StopCoroutine(highBeamPoweringUp);
             }
         }
         
@@ -118,9 +125,7 @@ public class FlashLight : MonoBehaviour
                 normalBeam.intensity = defaultNormalBeamIntensity;
                 flickering = false;
             }
-        }
-
-        
+        }  
     }
 
     IEnumerator Flicker()
