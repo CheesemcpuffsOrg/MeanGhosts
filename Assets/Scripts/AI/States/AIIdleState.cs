@@ -121,7 +121,7 @@ public class AIIdleState : AIState
 
         }
 
-        if (Vector3.Distance(this.transform.position, controller.player.transform.position) < agroRangeAdjusted && controller.player.GetComponent<Player.PlayerController>().invisible == false)
+        if (Vector3.Distance(this.transform.position, controller.player.transform.position) < agroRangeAdjusted && controller.player.GetComponent<PlayerController>().invisible == false)
         {
             state.SwitchToTheNextState(state.ChaseState);
         }

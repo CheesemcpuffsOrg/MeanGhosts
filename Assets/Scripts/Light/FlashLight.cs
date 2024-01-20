@@ -1,7 +1,6 @@
 using AudioSystem;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.ShaderGraph;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Rendering.Universal;
@@ -55,20 +54,29 @@ public class FlashLight : MonoBehaviour
 
             _flashLightSwitch = !_flashLightSwitch;
 
-            if (_flashLightSwitch)
+            NormalBeamControl();
+        }
+
+    }
+
+    private void NormalBeamControl()
+    {
+        if (_flashLightSwitch)
+        {
+            normalBeam.intensity = defaultNormalBeamIntensity;
+            highBeam.intensity = 0;
+        }
+        else if (!_flashLightSwitch)
+        {
+            normalBeam.intensity = 0;
+            highBeam.intensity = 0;
+            _beamControl = false;
+
+            if (highBeamPoweringUp != null)
             {
-                normalBeam.intensity = defaultNormalBeamIntensity;
-                highBeam.intensity = 0;
-            }
-            else if (!_flashLightSwitch)
-            {
-                normalBeam.intensity = 0;
-                highBeam.intensity = 0;
-                _beamControl = false;
                 StopCoroutine(highBeamPoweringUp);
             }
         }
-        
     }
 
     //add cd after use 
@@ -163,5 +171,24 @@ public class FlashLight : MonoBehaviour
         yield return new WaitForSeconds(torchCooldownDuration);
 
         torchOnCooldown = false;
+    }
+
+    public void Pause(bool pause)
+    {
+        if (pause)
+        {
+            normalBeam.intensity = 0;
+            highBeam.intensity = 0;
+            _beamControl = false;
+
+            if (highBeamPoweringUp != null)
+            {
+                StopCoroutine(highBeamPoweringUp);
+            }
+        }
+        else
+        {
+            NormalBeamControl();
+        }
     }
 }

@@ -58,7 +58,7 @@ public class AIController : MonoBehaviour
 
     void PlayerIsSafe()
     {
-        if (player.GetComponent<Player.PlayerController>().safe == true) 
+        if (player.GetComponent<PlayerController>().safe == true) 
         {
             this.transform.position = _spawn.position;
             this.gameObject.GetComponent<AIStateManager>().enabled = false;

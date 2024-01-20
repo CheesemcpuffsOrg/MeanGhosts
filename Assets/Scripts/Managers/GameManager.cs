@@ -2,184 +2,193 @@ using AudioSystem;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.SocialPlatforms.Impl;
 using Random = UnityEngine.Random;
+using UnityEngine.InputSystem;
 
 //Joshua 2023/12/06
 
 
-    public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviour
+{
+    public static GameManager GameManagerInstance;
+
+    public ControlScheme controlScheme;
+
+    GameObject player;
+
+    /*Camera cam;
+    float camHeight, camWidth;*/
+
+    public GameObject[] items;
+    [SerializeField] GameObject[] itemSpawnPoints;
+
+    public GameObject[] audioTapes;
+    [SerializeField] GameObject[] audioTapesSpawnPoints;
+
+    public int score = 0;
+    public float timer;
+
+    bool pause = false;
+
+    [Header("Sounds")]
+    [SerializeField] List<ObjectPool<AudioScriptableObject>> randomSoundPool;
+
+    [Header("Tags")]
+    [SerializeField] TagScriptableObject playerTag;
+
+    private void Awake()
     {
-        public static GameManager GameManagerInstance;
+        GameManagerInstance = this;
 
-        GameObject player;
+        controlScheme = new ControlScheme();
+        controlScheme.Pause.Pause.performed += Pause;
 
-        /*[Range(0f, 1f)]
-        [SerializeField] float lightLevel;*/
+        player = TagExtensions.FindWithTag(gameObject, playerTag);
+    }
 
-        [SerializeField] int chooseSound;
+    private void Start()
+    {
+        StartCoroutine(RandomAmbientSound());
 
-        /*Camera cam;
-        float camHeight, camWidth;*/
+        PlaceItems();
 
-        public GameObject[] items;
-        [SerializeField] GameObject[] itemSpawnPoints;
+        PlaceAudioTapes();
 
-        public GameObject[] audioTapes;
-        [SerializeField] GameObject[] audioTapesSpawnPoints;
+        /* cam = Camera.main;
+            cam.aspect = 4 / 3f;
+            camHeight = 2 * cam.orthographicSize;
+            camWidth = camHeight * cam.aspect;*/
+    }
 
-        [Header ("Sounds")]
-        [SerializeField] List<ObjectPool<AudioScriptableObject>> randomSoundPool;
-
-        public int score = 0;
-
-        public float timer;
-
-        bool pause = false;
-
-        private void Awake()
+    void Update()
+    {
+        if (score == 6)
         {
-            GameManagerInstance = this;
-
-            player = GameObject.Find("Player");
+            UIManagers.UIManagersInstance.Winner();
+            player.GetComponent<PlayerController>().OnDisable();
+            player.GetComponent<PlayerController>().flashLight.SetActive(false);
+            // player.GetComponent<Player.PlayerController>().flashLightState = false;
         }
 
-        private void Start()
+        timer += Time.deltaTime;
+    }
+
+    IEnumerator RandomAmbientSound()
+    {
+        yield return new WaitForSeconds(Random.Range(15f, 30f));
+
+        AudioScriptableObject soundToPlay = (AudioScriptableObject)RandomUtility.ObjectPoolCalculator(randomSoundPool);
+
+        AudioManager.AudioManagerInstance.PlaySound(soundToPlay, this.gameObject);
+
+        StartCoroutine(RandomAmbientSound());
+    }
+
+    void PlaceItems()
+    {
+        int removeItem = 0;
+        int removeSpawnPoint = 0;
+        GameObject spawnPoint = null;
+
+        foreach (GameObject obj in items)
         {
-            StartCoroutine(RandomAmbientSound());
-
-            PlaceItems();
-
-            PlaceAudioTapes();
-
-            /* cam = Camera.main;
-             cam.aspect = 4 / 3f;
-             camHeight = 2 * cam.orthographicSize;
-             camWidth = camHeight * cam.aspect;*/
-        }
-
-        void Update()
-        {
-            //Darkness.settings.SetDarkness(lightLevel);
-
-            if (score == 6)
+            if (obj != null)
             {
-                UIManagers.UIManagersInstance.Winner();
-                player.GetComponent<Player.PlayerController>().OnDisable();
-                player.GetComponent<Player.PlayerController>().flashLight.SetActive(false);
-               // player.GetComponent<Player.PlayerController>().flashLightState = false;
-            }
-
-            timer += Time.deltaTime;
-        }
-
-        IEnumerator RandomAmbientSound()
-        {
-            yield return new WaitForSeconds(Random.Range(15f, 30f));
-
-            AudioScriptableObject soundToPlay = (AudioScriptableObject)RandomUtility.ObjectPoolCalculator(randomSoundPool);
-
-            AudioManager.AudioManagerInstance.PlaySound(soundToPlay, this.gameObject);
-
-            StartCoroutine(RandomAmbientSound());
-        }
-
-        void PlaceItems()
-        {
-            int removeItem = 0;
-            int removeSpawnPoint = 0;
-            GameObject spawnPoint = null;
-
-            foreach (GameObject obj in items)
-            {
-                if (obj != null)
+                for (int i = 0; i < itemSpawnPoints.Length; i++)
                 {
-                    for (int i = 0; i < itemSpawnPoints.Length; i++)
+                    removeSpawnPoint = Random.Range(0, itemSpawnPoints.Length);
+                    if (itemSpawnPoints[removeSpawnPoint] != null)
                     {
-                        removeSpawnPoint = Random.Range(0, itemSpawnPoints.Length);
-                        if (itemSpawnPoints[removeSpawnPoint] != null)
-                        {
-                            spawnPoint = itemSpawnPoints[removeSpawnPoint];
-                            //Debug.Log(removeSpawnPoint);
-                            break;
-                        }
-                    }
-
-                    GameObject newObj = Instantiate(obj);
-                    newObj.transform.position = spawnPoint.transform.position;
-                    items[removeItem] = null;
-                    itemSpawnPoints[removeSpawnPoint] = null;
-                    removeItem += 1;
-                }
-            }
-        }
-
-        void PlaceAudioTapes()
-        {
-            int removeItem = 0;
-            int removeSpawnPoint = 0;
-            GameObject spawnPoint = null;
-
-            foreach (GameObject obj in audioTapes)
-            {
-                if (obj != null)
-                {
-                    for (int i = 0; i < audioTapesSpawnPoints.Length; i++)
-                    {
-                        removeSpawnPoint = Random.Range(0, audioTapesSpawnPoints.Length);
+                        spawnPoint = itemSpawnPoints[removeSpawnPoint];
                         //Debug.Log(removeSpawnPoint);
-                        if (audioTapesSpawnPoints[removeSpawnPoint] != null)
-                        {
-                            spawnPoint = audioTapesSpawnPoints[removeSpawnPoint];
-                            break;
-                        }
+                        break;
                     }
-
-                    GameObject newObj = Instantiate(obj);
-                    newObj.transform.position = spawnPoint.transform.position;
-                    audioTapes[removeItem] = null;
-                    audioTapesSpawnPoints[removeSpawnPoint] = null;
-                    removeItem += 1;
                 }
+
+                GameObject newObj = Instantiate(obj);
+                newObj.transform.position = spawnPoint.transform.position;
+                items[removeItem] = null;
+                itemSpawnPoints[removeSpawnPoint] = null;
+                removeItem += 1;
             }
-        }
-
-        public void Pause()
-        {
-            pause = !pause;
-
-            UIManagers.UIManagersInstance.PauseText();
-
-            if (pause == false)
-            {
-                Time.timeScale = 1;
-                player.GetComponent<Player.PlayerController>().flashLight.SetActive(true);
-                //player.GetComponent<Player.PlayerController>().flashLightState = true;
-            }
-            else
-            {
-                Time.timeScale = 0;
-                player.GetComponent<Player.PlayerController>().flashLight.SetActive(false);
-                //player.GetComponent<Player.PlayerController>().flashLightState = false;
-            }
-
-        }
-
-        public void GameOver()
-        {
-            player.GetComponent<Player.PlayerController>().OnDisable();
-            player.GetComponent<Player.PlayerController>().flashLight.SetActive(false);
-            //player.GetComponent<Player.PlayerController>().flashLightState = false;
-            UIManagers.UIManagersInstance.GameOver();
-        }
-
-        public void RestartGame()
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
+
+    void PlaceAudioTapes()
+    {
+        int removeItem = 0;
+        int removeSpawnPoint = 0;
+        GameObject spawnPoint = null;
+
+        foreach (GameObject obj in audioTapes)
+        {
+            if (obj != null)
+            {
+                for (int i = 0; i < audioTapesSpawnPoints.Length; i++)
+                {
+                    removeSpawnPoint = Random.Range(0, audioTapesSpawnPoints.Length);
+                    //Debug.Log(removeSpawnPoint);
+                    if (audioTapesSpawnPoints[removeSpawnPoint] != null)
+                    {
+                        spawnPoint = audioTapesSpawnPoints[removeSpawnPoint];
+                        break;
+                    }
+                }
+
+                GameObject newObj = Instantiate(obj);
+                newObj.transform.position = spawnPoint.transform.position;
+                audioTapes[removeItem] = null;
+                audioTapesSpawnPoints[removeSpawnPoint] = null;
+                removeItem += 1;
+            }
+        }
+    }
+
+    void Pause(InputAction.CallbackContext pauseGame)
+    {
+        pause = !pause;
+
+        UIManagers.UIManagersInstance.PauseText();
+
+        if (pause == false)
+        {
+            Time.timeScale = 1;
+            player.GetComponentInChildren<FlashLight>().Pause(pause);
+            player.GetComponent<PlayerController>().OnEnable();
+        }
+        else
+        {
+            Time.timeScale = 0;
+            player.GetComponentInChildren<FlashLight>().Pause(pause);
+            player.GetComponent<PlayerController>().OnDisable();
+        }
+
+    }
+
+    public void GameOver()
+    {
+        player.GetComponent<PlayerController>().OnDisable();
+        player.GetComponent<PlayerController>().flashLight.SetActive(false);
+        //player.GetComponent<Player.PlayerController>().flashLightState = false;
+        UIManagers.UIManagersInstance.GameOver();
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    void OnEnable()
+    {
+        controlScheme.Pause.Enable();
+    }
+
+    void OnDisable()
+    {
+        controlScheme.Pause.Disable();
+    }
+}
 
 

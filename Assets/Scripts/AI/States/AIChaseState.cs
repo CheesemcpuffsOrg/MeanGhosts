@@ -51,7 +51,7 @@ public class AIChaseState : AIState
             }
         }
 
-        if (controller.player.GetComponent<Player.PlayerController>().invisible == false) 
+        if (controller.player.GetComponent<PlayerController>().invisible == false) 
         {
             transform.root.position = Vector2.MoveTowards(transform.position, controller.player.transform.position, controller.stats.chaseSpeed * Time.deltaTime);
         }

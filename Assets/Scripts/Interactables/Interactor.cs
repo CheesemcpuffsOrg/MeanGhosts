@@ -9,7 +9,7 @@ namespace Interactable
     public class Interactor : MonoBehaviour
     {
 
-        [SerializeField] Player.PlayerController controller;
+        [SerializeField] PlayerController controller;
 
         private void OnTriggerEnter2D(Collider2D collision)
         {

@@ -23,7 +23,7 @@ public class InteractableObjs : MonoBehaviour
     {
         if (TagExtensions.HasTag(other.gameObject, playerTag))
         {
-            other.GetComponent<Player.PlayerController>().interactEvent.RemoveListener(Interact);
+            other.GetComponent<PlayerController>().interactEvent.RemoveListener(Interact);
             
         }
     }

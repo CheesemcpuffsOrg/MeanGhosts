@@ -64,15 +64,6 @@ public partial class @ControlScheme : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Pause"",
-                    ""type"": ""Button"",
-                    ""id"": ""c65fcba1-4023-4226-a4c7-bc4b405c52d1"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""BeamControl"",
                     ""type"": ""Button"",
                     ""id"": ""97fdc2dd-ed01-431f-8af8-a99290546470"",
@@ -250,7 +241,35 @@ public partial class @ControlScheme : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""c0fe0c7e-6f1c-4cce-808a-af55fe1cfe09"",
+                    ""id"": ""0f1d7939-33cd-4fe4-9da5-aebea79d9c7a"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""K&B"",
+                    ""action"": ""BeamControl"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Pause"",
+            ""id"": ""c6bff7d5-86a0-43b6-aa1e-4d7f25fc43c9"",
+            ""actions"": [
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""66b1fc7b-ee9c-4b15-a543-5d8ae498314e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""d6e3bd7d-b408-45fc-ab55-abf6856d3f0a"",
                     ""path"": ""<Keyboard>/escape"",
                     ""interactions"": ""Press"",
                     ""processors"": """",
@@ -261,23 +280,12 @@ public partial class @ControlScheme : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""81f7e4f2-0fb6-4f08-a023-c0c291d0787b"",
+                    ""id"": ""f6353f2b-6456-4ec8-9652-67fe28971fed"",
                     ""path"": ""<Gamepad>/start"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Pause"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""0f1d7939-33cd-4fe4-9da5-aebea79d9c7a"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""K&B"",
-                    ""action"": ""BeamControl"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -303,8 +311,10 @@ public partial class @ControlScheme : IInputActionCollection2, IDisposable
         m_Player_Flashlight = m_Player.FindAction("Flashlight", throwIfNotFound: true);
         m_Player_MoveMouse = m_Player.FindAction("MoveMouse", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
-        m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
         m_Player_BeamControl = m_Player.FindAction("BeamControl", throwIfNotFound: true);
+        // Pause
+        m_Pause = asset.FindActionMap("Pause", throwIfNotFound: true);
+        m_Pause_Pause = m_Pause.FindAction("Pause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -368,7 +378,6 @@ public partial class @ControlScheme : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Flashlight;
     private readonly InputAction m_Player_MoveMouse;
     private readonly InputAction m_Player_Interact;
-    private readonly InputAction m_Player_Pause;
     private readonly InputAction m_Player_BeamControl;
     public struct PlayerActions
     {
@@ -378,7 +387,6 @@ public partial class @ControlScheme : IInputActionCollection2, IDisposable
         public InputAction @Flashlight => m_Wrapper.m_Player_Flashlight;
         public InputAction @MoveMouse => m_Wrapper.m_Player_MoveMouse;
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
-        public InputAction @Pause => m_Wrapper.m_Player_Pause;
         public InputAction @BeamControl => m_Wrapper.m_Player_BeamControl;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
@@ -401,9 +409,6 @@ public partial class @ControlScheme : IInputActionCollection2, IDisposable
                 @Interact.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
                 @Interact.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
                 @Interact.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
-                @Pause.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
-                @Pause.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
-                @Pause.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
                 @BeamControl.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBeamControl;
                 @BeamControl.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBeamControl;
                 @BeamControl.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBeamControl;
@@ -423,9 +428,6 @@ public partial class @ControlScheme : IInputActionCollection2, IDisposable
                 @Interact.started += instance.OnInteract;
                 @Interact.performed += instance.OnInteract;
                 @Interact.canceled += instance.OnInteract;
-                @Pause.started += instance.OnPause;
-                @Pause.performed += instance.OnPause;
-                @Pause.canceled += instance.OnPause;
                 @BeamControl.started += instance.OnBeamControl;
                 @BeamControl.performed += instance.OnBeamControl;
                 @BeamControl.canceled += instance.OnBeamControl;
@@ -433,6 +435,39 @@ public partial class @ControlScheme : IInputActionCollection2, IDisposable
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
+
+    // Pause
+    private readonly InputActionMap m_Pause;
+    private IPauseActions m_PauseActionsCallbackInterface;
+    private readonly InputAction m_Pause_Pause;
+    public struct PauseActions
+    {
+        private @ControlScheme m_Wrapper;
+        public PauseActions(@ControlScheme wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Pause => m_Wrapper.m_Pause_Pause;
+        public InputActionMap Get() { return m_Wrapper.m_Pause; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(PauseActions set) { return set.Get(); }
+        public void SetCallbacks(IPauseActions instance)
+        {
+            if (m_Wrapper.m_PauseActionsCallbackInterface != null)
+            {
+                @Pause.started -= m_Wrapper.m_PauseActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_PauseActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_PauseActionsCallbackInterface.OnPause;
+            }
+            m_Wrapper.m_PauseActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
+            }
+        }
+    }
+    public PauseActions @Pause => new PauseActions(this);
     private int m_KBSchemeIndex = -1;
     public InputControlScheme KBScheme
     {
@@ -457,7 +492,10 @@ public partial class @ControlScheme : IInputActionCollection2, IDisposable
         void OnFlashlight(InputAction.CallbackContext context);
         void OnMoveMouse(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
-        void OnPause(InputAction.CallbackContext context);
         void OnBeamControl(InputAction.CallbackContext context);
+    }
+    public interface IPauseActions
+    {
+        void OnPause(InputAction.CallbackContext context);
     }
 }

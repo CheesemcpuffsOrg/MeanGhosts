@@ -22,7 +22,7 @@ public class PickUps : InteractableObjs
     {
         base.Interact();
 
-        if(player.GetComponent<Player.PlayerController>().heldObject == null)
+        if(player.GetComponent<PlayerController>().heldObject == null)
         {
             SpriteRenderer[] renderers = this.GetComponentsInChildren<SpriteRenderer>();
             foreach(SpriteRenderer renderer in renderers)
@@ -30,7 +30,7 @@ public class PickUps : InteractableObjs
                 renderer.enabled = false;
             }
             this.GetComponent<Collider2D>().enabled = false;
-            player.GetComponent<Player.PlayerController>().HeldObject(this.gameObject);
+            player.GetComponent<PlayerController>().HeldObject(this.gameObject);
          //   SoundManager.SoundManagerInstance.PlayOneShotSound("PickUp");
             string sendThis = null;
             UIManagers.UIManagersInstance.EnableItemImage(sendThis = this.gameObject.name.Replace("(Clone)", string.Empty));

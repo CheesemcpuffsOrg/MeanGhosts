@@ -20,7 +20,7 @@ public class DropOnGrave : InteractableObjs
     {
         if(player != null)
         {
-            if (standingOnGrave && player.GetComponent<Player.PlayerController>().heldObject != null && objectOnGrave == null)
+            if (standingOnGrave && player.GetComponent<PlayerController>().heldObject != null && objectOnGrave == null)
             {
                 UIManagers.UIManagersInstance.PlaceItemShowText();
             }
@@ -32,7 +32,7 @@ public class DropOnGrave : InteractableObjs
     {
         base.Interact();
 
-        heldObject = player.GetComponent<Player.PlayerController>().heldObject;
+        heldObject = player.GetComponent<PlayerController>().heldObject;
         
 
         if (heldObject != null && objectOnGrave == null)
@@ -49,7 +49,7 @@ public class DropOnGrave : InteractableObjs
             objectOnGrave = heldObject;
             string objectOnGraveName = objectOnGrave.name.Replace("(Clone)", string.Empty);
           //  SoundManager.SoundManagerInstance.PlayOneShotSound("PickUp");
-            player.GetComponent<Player.PlayerController>().heldObject = null;
+            player.GetComponent<PlayerController>().heldObject = null;
             UIManagers.UIManagersInstance.DisableItemImage();
             
 
@@ -70,7 +70,7 @@ public class DropOnGrave : InteractableObjs
         base.OnTriggerEnter2D(collision);
 
         UIManagers.UIManagersInstance.GraveName(ghost.name);
-        player.GetComponent<Player.PlayerController>().canInteract = true;
+        player.GetComponent<PlayerController>().canInteract = true;
         standingOnGrave = true; ;
 
     }
@@ -80,11 +80,11 @@ public class DropOnGrave : InteractableObjs
         base.OnTriggerExit2D(collision);
 
         UIManagers.UIManagersInstance.GraveName(ghost.name);
-        if (player.GetComponent<Player.PlayerController>().heldObject != null && objectOnGrave == null)
+        if (player.GetComponent<PlayerController>().heldObject != null && objectOnGrave == null)
         {
             UIManagers.UIManagersInstance.PlaceItemHideText();
         }
-        player.GetComponent<Player.PlayerController>().canInteract = false;
+        player.GetComponent<PlayerController>().canInteract = false;
         standingOnGrave = false;
     }
 }

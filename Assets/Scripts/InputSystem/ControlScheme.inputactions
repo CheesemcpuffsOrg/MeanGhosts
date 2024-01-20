@@ -42,15 +42,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Pause",
-                    "type": "Button",
-                    "id": "c65fcba1-4023-4226-a4c7-bc4b405c52d1",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "BeamControl",
                     "type": "Button",
                     "id": "97fdc2dd-ed01-431f-8af8-a99290546470",
@@ -228,7 +219,35 @@
                 },
                 {
                     "name": "",
-                    "id": "c0fe0c7e-6f1c-4cce-808a-af55fe1cfe09",
+                    "id": "0f1d7939-33cd-4fe4-9da5-aebea79d9c7a",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "K&B",
+                    "action": "BeamControl",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Pause",
+            "id": "c6bff7d5-86a0-43b6-aa1e-4d7f25fc43c9",
+            "actions": [
+                {
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "66b1fc7b-ee9c-4b15-a543-5d8ae498314e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "d6e3bd7d-b408-45fc-ab55-abf6856d3f0a",
                     "path": "<Keyboard>/escape",
                     "interactions": "Press",
                     "processors": "",
@@ -239,23 +258,12 @@
                 },
                 {
                     "name": "",
-                    "id": "81f7e4f2-0fb6-4f08-a023-c0c291d0787b",
+                    "id": "f6353f2b-6456-4ec8-9652-67fe28971fed",
                     "path": "<Gamepad>/start",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Pause",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "0f1d7939-33cd-4fe4-9da5-aebea79d9c7a",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "K&B",
-                    "action": "BeamControl",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
