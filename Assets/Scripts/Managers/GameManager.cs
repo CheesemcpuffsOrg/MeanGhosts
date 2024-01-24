@@ -33,7 +33,8 @@ public class GameManager : MonoBehaviour
     bool pause = false;
 
     [Header("Sounds")]
-    [SerializeField] List<ObjectPool<AudioScriptableObject>> randomSoundPool;
+    //[SerializeField] List<ObjectPool<AudioScriptableObject>> randomSoundPool;
+    [SerializeField]AudioScriptableObject ambientSound;
 
     [Header("Tags")]
     [SerializeField] TagScriptableObject playerTag;
@@ -79,9 +80,9 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(Random.Range(15f, 30f));
 
-        AudioScriptableObject soundToPlay = (AudioScriptableObject)RandomUtility.ObjectPoolCalculator(randomSoundPool);
+        //AudioScriptableObject soundToPlay = (AudioScriptableObject)RandomUtility.ObjectPoolCalculator(randomSoundPool);
 
-        AudioManager.AudioManagerInstance.PlaySound(soundToPlay, this.gameObject);
+        AudioManager.AudioManagerInstance.PlaySound(ambientSound, this.gameObject);
 
         StartCoroutine(RandomAmbientSound());
     }

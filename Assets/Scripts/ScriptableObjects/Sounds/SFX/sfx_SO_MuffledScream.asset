@@ -12,12 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 760b1e9d61e78084891ed16194867649, type: 3}
   m_Name: sfx_SO_MuffledScream
   m_EditorClassIdentifier: 
-  name: MuffledScream
+  audioClips:
+  - obj: {fileID: 8300000, guid: f4567583728ed0f43b7f41000fb5f5ad, type: 3}
+    weight: 100
   clip: {fileID: 8300000, guid: f4567583728ed0f43b7f41000fb5f5ad, type: 3}
   group: {fileID: -9123715879687149167, guid: d8dd63bf224bdc8468fb34784cf4b2fa, type: 2}
   volume: 1
   pitch: 1
   pan: 0
   spatialBlend: 1
+  dopplerLevel: 0
+  rolloffMode: 1
+  minDistance: 1
+  maxDistance: 30
   loop: 0
+  reduceAllOtherAudioButThis: 0
   source: {fileID: 0}

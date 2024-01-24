@@ -10,7 +10,7 @@ public class ObjectPool<T>
 {
     public T obj;
     [Range(0, 100)]
-    public int weight;   
+    public int weight = 100;   
 }
 
 public static class RandomUtility

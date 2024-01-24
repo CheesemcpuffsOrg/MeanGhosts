@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 760b1e9d61e78084891ed16194867649, type: 3}
   m_Name: sfx_SO_Giggles
   m_EditorClassIdentifier: 
-  name: Giggles
+  audioClips:
+  - obj: {fileID: 8300000, guid: f8b5dfce8b96df94ba6164e7f1d128de, type: 3}
+    weight: 100
   clip: {fileID: 8300000, guid: f8b5dfce8b96df94ba6164e7f1d128de, type: 3}
   group: {fileID: -9123715879687149167, guid: d8dd63bf224bdc8468fb34784cf4b2fa, type: 2}
   volume: 1
@@ -24,5 +26,5 @@ MonoBehaviour:
   minDistance: 1
   maxDistance: 30
   loop: 0
-  playOnAwake: 0
+  reduceAllOtherAudioButThis: 0
   source: {fileID: 0}

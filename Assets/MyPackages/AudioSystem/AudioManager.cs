@@ -90,7 +90,7 @@ namespace AudioSystem
 
             AudioSource audioSource = obj.GetComponent<AudioSource>();
 
-            audioSource.clip = sound.clip;
+            audioSource.clip = (AudioClip)RandomUtility.ObjectPoolCalculator(sound.audioClips);
             audioSource.outputAudioMixerGroup = sound.group;
             audioSource.volume = sound.volume;
             audioSource.pitch = sound.pitch;

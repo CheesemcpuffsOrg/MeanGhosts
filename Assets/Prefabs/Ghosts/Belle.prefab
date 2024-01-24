@@ -60,6 +60,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 953d49276f2910a4eade187bcc75f19c, type: 2}
+    - target: {fileID: 6925159469005380710, guid: ba8857bb1bebc7544959ea8697b27632, type: 3}
+      propertyPath: _spawn
+      value: 
+      objectReference: {fileID: 8191527339006696821}
     - target: {fileID: 6925159469005380711, guid: ba8857bb1bebc7544959ea8697b27632, type: 3}
       propertyPath: m_Name
       value: Belle
@@ -67,3 +71,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: ba8857bb1bebc7544959ea8697b27632, type: 3}
+--- !u!4 &8191527339006696821 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6925159469005380706, guid: ba8857bb1bebc7544959ea8697b27632, type: 3}
+  m_PrefabInstance: {fileID: 1275993613353517335}
+  m_PrefabAsset: {fileID: 0}

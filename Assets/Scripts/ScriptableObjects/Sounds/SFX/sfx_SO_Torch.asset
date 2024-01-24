@@ -12,12 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 760b1e9d61e78084891ed16194867649, type: 3}
   m_Name: sfx_SO_Torch
   m_EditorClassIdentifier: 
-  name: Torch
+  audioClips:
+  - obj: {fileID: 8300000, guid: caacf32f191c78446b98b0e4b51ff853, type: 3}
+    weight: 100
   clip: {fileID: 8300000, guid: caacf32f191c78446b98b0e4b51ff853, type: 3}
   group: {fileID: -9123715879687149167, guid: d8dd63bf224bdc8468fb34784cf4b2fa, type: 2}
   volume: 1
   pitch: 2
   pan: 0
   spatialBlend: 0
+  dopplerLevel: 0
+  rolloffMode: 1
+  minDistance: 1
+  maxDistance: 30
   loop: 0
+  reduceAllOtherAudioButThis: 0
   source: {fileID: 0}

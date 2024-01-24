@@ -6,7 +6,8 @@ using UnityEngine.Audio;
 [CreateAssetMenu(fileName = "Audio", menuName = "ScriptableObject/Audio")]
 public class AudioScriptableObject : ScriptableObject
 {
-    public AudioClip clip;
+
+    public List<ObjectPool<AudioClip>> audioClips;
 
     public AudioMixerGroup group;
 

@@ -14,5 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 3
   chaseSpeed: 6
-  agroRange: 20
-  affectTorchRange: 20
+  agroRange: 50

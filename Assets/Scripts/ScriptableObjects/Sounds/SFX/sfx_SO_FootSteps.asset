@@ -12,15 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 760b1e9d61e78084891ed16194867649, type: 3}
   m_Name: sfx_SO_FootSteps
   m_EditorClassIdentifier: 
-  name: Footsteps
+  audioClips:
+  - obj: {fileID: 8300000, guid: 207f587ae41e8714083f127181cf05a7, type: 3}
+    weight: 100
   clip: {fileID: 8300000, guid: 207f587ae41e8714083f127181cf05a7, type: 3}
   group: {fileID: -9123715879687149167, guid: d8dd63bf224bdc8468fb34784cf4b2fa, type: 2}
   volume: 0.3
   pitch: 1
   pan: 0
   spatialBlend: 0
+  dopplerLevel: 0
   rolloffMode: 1
   minDistance: 0
   maxDistance: 0
   loop: 1
+  reduceAllOtherAudioButThis: 0
   source: {fileID: 0}

@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 760b1e9d61e78084891ed16194867649, type: 3}
   m_Name: sfx_SO_Microphone
   m_EditorClassIdentifier: 
-  name: Mic
+  audioClips:
+  - obj: {fileID: 8300000, guid: 6692ee20577638d4db65755d7c74b9bc, type: 3}
+    weight: 100
   clip: {fileID: 8300000, guid: 6692ee20577638d4db65755d7c74b9bc, type: 3}
   group: {fileID: -9123715879687149167, guid: d8dd63bf224bdc8468fb34784cf4b2fa, type: 2}
   volume: 1
@@ -24,4 +26,5 @@ MonoBehaviour:
   minDistance: 1
   maxDistance: 10
   loop: 0
+  reduceAllOtherAudioButThis: 0
   source: {fileID: 0}
