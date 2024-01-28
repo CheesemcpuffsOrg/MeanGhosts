@@ -13,9 +13,8 @@ MonoBehaviour:
   m_Name: sfx_SO_GhostScream
   m_EditorClassIdentifier: 
   audioClips:
-  - obj: {fileID: 8300000, guid: 7dd44a29b6d102f45bf2e62f2849d973, type: 3}
+  - obj: {fileID: 8300000, guid: 3d98f79e3d14d574fb0a27e3d86f44b5, type: 3}
     weight: 100
-  clip: {fileID: 8300000, guid: 7dd44a29b6d102f45bf2e62f2849d973, type: 3}
   group: {fileID: -9123715879687149167, guid: d8dd63bf224bdc8468fb34784cf4b2fa, type: 2}
   volume: 1
   pitch: 1.2

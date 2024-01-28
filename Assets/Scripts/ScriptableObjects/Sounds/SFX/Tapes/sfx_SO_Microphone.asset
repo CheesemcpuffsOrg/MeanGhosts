@@ -13,9 +13,8 @@ MonoBehaviour:
   m_Name: sfx_SO_Microphone
   m_EditorClassIdentifier: 
   audioClips:
-  - obj: {fileID: 8300000, guid: 6692ee20577638d4db65755d7c74b9bc, type: 3}
+  - obj: {fileID: 8300000, guid: c2a6348b3a6aecf4291c87cdf5cfe4be, type: 3}
     weight: 100
-  clip: {fileID: 8300000, guid: 6692ee20577638d4db65755d7c74b9bc, type: 3}
   group: {fileID: -9123715879687149167, guid: d8dd63bf224bdc8468fb34784cf4b2fa, type: 2}
   volume: 1
   pitch: 1

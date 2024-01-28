@@ -15,7 +15,6 @@ MonoBehaviour:
   audioClips:
   - obj: {fileID: 8300000, guid: e08faed865e282344b0101eb5bea6e50, type: 3}
     weight: 100
-  clip: {fileID: 8300000, guid: e08faed865e282344b0101eb5bea6e50, type: 3}
   group: {fileID: -9123715879687149167, guid: d8dd63bf224bdc8468fb34784cf4b2fa, type: 2}
   volume: 0.2
   pitch: 1

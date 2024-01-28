@@ -13,9 +13,8 @@ MonoBehaviour:
   m_Name: sfx_SO_Torch
   m_EditorClassIdentifier: 
   audioClips:
-  - obj: {fileID: 8300000, guid: caacf32f191c78446b98b0e4b51ff853, type: 3}
+  - obj: {fileID: 8300000, guid: bc9125f9c21b83c4187e9eb53bab83a4, type: 3}
     weight: 100
-  clip: {fileID: 8300000, guid: caacf32f191c78446b98b0e4b51ff853, type: 3}
   group: {fileID: -9123715879687149167, guid: d8dd63bf224bdc8468fb34784cf4b2fa, type: 2}
   volume: 1
   pitch: 2
