@@ -18,7 +18,7 @@ public class AICaughtState : AIState
 
     public override void EnterState(AIStateManager state)
     {
-        controller.flashLight.highBeamIsActive.AddListener(CaughtByBeam);
+        controller.flashLight.highBeamIsActive.AddListener(SpottedByActiveHighBeam);
     }
 
     public override void UpdateState(AIStateManager state)
@@ -28,15 +28,13 @@ public class AICaughtState : AIState
             state.SwitchToTheNextState(state.IdleState);
         }
 
-        //add delay period until ghost is detroyed
-        if(!state.AnyState.seenByHighBeam || !controller.flashLight.flashLightSwitch || !controller.flashLight.beamControl) 
+        if (!state.AnyState.spottedByHighBeam || !controller.flashLight.flashLightSwitch || !controller.flashLight.beamControl)
         {
-            Debug.Log("1 is true");
-            if(caughtByBeam != null)
+            if (caughtByBeam != null)
             {
                 StopCoroutine(caughtByBeam);
                 highBeamOnGhost = false;
-            }   
+            }
         }
     }
 
@@ -50,13 +48,15 @@ public class AICaughtState : AIState
             state.AnyState.SpottedByHighBeam(false);
             state.AnyState.SpottedByTorch(false);
             highBeamOnGhost = false;
-            controller.flashLight.highBeamIsActive.RemoveListener(CaughtByBeam);
+            controller.flashLight.highBeamIsActive.RemoveListener(SpottedByActiveHighBeam);
         }
     }
 
-    void CaughtByBeam()
+    void SpottedByActiveHighBeam()
     {
-        if (aiStateManager.AnyState.seenByHighBeam)
+        //Debug.Log("spotted");
+
+        if (aiStateManager.AnyState.spottedByHighBeam)
         {
             highBeamOnGhost = true;
             caughtByBeam = StartCoroutine(DeathTimer());
@@ -65,6 +65,8 @@ public class AICaughtState : AIState
 
     IEnumerator DeathTimer()
     {
+        //Debug.Log("Start timer");
+
         yield return new WaitForSeconds(timeUntilExplode);
 
         aiStateManager.SwitchToTheNextState(aiStateManager.IdleState);  

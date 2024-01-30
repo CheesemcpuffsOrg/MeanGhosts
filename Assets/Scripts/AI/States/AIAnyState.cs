@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class AIAnyState : AIState
@@ -9,16 +10,15 @@ public class AIAnyState : AIState
 
     Vector3 viewPos;
 
-    bool _seenByTorch = false;
-    bool _seenByHighBeam = false;
-    bool _visibleToCamera = false;
+    bool spottedByTorch = false;
+    bool visibleToCamera = false;
+    bool _spottedByHighBeam = false;
+    public bool spottedByHighBeam => _spottedByHighBeam;
     bool _caught = false;
+    public bool caught => _caught;
 
     [SerializeField] int affectLightRange = 20;
     bool isWithinRange = false;
-
-    public bool caught => _caught;
-    public bool seenByHighBeam => _seenByHighBeam;
 
     public override void EnterState(AIStateManager state)
     {
@@ -28,6 +28,10 @@ public class AIAnyState : AIState
     public override void UpdateState(AIStateManager state)
     {
         CheckIfCaught(state);
+
+        VisibleToCamera();
+
+        TorchFlicker();
     }
 
     public override void ExitState(AIStateManager state)
@@ -37,46 +41,22 @@ public class AIAnyState : AIState
 
     private void CheckIfCaught(AIStateManager state)
     {
-        if (!isWithinRange)
+        /*if(visibleToCamera && spottedByTorch && controller.flashLight.beamControl && !spottedByHighBeam)
         {
-            if (Vector3.Distance(this.transform.position, controller.player.transform.position) < affectLightRange && !caught)
-            {
-                isWithinRange = true;
-                controller.flashLight.FlickeringTorch(isWithinRange);
-            }
-        }
-        else
+            _caught = false;
+        }*//*
+        if (visibleToCamera && spottedByTorch)
         {
-            if (Vector3.Distance(this.transform.position, controller.player.transform.position) > affectLightRange || caught)
+            if (controller.flashLight.flashLightSwitch)
             {
-                isWithinRange = false;
-                controller.flashLight.FlickeringTorch(isWithinRange);
+                _caught = true;
+                state.SwitchToTheNextState(state.CaughtState);
             }
-        }
+            *//*else if (controller.flashLight.beamControl )
+            {
 
-        viewPos = controller.cam.WorldToViewportPoint(this.transform.position);
-
-        if (controller.flashLight.flashLightSwitch)
-        {
-            if (viewPos.x < 1.05f && viewPos.x > -0.05f && viewPos.y < 1.05 && viewPos.y > -0.05f)
-            {
-                _visibleToCamera = true;
-            }
+            }*//*  
             else
-            {
-                _visibleToCamera = false;
-            }
-
-            if (!caught)
-            {
-                if (_visibleToCamera && _seenByTorch)
-                {
-                    _caught = true;
-                    state.SwitchToTheNextState(state.CaughtState);
-                }
-            }
-
-            if (!_seenByTorch)
             {
                 _caught = false;
             }
@@ -84,16 +64,85 @@ public class AIAnyState : AIState
         else
         {
             _caught = false;
+        }*/
+
+
+        if (controller.flashLight.flashLightSwitch && !controller.flashLight.beamControl)
+        {
+            if (!caught)
+            {
+                if (visibleToCamera && spottedByTorch)
+                {
+                    _caught = true;
+                    state.SwitchToTheNextState(state.CaughtState);
+                }
+            }
+
+            if (!spottedByTorch)
+            {
+                _caught = false;
+            }
+        }   
+        else if (controller.flashLight.flashLightSwitch && controller.flashLight.beamControl)
+        {
+            if (!caught)
+            {
+                if (visibleToCamera && spottedByHighBeam)
+                {
+                    _caught = true;
+                    state.SwitchToTheNextState(state.CaughtState);
+                }
+            }
+
+            if (!spottedByHighBeam)
+            {
+                _caught = false;
+            }
+        }
+    }
+
+    private void TorchFlicker()
+    {
+
+        if (!isWithinRange)
+        {
+            if (Vector3.Distance(this.transform.position, controller.player.transform.position) < affectLightRange && !caught && !controller.flashLight.beamControl)
+            {
+                isWithinRange = true;
+                controller.flashLight.FlickeringTorch(isWithinRange);
+            }
+        }
+        else
+        {
+            if (Vector3.Distance(this.transform.position, controller.player.transform.position) > affectLightRange || caught || controller.flashLight.beamControl)
+            {
+                isWithinRange = false;
+                controller.flashLight.FlickeringTorch(isWithinRange);
+            }
+        }
+    }
+
+    private void VisibleToCamera()
+    {
+        viewPos = controller.cam.WorldToViewportPoint(this.transform.position);
+
+        if (viewPos.x < 1.05f && viewPos.x > -0.05f && viewPos.y < 1.05 && viewPos.y > -0.05f)
+        {
+            visibleToCamera = true;
+        }
+        else
+        {
+            visibleToCamera = false;
         }
     }
 
     public void SpottedByTorch(bool isSpotted)
     {
-        _seenByTorch = isSpotted;
+        spottedByTorch = isSpotted;
     }
 
     public void SpottedByHighBeam(bool isSpotted)
     {
-        _seenByHighBeam = isSpotted;
+        _spottedByHighBeam = isSpotted;
     }
 }

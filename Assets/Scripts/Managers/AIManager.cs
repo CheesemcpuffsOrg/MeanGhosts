@@ -9,16 +9,16 @@ public class AIManager : MonoBehaviour
 
     GameObject player;
 
-    List<GameObject> ghostCaughtByNormalBeam;
-    List<GameObject> ghostCaughtByHighBeam;
-
     [Header("Tags")]
     [SerializeField]TagScriptableObject playerTag;
 
-    void Start()
+    private void Awake()
     {
         AIManagerInstance = this;
+    }
 
+    void Start()
+    {
         player = TagExtensions.FindWithTag(gameObject, playerTag);
     }
 

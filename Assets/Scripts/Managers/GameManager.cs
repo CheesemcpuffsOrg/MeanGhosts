@@ -32,10 +32,6 @@ public class GameManager : MonoBehaviour
 
     bool pause = false;
 
-    [Header("Sounds")]
-    //[SerializeField] List<ObjectPool<AudioScriptableObject>> randomSoundPool;
-    [SerializeField]AudioScriptableObject ambientSound;
-
     [Header("Tags")]
     [SerializeField] TagScriptableObject playerTag;
 
@@ -45,13 +41,11 @@ public class GameManager : MonoBehaviour
 
         controlScheme = new ControlScheme();
         controlScheme.Pause.Pause.performed += Pause;
-
-        player = TagExtensions.FindWithTag(gameObject, playerTag);
     }
 
     private void Start()
     {
-        StartCoroutine(RandomAmbientSound());
+        player = TagExtensions.FindWithTag(gameObject, playerTag);
 
         PlaceItems();
 
@@ -76,16 +70,7 @@ public class GameManager : MonoBehaviour
         timer += Time.deltaTime;
     }
 
-    IEnumerator RandomAmbientSound()
-    {
-        yield return new WaitForSeconds(Random.Range(15f, 30f));
 
-        //AudioScriptableObject soundToPlay = (AudioScriptableObject)RandomUtility.ObjectPoolCalculator(randomSoundPool);
-
-        AudioManager.AudioManagerInstance.PlaySound(ambientSound, this.gameObject);
-
-        StartCoroutine(RandomAmbientSound());
-    }
 
     void PlaceItems()
     {

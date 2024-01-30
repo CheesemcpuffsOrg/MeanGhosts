@@ -12,14 +12,15 @@ public class FlashLight : MonoBehaviour
 
     [SerializeField] Light2D highBeam;
     [SerializeField] Light2D normalBeam;
+    [SerializeField] Light2D globalLight;
 
     bool _beamControl = false;
     bool _flashLightSwitch = false;
-    bool flickering = false;
     bool torchOnCooldown = false; 
 
     [SerializeField]float defaultNormalBeamIntensity = 0.3f;
     [SerializeField]float defaultHighBeamIntensity = 0.5f;
+    float globalLightDefaultIntensity = 0.04f;
 
     [SerializeField] float highBeamDuration = 3;
     [SerializeField] float torchCooldownDuration = 2;
@@ -27,7 +28,6 @@ public class FlashLight : MonoBehaviour
     public bool flashLightSwitch => _flashLightSwitch;
     public bool beamControl => _beamControl;
 
-    //UnityEvent flashLightIsActive = new UnityEvent();
     public UnityEvent highBeamIsActive { get; } = new UnityEvent();
 
     int ghostsWithinRange = 0;
@@ -44,6 +44,15 @@ public class FlashLight : MonoBehaviour
     {
         normalBeam.intensity = 0;
         highBeam.intensity = 0;
+
+    }
+
+    private void Update()
+    {
+        if (_beamControl)
+        {
+            highBeam.intensity += 0.01f;
+        }
     }
 
     public void FlashLightSwitch()
@@ -63,11 +72,13 @@ public class FlashLight : MonoBehaviour
     {
         if (_flashLightSwitch)
         {
+            globalLight.intensity = globalLightDefaultIntensity;
             normalBeam.intensity = defaultNormalBeamIntensity;
             highBeam.intensity = 0;
         }
         else if (!_flashLightSwitch)
         {
+            globalLight.intensity = 0;
             normalBeam.intensity = 0;
             highBeam.intensity = 0;
             _beamControl = false;
@@ -82,7 +93,7 @@ public class FlashLight : MonoBehaviour
     //add cd after use 
     public void BeamControl()
     {
-        if(!flickering && _flashLightSwitch)
+        if(_flashLightSwitch)
         {
             AudioManager.AudioManagerInstance.PlaySound(flashLight, this.gameObject);
 
@@ -92,17 +103,18 @@ public class FlashLight : MonoBehaviour
             {
                 normalBeam.intensity = 0;
                 highBeam.intensity = defaultHighBeamIntensity;
+                globalLight.intensity = 0;
                 highBeamPoweringUp = StartCoroutine(HighBeamPoweringUp());
                 highBeamIsActive.Invoke();
             }
             else if (!_beamControl)
             {
+                globalLight.intensity = globalLightDefaultIntensity;
                 normalBeam.intensity = defaultNormalBeamIntensity;
                 highBeam.intensity = 0;
                 StopCoroutine(highBeamPoweringUp);
             }
-        }
-        
+        } 
     }
 
     public void FlickeringTorch(bool result)
@@ -121,7 +133,6 @@ public class FlashLight : MonoBehaviour
             if (ghostsWithinRange > 0 && _flashLightSwitch)
             {
                 flickers.Add(StartCoroutine(Flicker()));
-                flickering = true;
             }
             else if (ghostsWithinRange <= 0)
             {
@@ -130,8 +141,12 @@ public class FlashLight : MonoBehaviour
                     StopCoroutine(flicker);
                 }
 
-                normalBeam.intensity = defaultNormalBeamIntensity;
-                flickering = false;
+                if (!highBeam)
+                {
+                    normalBeam.intensity = defaultNormalBeamIntensity;
+                }
+                
+                
             }
         }  
     }
