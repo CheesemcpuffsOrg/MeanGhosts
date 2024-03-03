@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class AIAnyState : AIState
+public class AIAnyState : AIState, ISpotted
 {
     [SerializeField] AIController controller;
     [SerializeField] AIStateManager stateManager;
@@ -20,6 +20,8 @@ public class AIAnyState : AIState
     [SerializeField] int affectLightRange = 20;
     bool isWithinRange = false;
 
+    [SerializeField] CaughtByBeam caughtByBeam;
+
     public override void EnterState(AIStateManager state)
     {
         
@@ -27,9 +29,7 @@ public class AIAnyState : AIState
 
     public override void UpdateState(AIStateManager state)
     {
-        CheckIfCaught(state);
 
-        VisibleToCamera();
 
         TorchFlicker();
     }
@@ -39,9 +39,19 @@ public class AIAnyState : AIState
         
     }
 
-    private void CheckIfCaught(AIStateManager state)
+    private void Caught(bool isCaught)
     {
-        /*if(visibleToCamera && spottedByTorch && controller.flashLight.beamControl && !spottedByHighBeam)
+        if(isCaught)
+        {
+            stateManager.SwitchToTheNextState(stateManager.CaughtState);
+        }
+    }
+
+    
+
+    /*private void CheckIfCaught(AIStateManager state)
+    {
+        *//*if(visibleToCamera && spottedByTorch && controller.flashLight.beamControl && !spottedByHighBeam)
         {
             _caught = false;
         }*//*
@@ -64,7 +74,7 @@ public class AIAnyState : AIState
         else
         {
             _caught = false;
-        }*/
+        }*//*
 
 
         if (controller.flashLight.flashLightSwitch && !controller.flashLight.beamControl)
@@ -99,7 +109,7 @@ public class AIAnyState : AIState
                 _caught = false;
             }
         }
-    }
+    }*/
 
     private void TorchFlicker()
     {
@@ -122,19 +132,19 @@ public class AIAnyState : AIState
         }
     }
 
-    private void VisibleToCamera()
-    {
-        viewPos = controller.cam.WorldToViewportPoint(this.transform.position);
+    /* private void VisibleToCamera()
+     {
+         viewPos = controller.cam.WorldToViewportPoint(this.transform.position);
 
-        if (viewPos.x < 1.05f && viewPos.x > -0.05f && viewPos.y < 1.05 && viewPos.y > -0.05f)
-        {
-            visibleToCamera = true;
-        }
-        else
-        {
-            visibleToCamera = false;
-        }
-    }
+         if (viewPos.x < 1.05f && viewPos.x > -0.05f && viewPos.y < 1.05 && viewPos.y > -0.05f)
+         {
+             visibleToCamera = true;
+         }
+         else
+         {
+             visibleToCamera = false;
+         }
+     }*/
 
     public void SpottedByTorch(bool isSpotted)
     {
@@ -144,5 +154,29 @@ public class AIAnyState : AIState
     public void SpottedByHighBeam(bool isSpotted)
     {
         _spottedByHighBeam = isSpotted;
+    }
+
+    public void SpottedByTorchInterface(bool isSpotted)
+    {
+        if (isSpotted)
+        {
+            caughtByBeam.caughtEvent.AddListener(Caught);
+        }
+        else
+        {
+            caughtByBeam.caughtEvent.RemoveListener(Caught);
+        }
+    }
+
+    public void SpottedByHighBeamInterface(bool isSpotted)
+    {
+        /*if (isSpotted)
+        {
+            caughtByBeam.caughtEvent.AddListener(Caught);
+        }
+        else
+        {
+            caughtByBeam.caughtEvent.RemoveListener(Caught);
+        }*/
     }
 }

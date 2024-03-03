@@ -11,7 +11,16 @@ public class PlayerCollisions : MonoBehaviour
     [Header ("Tags")]
     [SerializeField] TagScriptableObject enemyTag;
 
+    FlashLight flashLight;
+
     private void Start()
+    {
+        flashLight = this.gameObject.GetComponent<FlashLight>();
+
+        CreateTriggers();
+    }
+
+    private void CreateTriggers()
     {
         normalBeamCollider.OnTriggerEnter2D_Action += NormalBeamOnTriggerEnter2D;
         normalBeamCollider.OnTriggerExit2D_Action += NormalBeamOnTriggerExit2D;
@@ -24,7 +33,7 @@ public class PlayerCollisions : MonoBehaviour
     {
         if (TagExtensions.HasTag(other.gameObject, enemyTag))
         {
-            other.GetComponent<AIStateManager>().AnyState.SpottedByTorch(true);
+            other.GetComponent<CaughtByBeam>().SpottedByTorch(true, flashLight);
         }
     }
 
@@ -32,7 +41,7 @@ public class PlayerCollisions : MonoBehaviour
     {
         if (TagExtensions.HasTag(other.gameObject, enemyTag))
         {
-            other.GetComponent<AIStateManager>().AnyState.SpottedByTorch(false);
+            other.GetComponent<CaughtByBeam>().SpottedByTorch(false, flashLight);
         }
     }
 
@@ -40,7 +49,7 @@ public class PlayerCollisions : MonoBehaviour
     {
         if (TagExtensions.HasTag(other.gameObject, enemyTag))
         {
-            other.GetComponent<AIStateManager>().AnyState.SpottedByHighBeam(true);
+            other.GetComponent<CaughtByBeam>().SpottedByHighBeam(true, flashLight);
         }
     }
 
@@ -48,7 +57,7 @@ public class PlayerCollisions : MonoBehaviour
     {
         if (TagExtensions.HasTag(other.gameObject, enemyTag))
         {
-            other.GetComponent<AIStateManager>().AnyState.SpottedByHighBeam(false);
+            other.GetComponent<CaughtByBeam>().SpottedByHighBeam(false, flashLight);
         }
     }
 }

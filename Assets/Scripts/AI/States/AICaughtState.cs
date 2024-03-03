@@ -6,7 +6,7 @@ public class AICaughtState : AIState
 {
 
     [SerializeField] AIController controller;
-    [SerializeField] AIStateManager aiStateManager;
+    [SerializeField] AIStateManager stateManager;
 
     bool highBeamOnGhost = false;
 
@@ -16,6 +16,13 @@ public class AICaughtState : AIState
 
     [SerializeField]ParticleSystem poofPA;
 
+    [SerializeField] CaughtByBeam CaughtByBeam;
+
+    private void Start()
+    {
+        CaughtByBeam.caughtEvent.AddListener(Freed);
+    }
+
     public override void EnterState(AIStateManager state)
     {
         controller.flashLight.highBeamIsActive.AddListener(SpottedByActiveHighBeam);
@@ -23,7 +30,7 @@ public class AICaughtState : AIState
 
     public override void UpdateState(AIStateManager state)
     {
-        if (!state.AnyState.caught)
+        /*if (!state.AnyState.caught)
         {
             state.SwitchToTheNextState(state.IdleState);
         }
@@ -35,7 +42,7 @@ public class AICaughtState : AIState
                 StopCoroutine(caughtByBeam);
                 highBeamOnGhost = false;
             }
-        }
+        }*/
     }
 
     public override void ExitState(AIStateManager state)
@@ -45,10 +52,18 @@ public class AICaughtState : AIState
             var poof = Instantiate(poofPA, this.transform.position, this.transform.rotation);
             poof.Play();
             transform.root.position = controller.spawn.position;
-            state.AnyState.SpottedByHighBeam(false);
+            state.AnyState.SpottedByHighBeamInterface(false);
             state.AnyState.SpottedByTorch(false);
             highBeamOnGhost = false;
             controller.flashLight.highBeamIsActive.RemoveListener(SpottedByActiveHighBeam);
+        }
+    }
+
+    private void Freed(bool isCaught)
+    {
+        if (!isCaught)
+        {
+            stateManager.SwitchToTheNextState(stateManager.IdleState);
         }
     }
 
@@ -56,7 +71,7 @@ public class AICaughtState : AIState
     {
         //Debug.Log("spotted");
 
-        if (aiStateManager.AnyState.spottedByHighBeam)
+        if (stateManager.AnyState.spottedByHighBeam)
         {
             highBeamOnGhost = true;
             caughtByBeam = StartCoroutine(DeathTimer());
@@ -69,7 +84,7 @@ public class AICaughtState : AIState
 
         yield return new WaitForSeconds(timeUntilExplode);
 
-        aiStateManager.SwitchToTheNextState(aiStateManager.IdleState);  
+        stateManager.SwitchToTheNextState(stateManager.IdleState);  
     }
 
 }

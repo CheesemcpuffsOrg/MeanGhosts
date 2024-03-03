@@ -30,10 +30,12 @@ public class AIIdleState : AIState
     {
         IdleMovement();
 
-        if (!anyState.caught)
-        {
-            SwitchToChaseState(state);
-        }  
+        /* if (!anyState.caught)
+         {
+             SwitchToChaseState(state);
+         } */
+
+        SwitchToChaseState(state);
     }
 
     public override void ExitState(AIStateManager state)
@@ -126,7 +128,4 @@ public class AIIdleState : AIState
             state.SwitchToTheNextState(state.ChaseState);
         }
     }
-
-    
-
 }

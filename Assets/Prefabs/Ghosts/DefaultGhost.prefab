@@ -124,9 +124,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 6925159469005380710}
-  aiStateManager: {fileID: 6925159469005380709}
+  stateManager: {fileID: 6925159469005380709}
   timeUntilExplode: 2
   poofPA: {fileID: 2990887196051449723, guid: 1a728e840d39dbe42bae067a8fc1b4ea, type: 3}
+  CaughtByBeam: {fileID: 7773656104260536614}
 --- !u!1 &6925159468932551726
 GameObject:
   m_ObjectHideFlags: 0
@@ -192,6 +193,7 @@ GameObject:
   - component: {fileID: 6925159469005380710}
   - component: {fileID: 650324298}
   - component: {fileID: 7035781920935776391}
+  - component: {fileID: 7773656104260536614}
   m_Layer: 8
   m_Name: DefaultGhost
   m_TagString: Enemy
@@ -351,6 +353,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tags:
   - {fileID: 11400000, guid: 1f186d17a18eb0740b62b1dc866d3ce6, type: 2}
+--- !u!114 &7773656104260536614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6925159469005380711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36b7ad6a5ea870f4787923c7ff873ecd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerTag: {fileID: 11400000, guid: 245989d67fe58824aacae9258831b138, type: 2}
 --- !u!1 &6925159469467064000
 GameObject:
   m_ObjectHideFlags: 0
@@ -433,3 +448,4 @@ MonoBehaviour:
   controller: {fileID: 6925159469005380710}
   stateManager: {fileID: 6925159469005380709}
   affectLightRange: 20
+  caughtByBeam: {fileID: 7773656104260536614}
