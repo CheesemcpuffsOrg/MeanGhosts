@@ -365,6 +365,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36b7ad6a5ea870f4787923c7ff873ecd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spottedInterfaces:
+  - {fileID: 8852358032143981071}
   playerTag: {fileID: 11400000, guid: 245989d67fe58824aacae9258831b138, type: 2}
 --- !u!1 &6925159469467064000
 GameObject:

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -17,6 +18,7 @@ public class CaughtByBeam : MonoBehaviour
     public CaughtEvent caughtEvent => _caughtEvent;
     CaughtEvent _caughtByHighBeam;
     public CaughtEvent caughtByHighBeam => _caughtByHighBeam;
+    [SerializeField] List<GameObject> spottedInterfaces = new List<GameObject>();
 
     [Header ("Camera")]
     Vector3 viewPos;
@@ -103,28 +105,23 @@ public class CaughtByBeam : MonoBehaviour
         }
     }
 
-    public void SpottedByTorch(bool isSpotted, FlashLight data)
+    public void SpottedByTorch(bool isSpotted)
     {
-        ISpotted spotted = this.GetComponent<ISpotted>();
+        foreach(var i in spottedInterfaces)
+        {
+            ISpotted spotted = i.GetComponent<ISpotted>();
 
-        spotted.SpottedByTorchInterface(isSpotted);
-
+            spotted.SpottedByTorchInterface(isSpotted);
+        }
+       
         spottedByTorch = isSpotted;
 
-        if (flashLight == null)
-        {
-            flashLight = data;
-        }
     }
 
-    public void SpottedByHighBeam(bool isSpotted, FlashLight data)
+    public void SpottedByHighBeam(bool isSpotted)
     {
         spottedByHighBeam = isSpotted;
 
-        if(flashLight == null)
-        {
-            flashLight = data;
-        }
     }
 
 }
