@@ -1,36 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1418391185
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1418391186}
-  m_Layer: 8
-  m_Name: Audio
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1418391186
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1418391185}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6925159469005380706}
-  m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1971317276
 GameObject:
   m_ObjectHideFlags: 0
@@ -125,9 +94,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 6925159469005380710}
   stateManager: {fileID: 6925159469005380709}
+  caughtByBeam: {fileID: 7773656104260536614}
   timeUntilExplode: 2
   poofPA: {fileID: 2990887196051449723, guid: 1a728e840d39dbe42bae067a8fc1b4ea, type: 3}
-  CaughtByBeam: {fileID: 7773656104260536614}
 --- !u!1 &6925159468932551726
 GameObject:
   m_ObjectHideFlags: 0
@@ -214,7 +183,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6925159469467064015}
-  - {fileID: 1418391186}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -365,8 +333,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36b7ad6a5ea870f4787923c7ff873ecd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _torchState: 2
   spottedInterfaces:
   - {fileID: 8852358032143981071}
+  visibleToCamera: 0
   playerTag: {fileID: 11400000, guid: 245989d67fe58824aacae9258831b138, type: 2}
 --- !u!1 &6925159469467064000
 GameObject:

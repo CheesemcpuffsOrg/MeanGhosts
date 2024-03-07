@@ -10,20 +10,21 @@ public class CaughtByBeam : MonoBehaviour
     GameObject player;
 
     [Header ("Torch")]
-    bool spottedByTorch = false;
-    bool spottedByHighBeam = false;
+    [SerializeField] List<GameObject> spottedInterfaces = new List<GameObject>();
     FlashLight flashLight;
-    bool _caught = false;
     CaughtEvent _caughtEvent;
     public CaughtEvent caughtEvent => _caughtEvent;
-    CaughtEvent _caughtByHighBeam;
-    public CaughtEvent caughtByHighBeam => _caughtByHighBeam;
-    [SerializeField] List<GameObject> spottedInterfaces = new List<GameObject>();
+    CaughtEvent _caughtByHighBeamEvent;
+    public CaughtEvent caughtByHighBeamEvent => _caughtByHighBeamEvent;
+    bool spotted;
+    bool spottedByHighBeam;
+    bool caught;
+    bool caughtByHighBeam;
 
     [Header ("Camera")]
     Vector3 viewPos;
     Camera _cam;
-    bool visibleToCamera = false;
+    [SerializeField] bool visibleToCamera = false;
 
     [Header("Tags")]
     [SerializeField] TagScriptableObject playerTag;
@@ -31,7 +32,7 @@ public class CaughtByBeam : MonoBehaviour
     private void Awake()
     {
         _caughtEvent = new CaughtEvent();
-        _caughtByHighBeam = new CaughtEvent();
+        _caughtByHighBeamEvent = new CaughtEvent();
 
         _cam = Camera.main;
     }
@@ -46,48 +47,47 @@ public class CaughtByBeam : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         CheckIfCaught();
         
-
         VisibleToCamera();
     }
 
     private void CheckIfCaught()
     {
-        if (flashLight.flashLightSwitch && !flashLight.beamControl)
+        if (flashLight.flashLightState == FlashLight.FlashLightState.ON)
         {
-            if (!_caught)
+            if (spotted && visibleToCamera && !caught)
             {
-                if (visibleToCamera && spottedByTorch)
-                {
-                    _caught = true;
-                    _caughtEvent.Invoke(_caught);
-                }
+                Debug.Log("spotted");
+                caught = true;
+                _caughtEvent.Invoke(true);
             }
-
-            if (!spottedByTorch)
+            else if ((!spotted || !visibleToCamera) && caught)
             {
-                _caught = false;
-                _caughtEvent.Invoke(_caught);
+                Debug.Log("not spotted");
+                caught = false;
+                _caughtEvent.Invoke(false);
             }
         }
-        else if (flashLight.flashLightSwitch && flashLight.beamControl)
+        else if (flashLight.flashLightState == FlashLight.FlashLightState.HIGHBEAM)
         {
-            if (!_caught)
+            if (spottedByHighBeam && visibleToCamera && !caughtByHighBeam)
             {
-                if (visibleToCamera && spottedByHighBeam)
-                {
-                    _caught = true;
-                    _caughtByHighBeam.Invoke(_caught);
-                }
+                caughtByHighBeam = true;
+                _caughtByHighBeamEvent.Invoke(true);
+                Debug.Log("caught by high beam");
             }
-
-            if (!spottedByHighBeam)
+            else if (!spottedByHighBeam && caughtByHighBeam)
             {
-                _caught = false;
-                _caughtByHighBeam.Invoke(_caught);
+                caughtByHighBeam = false;
+                _caughtByHighBeamEvent.Invoke(false);
+                //Debug.Log("not caught by highbeam");
             }
+        }
+        else if(flashLight.flashLightState == FlashLight.FlashLightState.OFF || flashLight.flashLightState == FlashLight.FlashLightState.COOLDOWN)
+        {
+            _caughtEvent.Invoke(false);
+            _caughtByHighBeamEvent.Invoke(false);
         }
     }
 
@@ -98,6 +98,7 @@ public class CaughtByBeam : MonoBehaviour
         if (viewPos.x < 1.05f && viewPos.x > -0.05f && viewPos.y < 1.05 && viewPos.y > -0.05f)
         {
             visibleToCamera = true;
+            //Debug.Log("seen by camera");
         }
         else
         {
@@ -113,15 +114,22 @@ public class CaughtByBeam : MonoBehaviour
 
             spotted.SpottedByTorchInterface(isSpotted);
         }
-       
-        spottedByTorch = isSpotted;
 
+        spotted = isSpotted;
+
+        //Debug.Log("caught by torch");
     }
 
     public void SpottedByHighBeam(bool isSpotted)
     {
-        spottedByHighBeam = isSpotted;
+        foreach (var i in spottedInterfaces)
+        {
+            ISpotted spotted = i.GetComponent<ISpotted>();
 
+            spotted.SpottedByHighBeamInterface(isSpotted);
+        }
+
+        spottedByHighBeam = isSpotted;
     }
 
 }

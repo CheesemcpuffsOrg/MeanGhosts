@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class PlayerCollisions : MonoBehaviour
 {
+
+    [SerializeField] FlashLight flashLight;
+
     [Header ("Collision Proxies")]
     [SerializeField] private Collision2DProxy normalBeamCollider;
-    [SerializeField] private Collision2DProxy highBeamCollider;  
+    [SerializeField] private Collision2DProxy highBeamCollider;
+    [SerializeField] private Collision2DProxy ghostDetectionCollider;
 
     [Header ("Tags")]
     [SerializeField] TagScriptableObject enemyTag;
@@ -18,6 +22,9 @@ public class PlayerCollisions : MonoBehaviour
 
         highBeamCollider.OnTriggerEnter2D_Action += HighBeamOnTriggerEnter2D;
         highBeamCollider.OnTriggerExit2D_Action += HighBeamOnTriggerExit2D;
+
+        ghostDetectionCollider.OnTriggerEnter2D_Action += GhostDetectionOnTriggerEnter2D;
+        ghostDetectionCollider.OnTriggerExit2D_Action = GhostDetectionOnTriggerExit2D;
     }
 
     private void NormalBeamOnTriggerEnter2D(Collider2D other)
@@ -49,6 +56,22 @@ public class PlayerCollisions : MonoBehaviour
         if (TagExtensions.HasTag(other.gameObject, enemyTag))
         {
             other.GetComponent<CaughtByBeam>().SpottedByHighBeam(false);
+        }
+    }
+
+    private void GhostDetectionOnTriggerEnter2D(Collider2D other)
+    {
+        if(TagExtensions.HasTag(other.gameObject, enemyTag))
+        {
+            flashLight.IsGhostWithinRange(true);
+        }
+    }
+
+    private void GhostDetectionOnTriggerExit2D(Collider2D other)
+    {
+        if (TagExtensions.HasTag(other.gameObject, enemyTag))
+        {
+            flashLight.IsGhostWithinRange(false);
         }
     }
 }

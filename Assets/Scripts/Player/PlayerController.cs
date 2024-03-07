@@ -133,7 +133,7 @@ public class PlayerController : MonoBehaviour
 
     void BeamControl(InputAction.CallbackContext beam)
     {
-        flashlight.BeamControl();
+        flashlight.HighBeamControl();
     }
 
     void Interact(InputAction.CallbackContext interact)
