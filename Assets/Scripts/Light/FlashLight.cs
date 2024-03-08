@@ -30,6 +30,7 @@ public class FlashLight : MonoBehaviour
 
     [Header ("Flicker")]
     int ghostsWithinRange = 0;
+    int ghostHasBeenCaught = 0;
     List<Coroutine> flickers = new List<Coroutine>();
 
     [Header ("Sounds")]
@@ -125,24 +126,37 @@ public class FlashLight : MonoBehaviour
         if (result)
         {
             ghostsWithinRange++;
-           // FlickeringTorch();
+            FlickeringTorch();
         }
         else
         {
             ghostsWithinRange--;
-           // FlickeringTorch();
+            FlickeringTorch();
         }
     }
 
+    public void GhostHasBeenCaught(bool result)
+    {
+        if (result)
+        {
+            ghostHasBeenCaught++;
+        }
+        else
+        {
+            ghostHasBeenCaught--;
+        }
+    }
+
+    //we should only be calling ghosts in range once above, not in the aistate, refactor this
     private void FlickeringTorch()
     {
         if (_flashLightState != FlashLightState.COOLDOWN || _flashLightState != FlashLightState.HIGHBEAM)
         {
-            if (ghostsWithinRange > 0)
+            if (ghostsWithinRange > 0 && ghostHasBeenCaught != ghostsWithinRange)
             {
                 flickers.Add(StartCoroutine(Flicker()));
             }
-            else if (ghostsWithinRange <= 0)
+            else if (ghostsWithinRange <= 0 && ghostHasBeenCaught == ghostsWithinRange)
             {
                 if(flickers != null)
                 {

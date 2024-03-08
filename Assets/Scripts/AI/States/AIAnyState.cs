@@ -36,12 +36,10 @@ public class AIAnyState : AIState, ISpotted
         if (isSpotted)
         {
             caughtByBeam.caughtEvent.AddListener(Caught);
-            controller.flashLight.IsGhostWithinRange(false);
         }
         else
         {
             caughtByBeam.caughtEvent.RemoveListener(Caught);
-            controller.flashLight.IsGhostWithinRange(true);
         }
     }
 

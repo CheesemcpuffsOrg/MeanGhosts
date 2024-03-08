@@ -321,6 +321,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tags:
   - {fileID: 11400000, guid: 1f186d17a18eb0740b62b1dc866d3ce6, type: 2}
+  - {fileID: 11400000, guid: 54449f2dd3c10ce49bbbf34e07ff4da8, type: 2}
 --- !u!114 &7773656104260536614
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -333,7 +334,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36b7ad6a5ea870f4787923c7ff873ecd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _torchState: 2
   spottedInterfaces:
   - {fileID: 8852358032143981071}
   visibleToCamera: 0
@@ -419,5 +419,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 6925159469005380710}
   stateManager: {fileID: 6925159469005380709}
-  affectLightRange: 20
   caughtByBeam: {fileID: 7773656104260536614}

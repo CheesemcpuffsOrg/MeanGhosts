@@ -56,32 +56,40 @@ public class CaughtByBeam : MonoBehaviour
     {
         if (flashLight.flashLightState == FlashLight.FlashLightState.ON)
         {
+            //Object has been spotted with the default beam
             if (spotted && visibleToCamera && !caught)
             {
-                Debug.Log("spotted");
                 caught = true;
                 _caughtEvent.Invoke(true);
             }
+            //Object is currently not spotted by the default beam
             else if ((!spotted || !visibleToCamera) && caught)
             {
-                Debug.Log("not spotted");
                 caught = false;
                 _caughtEvent.Invoke(false);
+            }
+            //Switching back to default beam from highbeam
+            else if (spottedByHighBeam && visibleToCamera && caughtByHighBeam)
+            {
+                caughtByHighBeam = false;
+                _caughtByHighBeamEvent.Invoke(false);
             }
         }
         else if (flashLight.flashLightState == FlashLight.FlashLightState.HIGHBEAM)
         {
+            //spotted by the high beam
             if (spottedByHighBeam && visibleToCamera && !caughtByHighBeam)
             {
                 caughtByHighBeam = true;
                 _caughtByHighBeamEvent.Invoke(true);
-                Debug.Log("caught by high beam");
-            }
-            else if (!spottedByHighBeam && caughtByHighBeam)
+            }  
+            //high beam is active but not currently aiming at object
+            else if(!spottedByHighBeam && (visibleToCamera || !visibleToCamera) && (caughtByHighBeam || !caughtByHighBeam))
             {
                 caughtByHighBeam = false;
+                caught = false;
                 _caughtByHighBeamEvent.Invoke(false);
-                //Debug.Log("not caught by highbeam");
+                _caughtEvent.Invoke(false);
             }
         }
         else if(flashLight.flashLightState == FlashLight.FlashLightState.OFF || flashLight.flashLightState == FlashLight.FlashLightState.COOLDOWN)
@@ -98,7 +106,6 @@ public class CaughtByBeam : MonoBehaviour
         if (viewPos.x < 1.05f && viewPos.x > -0.05f && viewPos.y < 1.05 && viewPos.y > -0.05f)
         {
             visibleToCamera = true;
-            //Debug.Log("seen by camera");
         }
         else
         {
@@ -116,8 +123,6 @@ public class CaughtByBeam : MonoBehaviour
         }
 
         spotted = isSpotted;
-
-        //Debug.Log("caught by torch");
     }
 
     public void SpottedByHighBeam(bool isSpotted)

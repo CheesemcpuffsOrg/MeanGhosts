@@ -14,6 +14,7 @@ public class PlayerCollisions : MonoBehaviour
 
     [Header ("Tags")]
     [SerializeField] TagScriptableObject enemyTag;
+    [SerializeField] TagScriptableObject spottableByTorch;
 
     private void Start()
     {
@@ -29,7 +30,7 @@ public class PlayerCollisions : MonoBehaviour
 
     private void NormalBeamOnTriggerEnter2D(Collider2D other)
     {
-        if (TagExtensions.HasTag(other.gameObject, enemyTag))
+        if (TagExtensions.HasTag(other.gameObject, spottableByTorch))
         {
             other.GetComponent<CaughtByBeam>().SpottedByTorch(true);
         }
@@ -37,7 +38,7 @@ public class PlayerCollisions : MonoBehaviour
 
     private void NormalBeamOnTriggerExit2D(Collider2D other)
     {
-        if (TagExtensions.HasTag(other.gameObject, enemyTag))
+        if (TagExtensions.HasTag(other.gameObject, spottableByTorch))
         {
             other.GetComponent<CaughtByBeam>().SpottedByTorch(false);
         }
@@ -45,7 +46,7 @@ public class PlayerCollisions : MonoBehaviour
 
     private void HighBeamOnTriggerEnter2D(Collider2D other)
     {
-        if (TagExtensions.HasTag(other.gameObject, enemyTag))
+        if (TagExtensions.HasTag(other.gameObject, spottableByTorch))
         {
             other.GetComponent<CaughtByBeam>().SpottedByHighBeam(true);
         }
@@ -53,7 +54,7 @@ public class PlayerCollisions : MonoBehaviour
 
     private void HighBeamOnTriggerExit2D(Collider2D other)
     {
-        if (TagExtensions.HasTag(other.gameObject, enemyTag))
+        if (TagExtensions.HasTag(other.gameObject, spottableByTorch))
         {
             other.GetComponent<CaughtByBeam>().SpottedByHighBeam(false);
         }
