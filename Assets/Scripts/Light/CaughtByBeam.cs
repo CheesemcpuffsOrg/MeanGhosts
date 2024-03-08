@@ -18,13 +18,13 @@ public class CaughtByBeam : MonoBehaviour
     public CaughtEvent caughtByHighBeamEvent => _caughtByHighBeamEvent;
     bool spotted;
     bool spottedByHighBeam;
-    bool caught;
+    bool caught; 
     bool caughtByHighBeam;
 
     [Header ("Camera")]
     Vector3 viewPos;
     Camera _cam;
-    [SerializeField] bool visibleToCamera = false;
+    bool visibleToCamera = false;
 
     [Header("Tags")]
     [SerializeField] TagScriptableObject playerTag;
@@ -54,7 +54,7 @@ public class CaughtByBeam : MonoBehaviour
 
     private void CheckIfCaught()
     {
-        if (flashLight.flashLightState == FlashLight.FlashLightState.ON)
+        if (flashLight.flashLightState == FlashLight.FlashLightState.ON || flashLight.flashLightState == FlashLight.FlashLightState.FLICKER)
         {
             //Object has been spotted with the default beam
             if (spotted && visibleToCamera && !caught)
@@ -84,7 +84,7 @@ public class CaughtByBeam : MonoBehaviour
                 _caughtByHighBeamEvent.Invoke(true);
             }  
             //high beam is active but not currently aiming at object
-            else if(!spottedByHighBeam && (visibleToCamera || !visibleToCamera) && (caughtByHighBeam || !caughtByHighBeam))
+            else if(!spottedByHighBeam && spotted)
             {
                 caughtByHighBeam = false;
                 caught = false;
@@ -94,6 +94,8 @@ public class CaughtByBeam : MonoBehaviour
         }
         else if(flashLight.flashLightState == FlashLight.FlashLightState.OFF || flashLight.flashLightState == FlashLight.FlashLightState.COOLDOWN)
         {
+            caught = false;
+            caughtByHighBeam = false;
             _caughtEvent.Invoke(false);
             _caughtByHighBeamEvent.Invoke(false);
         }

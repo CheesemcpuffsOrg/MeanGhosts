@@ -9,7 +9,7 @@ using UnityEngine.Rendering.Universal;
 
 public class FlashLight : MonoBehaviour
 {
-    public enum FlashLightState { OFF, ON, HIGHBEAM, COOLDOWN }
+    public enum FlashLightState { OFF, ON, HIGHBEAM, COOLDOWN, FLICKER }
     [SerializeField] FlashLightState _flashLightState;
     public FlashLightState flashLightState => _flashLightState;
 
@@ -29,8 +29,8 @@ public class FlashLight : MonoBehaviour
     [SerializeField] float torchCooldownDuration = 2;
 
     [Header ("Flicker")]
-    int ghostsWithinRange = 0;
-    int ghostHasBeenCaught = 0;
+    [SerializeField]int ghostsWithinRange = 0;
+    [SerializeField]int ghostHasBeenCaught = 0;
     List<Coroutine> flickers = new List<Coroutine>();
 
     [Header ("Sounds")]
@@ -72,12 +72,20 @@ public class FlashLight : MonoBehaviour
             highBeam.intensity = 0;
             _flashLightState = FlashLightState.ON;
         }
-        else if (_flashLightState == FlashLightState.ON || _flashLightState == FlashLightState.HIGHBEAM)
+        else if (_flashLightState == FlashLightState.ON || _flashLightState == FlashLightState.HIGHBEAM || _flashLightState == FlashLightState.FLICKER)
         {
             globalLight.intensity = 0;
             normalBeam.intensity = 0;
             highBeam.intensity = 0;
             _flashLightState = FlashLightState.OFF;
+
+            if (flickers != null)
+            {
+                foreach (var flicker in flickers)
+                {
+                    StopCoroutine(flicker);
+                }
+            }
 
             if (highBeamPoweringUp != null)
             {
@@ -86,10 +94,9 @@ public class FlashLight : MonoBehaviour
         }
     }
 
-    //add cd after use 
     public void HighBeamControl()
     {
-        if (_flashLightState == FlashLightState.ON)
+        if (_flashLightState == FlashLightState.ON || _flashLightState == FlashLightState.FLICKER)
         {
             AudioManager.AudioManagerInstance.PlaySound(flashLight, this.gameObject);
 
@@ -140,25 +147,31 @@ public class FlashLight : MonoBehaviour
         if (result)
         {
             ghostHasBeenCaught++;
+            FlickeringTorch();
         }
         else
         {
             ghostHasBeenCaught--;
+            FlickeringTorch();
         }
     }
 
-    //we should only be calling ghosts in range once above, not in the aistate, refactor this
     private void FlickeringTorch()
     {
-        if (_flashLightState != FlashLightState.COOLDOWN || _flashLightState != FlashLightState.HIGHBEAM)
+        if (_flashLightState == FlashLightState.ON || _flashLightState == FlashLightState.FLICKER)
         {
-            if (ghostsWithinRange > 0 && ghostHasBeenCaught != ghostsWithinRange)
+            if (ghostHasBeenCaught != ghostsWithinRange)
             {
+                Debug.Log("time to flicker");
                 flickers.Add(StartCoroutine(Flicker()));
             }
-            else if (ghostsWithinRange <= 0 && ghostHasBeenCaught == ghostsWithinRange)
+            else if (ghostHasBeenCaught == ghostsWithinRange)
             {
-                if(flickers != null)
+                Debug.Log("stop flicker");
+
+                _flashLightState = FlashLightState.ON;
+
+                if (flickers != null)
                 {
                     foreach (var flicker in flickers)
                     {
@@ -173,18 +186,17 @@ public class FlashLight : MonoBehaviour
 
     IEnumerator Flicker()
     {
-        _flashLightState = FlashLightState.OFF;
+        _flashLightState = FlashLightState.FLICKER;
 
         normalBeam.intensity = 0.1f;
         highBeam.intensity = 0;
 
         yield return new WaitForSeconds(Random.Range(.1f,.2f));
 
-        _flashLightState = FlashLightState.ON;
-
         normalBeam.intensity = defaultNormalBeamIntensity;
 
         yield return new WaitForSeconds(Random.Range(.2f, 3f));
+
 
         FlickeringTorch(); 
     }

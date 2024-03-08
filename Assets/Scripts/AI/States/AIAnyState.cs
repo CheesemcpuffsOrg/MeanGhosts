@@ -16,6 +16,7 @@ public class AIAnyState : AIState, ISpotted
 
     public override void UpdateState(AIStateManager state)
     {
+
     }
 
     public override void ExitState(AIStateManager state)
@@ -27,7 +28,11 @@ public class AIAnyState : AIState, ISpotted
     {
         if(isCaught)
         {
-            stateManager.SwitchToTheNextState(stateManager.CaughtState);
+            if(stateManager.CurrentState != stateManager.CaughtState)
+            {
+                stateManager.SwitchToTheNextState(stateManager.CaughtState);
+            }
+            
         }
     }
 

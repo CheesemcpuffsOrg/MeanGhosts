@@ -13,8 +13,10 @@ public class AICaughtState : AIState
     bool highBeamOnGhost = false;
 
     [SerializeField] float timeUntilExplode = 2;
+    [SerializeField] float transitionDelay = 1;
 
     Coroutine caughtByBeamCoroutine;
+    Coroutine transitionDelayCoroutine;
 
     [SerializeField]ParticleSystem poofPA;
 
@@ -24,6 +26,11 @@ public class AICaughtState : AIState
         caughtByBeam.caughtEvent.AddListener(Freed);
 
         controller.flashLight.GhostHasBeenCaught(true);
+
+        if (transitionDelayCoroutine != null)
+        {
+            StopCoroutine(transitionDelayCoroutine);
+        }
 
         if (controller.flashLight.flashLightState == FlashLight.FlashLightState.HIGHBEAM)
         {
@@ -38,6 +45,8 @@ public class AICaughtState : AIState
 
     public override void ExitState(AIStateManager state)
     {
+        
+
         caughtByBeam.caughtByHighBeamEvent.RemoveListener(HighBeamControl);
         caughtByBeam.caughtEvent.RemoveListener(Freed);
 
@@ -51,6 +60,7 @@ public class AICaughtState : AIState
             controller.flashLight.GhostHasBeenCaught(false);
 
             stateManager.SwitchToTheNextState(stateManager.IdleState);
+
         }
     }
 
@@ -84,5 +94,5 @@ public class AICaughtState : AIState
 
         stateManager.SwitchToTheNextState(stateManager.IdleState);  
     }
-
+ 
 }
