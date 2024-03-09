@@ -199,25 +199,12 @@ namespace AudioSystem
             StartCoroutine(SoundDelay(delay, sound, gameObject));
         }
 
-        public IEnumerator SoundDelay(float delay, AudioScriptableObject sound, GameObject gameObject)
+        private IEnumerator SoundDelay(float delay, AudioScriptableObject sound, GameObject gameObject)
         {
             yield return new WaitForSeconds(delay);
 
             PlaySound(sound, gameObject);
         }
-
-        /// <summary>
-        /// Plays a random sound from a list.
-        /// </summary>
-        public void PlaySoundFromlist(List<AudioScriptableObject> list, GameObject gameObject)
-        {
-            var randomList = RandomUtility.RandomListSort(list);
-
-            var sound = randomList[0];
-
-            PlaySound(sound, gameObject);
-        }
-
 
         /// <summary>
         /// Checks to see if the requested sound exists and is playing
@@ -251,5 +238,19 @@ namespace AudioSystem
                 }
             }
         }
+
+        #region -- DEPRECATED --
+        /// <summary>
+        /// Plays a random sound from a list.
+        /// </summary>
+        /*public void PlaySoundFromlist(List<AudioScriptableObject> list, GameObject gameObject)
+        {
+            var randomList = RandomUtility.RandomListSort(list);
+
+            var sound = randomList[0];
+
+            PlaySound(sound, gameObject);
+        }*/
+        #endregion
     }
 }

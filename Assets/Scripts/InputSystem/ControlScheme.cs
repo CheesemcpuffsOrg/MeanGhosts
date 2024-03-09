@@ -290,6 +290,234 @@ public partial class @ControlScheme : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""SoundDesignTesting"",
+            ""id"": ""d9241766-d205-44ac-8ee7-88b892de1413"",
+            ""actions"": [
+                {
+                    ""name"": ""one"",
+                    ""type"": ""Button"",
+                    ""id"": ""10b0ab72-619b-463e-9974-939da0bc5da3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""two"",
+                    ""type"": ""Button"",
+                    ""id"": ""fd05eb90-3d9b-4da2-a922-e3e3455718dc"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""three"",
+                    ""type"": ""Button"",
+                    ""id"": ""c8115b5d-8e54-4ab6-8584-0924c72da903"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""four"",
+                    ""type"": ""Button"",
+                    ""id"": ""ebceb9b3-6e28-49fe-95e3-02eddd5fd8af"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""five"",
+                    ""type"": ""Button"",
+                    ""id"": ""7031ff65-57dc-4db8-9185-f507864e3294"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""six"",
+                    ""type"": ""Button"",
+                    ""id"": ""b9387166-bdf2-4b05-a208-dc6eb8965066"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""seven"",
+                    ""type"": ""Button"",
+                    ""id"": ""390306f3-53eb-4291-83d2-0122a5d051f9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""eight"",
+                    ""type"": ""Button"",
+                    ""id"": ""a832955f-9084-4746-9c41-56d8ee84b88c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""nine"",
+                    ""type"": ""Button"",
+                    ""id"": ""34cc3058-336c-4502-9dc4-08a94e91f814"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""zero"",
+                    ""type"": ""Button"",
+                    ""id"": ""0c527985-aa65-4ee1-bd17-7f501e7287e2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""shift"",
+                    ""type"": ""Button"",
+                    ""id"": ""4c1997b5-98e3-46f9-928a-30dc61d20784"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""cde38a82-9fe1-496e-9fef-999bf4269223"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""one"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3969eae8-dfe3-4143-8da6-4076d8afb307"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""two"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""32e36440-3462-4b51-b925-d57798e0e3d7"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""three"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d8c6d502-c2f7-4e99-b0e7-64d5161d1c31"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""four"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""564041d3-d1d3-4c26-b7b3-2ff6357d861c"",
+                    ""path"": ""<Keyboard>/5"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""five"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dad94591-f193-4e57-860f-0b59e583d316"",
+                    ""path"": ""<Keyboard>/6"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""six"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f55c2081-17c6-4f41-a72e-13195ba5ddd9"",
+                    ""path"": ""<Keyboard>/7"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""seven"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""52c69316-6b11-4cb5-abd6-cd809e64b598"",
+                    ""path"": ""<Keyboard>/8"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""eight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9518cea6-bdf1-4cba-a807-5ac420d996c2"",
+                    ""path"": ""<Keyboard>/9"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""nine"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""19d74def-7a47-4895-bd5c-64e40ee0ab91"",
+                    ""path"": ""<Keyboard>/0"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""zero"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2337c665-975f-4aeb-8398-f41c13abbd7b"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""shift"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -315,6 +543,19 @@ public partial class @ControlScheme : IInputActionCollection2, IDisposable
         // Pause
         m_Pause = asset.FindActionMap("Pause", throwIfNotFound: true);
         m_Pause_Pause = m_Pause.FindAction("Pause", throwIfNotFound: true);
+        // SoundDesignTesting
+        m_SoundDesignTesting = asset.FindActionMap("SoundDesignTesting", throwIfNotFound: true);
+        m_SoundDesignTesting_one = m_SoundDesignTesting.FindAction("one", throwIfNotFound: true);
+        m_SoundDesignTesting_two = m_SoundDesignTesting.FindAction("two", throwIfNotFound: true);
+        m_SoundDesignTesting_three = m_SoundDesignTesting.FindAction("three", throwIfNotFound: true);
+        m_SoundDesignTesting_four = m_SoundDesignTesting.FindAction("four", throwIfNotFound: true);
+        m_SoundDesignTesting_five = m_SoundDesignTesting.FindAction("five", throwIfNotFound: true);
+        m_SoundDesignTesting_six = m_SoundDesignTesting.FindAction("six", throwIfNotFound: true);
+        m_SoundDesignTesting_seven = m_SoundDesignTesting.FindAction("seven", throwIfNotFound: true);
+        m_SoundDesignTesting_eight = m_SoundDesignTesting.FindAction("eight", throwIfNotFound: true);
+        m_SoundDesignTesting_nine = m_SoundDesignTesting.FindAction("nine", throwIfNotFound: true);
+        m_SoundDesignTesting_zero = m_SoundDesignTesting.FindAction("zero", throwIfNotFound: true);
+        m_SoundDesignTesting_shift = m_SoundDesignTesting.FindAction("shift", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -468,6 +709,119 @@ public partial class @ControlScheme : IInputActionCollection2, IDisposable
         }
     }
     public PauseActions @Pause => new PauseActions(this);
+
+    // SoundDesignTesting
+    private readonly InputActionMap m_SoundDesignTesting;
+    private ISoundDesignTestingActions m_SoundDesignTestingActionsCallbackInterface;
+    private readonly InputAction m_SoundDesignTesting_one;
+    private readonly InputAction m_SoundDesignTesting_two;
+    private readonly InputAction m_SoundDesignTesting_three;
+    private readonly InputAction m_SoundDesignTesting_four;
+    private readonly InputAction m_SoundDesignTesting_five;
+    private readonly InputAction m_SoundDesignTesting_six;
+    private readonly InputAction m_SoundDesignTesting_seven;
+    private readonly InputAction m_SoundDesignTesting_eight;
+    private readonly InputAction m_SoundDesignTesting_nine;
+    private readonly InputAction m_SoundDesignTesting_zero;
+    private readonly InputAction m_SoundDesignTesting_shift;
+    public struct SoundDesignTestingActions
+    {
+        private @ControlScheme m_Wrapper;
+        public SoundDesignTestingActions(@ControlScheme wrapper) { m_Wrapper = wrapper; }
+        public InputAction @one => m_Wrapper.m_SoundDesignTesting_one;
+        public InputAction @two => m_Wrapper.m_SoundDesignTesting_two;
+        public InputAction @three => m_Wrapper.m_SoundDesignTesting_three;
+        public InputAction @four => m_Wrapper.m_SoundDesignTesting_four;
+        public InputAction @five => m_Wrapper.m_SoundDesignTesting_five;
+        public InputAction @six => m_Wrapper.m_SoundDesignTesting_six;
+        public InputAction @seven => m_Wrapper.m_SoundDesignTesting_seven;
+        public InputAction @eight => m_Wrapper.m_SoundDesignTesting_eight;
+        public InputAction @nine => m_Wrapper.m_SoundDesignTesting_nine;
+        public InputAction @zero => m_Wrapper.m_SoundDesignTesting_zero;
+        public InputAction @shift => m_Wrapper.m_SoundDesignTesting_shift;
+        public InputActionMap Get() { return m_Wrapper.m_SoundDesignTesting; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(SoundDesignTestingActions set) { return set.Get(); }
+        public void SetCallbacks(ISoundDesignTestingActions instance)
+        {
+            if (m_Wrapper.m_SoundDesignTestingActionsCallbackInterface != null)
+            {
+                @one.started -= m_Wrapper.m_SoundDesignTestingActionsCallbackInterface.OnOne;
+                @one.performed -= m_Wrapper.m_SoundDesignTestingActionsCallbackInterface.OnOne;
+                @one.canceled -= m_Wrapper.m_SoundDesignTestingActionsCallbackInterface.OnOne;
+                @two.started -= m_Wrapper.m_SoundDesignTestingActionsCallbackInterface.OnTwo;
+                @two.performed -= m_Wrapper.m_SoundDesignTestingActionsCallbackInterface.OnTwo;
+                @two.canceled -= m_Wrapper.m_SoundDesignTestingActionsCallbackInterface.OnTwo;
+                @three.started -= m_Wrapper.m_SoundDesignTestingActionsCallbackInterface.OnThree;
+                @three.performed -= m_Wrapper.m_SoundDesignTestingActionsCallbackInterface.OnThree;
+                @three.canceled -= m_Wrapper.m_SoundDesignTestingActionsCallbackInterface.OnThree;
+                @four.started -= m_Wrapper.m_SoundDesignTestingActionsCallbackInterface.OnFour;
+                @four.performed -= m_Wrapper.m_SoundDesignTestingActionsCallbackInterface.OnFour;
+                @four.canceled -= m_Wrapper.m_SoundDesignTestingActionsCallbackInterface.OnFour;
+                @five.started -= m_Wrapper.m_SoundDesignTestingActionsCallbackInterface.OnFive;
+                @five.performed -= m_Wrapper.m_SoundDesignTestingActionsCallbackInterface.OnFive;
+                @five.canceled -= m_Wrapper.m_SoundDesignTestingActionsCallbackInterface.OnFive;
+                @six.started -= m_Wrapper.m_SoundDesignTestingActionsCallbackInterface.OnSix;
+                @six.performed -= m_Wrapper.m_SoundDesignTestingActionsCallbackInterface.OnSix;
+                @six.canceled -= m_Wrapper.m_SoundDesignTestingActionsCallbackInterface.OnSix;
+                @seven.started -= m_Wrapper.m_SoundDesignTestingActionsCallbackInterface.OnSeven;
+                @seven.performed -= m_Wrapper.m_SoundDesignTestingActionsCallbackInterface.OnSeven;
+                @seven.canceled -= m_Wrapper.m_SoundDesignTestingActionsCallbackInterface.OnSeven;
+                @eight.started -= m_Wrapper.m_SoundDesignTestingActionsCallbackInterface.OnEight;
+                @eight.performed -= m_Wrapper.m_SoundDesignTestingActionsCallbackInterface.OnEight;
+                @eight.canceled -= m_Wrapper.m_SoundDesignTestingActionsCallbackInterface.OnEight;
+                @nine.started -= m_Wrapper.m_SoundDesignTestingActionsCallbackInterface.OnNine;
+                @nine.performed -= m_Wrapper.m_SoundDesignTestingActionsCallbackInterface.OnNine;
+                @nine.canceled -= m_Wrapper.m_SoundDesignTestingActionsCallbackInterface.OnNine;
+                @zero.started -= m_Wrapper.m_SoundDesignTestingActionsCallbackInterface.OnZero;
+                @zero.performed -= m_Wrapper.m_SoundDesignTestingActionsCallbackInterface.OnZero;
+                @zero.canceled -= m_Wrapper.m_SoundDesignTestingActionsCallbackInterface.OnZero;
+                @shift.started -= m_Wrapper.m_SoundDesignTestingActionsCallbackInterface.OnShift;
+                @shift.performed -= m_Wrapper.m_SoundDesignTestingActionsCallbackInterface.OnShift;
+                @shift.canceled -= m_Wrapper.m_SoundDesignTestingActionsCallbackInterface.OnShift;
+            }
+            m_Wrapper.m_SoundDesignTestingActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @one.started += instance.OnOne;
+                @one.performed += instance.OnOne;
+                @one.canceled += instance.OnOne;
+                @two.started += instance.OnTwo;
+                @two.performed += instance.OnTwo;
+                @two.canceled += instance.OnTwo;
+                @three.started += instance.OnThree;
+                @three.performed += instance.OnThree;
+                @three.canceled += instance.OnThree;
+                @four.started += instance.OnFour;
+                @four.performed += instance.OnFour;
+                @four.canceled += instance.OnFour;
+                @five.started += instance.OnFive;
+                @five.performed += instance.OnFive;
+                @five.canceled += instance.OnFive;
+                @six.started += instance.OnSix;
+                @six.performed += instance.OnSix;
+                @six.canceled += instance.OnSix;
+                @seven.started += instance.OnSeven;
+                @seven.performed += instance.OnSeven;
+                @seven.canceled += instance.OnSeven;
+                @eight.started += instance.OnEight;
+                @eight.performed += instance.OnEight;
+                @eight.canceled += instance.OnEight;
+                @nine.started += instance.OnNine;
+                @nine.performed += instance.OnNine;
+                @nine.canceled += instance.OnNine;
+                @zero.started += instance.OnZero;
+                @zero.performed += instance.OnZero;
+                @zero.canceled += instance.OnZero;
+                @shift.started += instance.OnShift;
+                @shift.performed += instance.OnShift;
+                @shift.canceled += instance.OnShift;
+            }
+        }
+    }
+    public SoundDesignTestingActions @SoundDesignTesting => new SoundDesignTestingActions(this);
     private int m_KBSchemeIndex = -1;
     public InputControlScheme KBScheme
     {
@@ -497,5 +851,19 @@ public partial class @ControlScheme : IInputActionCollection2, IDisposable
     public interface IPauseActions
     {
         void OnPause(InputAction.CallbackContext context);
+    }
+    public interface ISoundDesignTestingActions
+    {
+        void OnOne(InputAction.CallbackContext context);
+        void OnTwo(InputAction.CallbackContext context);
+        void OnThree(InputAction.CallbackContext context);
+        void OnFour(InputAction.CallbackContext context);
+        void OnFive(InputAction.CallbackContext context);
+        void OnSix(InputAction.CallbackContext context);
+        void OnSeven(InputAction.CallbackContext context);
+        void OnEight(InputAction.CallbackContext context);
+        void OnNine(InputAction.CallbackContext context);
+        void OnZero(InputAction.CallbackContext context);
+        void OnShift(InputAction.CallbackContext context);
     }
 }
