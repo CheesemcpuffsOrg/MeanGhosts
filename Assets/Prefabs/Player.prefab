@@ -55,6 +55,8 @@ MonoBehaviour:
   defaultHighBeamIntensity: 0.5
   highBeamDuration: 3
   torchCooldownDuration: 2
+  ghostsWithinRange: 0
+  ghostHasBeenCaught: 0
   flashLight: {fileID: 11400000, guid: bf12d4d2bb04b2146b9b202233db3710, type: 2}
 --- !u!1 &1316690782
 GameObject:
@@ -118,8 +120,8 @@ MonoBehaviour:
   m_NormalMapDistance: 3
   m_NormalMapQuality: 2
   m_UseNormalMap: 0
-  m_ShadowIntensityEnabled: 0
-  m_ShadowIntensity: 0.75
+  m_ShadowIntensityEnabled: 1
+  m_ShadowIntensity: 1
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_Vertices:
@@ -1507,7 +1509,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 10
+  m_Radius: 25
 --- !u!114 &3873034666254721772
 MonoBehaviour:
   m_ObjectHideFlags: 0

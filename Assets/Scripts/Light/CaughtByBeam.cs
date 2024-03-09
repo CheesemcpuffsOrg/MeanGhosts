@@ -105,7 +105,7 @@ public class CaughtByBeam : MonoBehaviour
     {
         viewPos = _cam.WorldToViewportPoint(this.transform.position);
 
-        if (viewPos.x < 1.05f && viewPos.x > -0.05f && viewPos.y < 1.05 && viewPos.y > -0.05f)
+        if (viewPos.x < 1.10f && viewPos.x > -0.10f && viewPos.y < 1.10 && viewPos.y > -0.10f)
         {
             visibleToCamera = true;
         }

@@ -28,7 +28,7 @@ public class FlashLight : MonoBehaviour
     public UnityEvent highBeamIsActive { get; } = new UnityEvent();
     [SerializeField] float torchCooldownDuration = 2;
 
-    [Header ("Flicker")]
+    [Header("Flicker")]
     [SerializeField]int ghostsWithinRange = 0;
     [SerializeField]int ghostHasBeenCaught = 0;
     List<Coroutine> flickers = new List<Coroutine>();
@@ -186,6 +186,8 @@ public class FlashLight : MonoBehaviour
 
     IEnumerator Flicker()
     {
+        yield return new WaitForSeconds(1f);
+
         _flashLightState = FlashLightState.FLICKER;
 
         normalBeam.intensity = 0.1f;

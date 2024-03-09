@@ -10,8 +10,6 @@ public class AICaughtState : AIState
     [SerializeField] AIStateManager stateManager;
     [SerializeField] CaughtByBeam caughtByBeam;
 
-    bool highBeamOnGhost = false;
-
     [SerializeField] float timeUntilExplode = 2;
     [SerializeField] float transitionDelay = 1;
 
@@ -34,7 +32,7 @@ public class AICaughtState : AIState
 
         if (controller.flashLight.flashLightState == FlashLight.FlashLightState.HIGHBEAM)
         {
-
+            caughtByBeamCoroutine = StartCoroutine(DeathTimer());
         }
     }
 
