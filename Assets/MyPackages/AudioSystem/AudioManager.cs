@@ -11,11 +11,6 @@ using UnityEngine.Rendering;
 namespace AudioSystem
 {
 
-    //add fade in fade out to scriptable object.
-    //Handle mutiple audio source stacking.
-    //Make one shots if neccesary, don't see a point though.
-    //have method that takes in group of sounds, picks a random sound and passes it through play
-
     public class AudioManager : MonoBehaviour
     {
         [System.Serializable]
@@ -30,7 +25,7 @@ namespace AudioSystem
 
         public static AudioManager AudioManagerInstance;
 
-        List<AudioReference> audioReference = new List<AudioReference>();
+        List<AudioReference> audioReferences = new List<AudioReference>();
         Queue<GameObject> audioPool = new Queue<GameObject>();
 
         [SerializeField] GameObject audioObjPrefab;
@@ -50,7 +45,7 @@ namespace AudioSystem
         /// </summary>
         public void StopAllAudio()
         {
-            foreach (AudioReference s in audioReference)
+            foreach (AudioReference s in audioReferences)
             {
                 s.audioSource.transform.SetParent(audioPoolContainer);
                 audioPool.Enqueue(s.audioSource);
@@ -59,7 +54,7 @@ namespace AudioSystem
                 {
                     StopCoroutine(s.clipLength);
                 }
-                audioReference.Remove(s);
+                audioReferences.Remove(s);
             }
         }
 
@@ -69,14 +64,12 @@ namespace AudioSystem
         public void PlaySound(AudioScriptableObject sound, GameObject gameObject)
         {
             Coroutine clipLength = null;
-
             GameObject obj;
 
             //take obj from audio pool, if there are none create a new object
             if (audioPool.Count > 0)
             {
                 obj = audioPool.Dequeue();
-                
             }
             else
             {
@@ -95,24 +88,14 @@ namespace AudioSystem
             audioSource.volume = sound.volume;
             audioSource.pitch = sound.pitch;
             audioSource.loop = sound.loop;
+            var fadeIn = sound.fadeIn;
+            var fadeInDuration = sound.fadeInDuration;
             audioSource.panStereo = sound.pan;
             audioSource.spatialBlend = sound.spatialBlend;
             audioSource.rolloffMode = sound.rolloffMode;
             audioSource.minDistance = sound.minDistance;
             audioSource.maxDistance = sound.maxDistance;
             audioSource.dopplerLevel = sound.dopplerLevel;
-
-/*            //this causes specific sounds to play over other sounds
-            if (sound.reduceAllOtherAudioButThis)
-            {
-                reduceOtherAudios = true;
-                foreach (AudioReference s in audioReference)
-                {
-                    var currentVolume = s.audioSource.GetComponent<AudioSource>().volume;
-
-                    s.audioSource.GetComponent<AudioSource>().volume =  currentVolume - (currentVolume * 60/100)
-                }
-            }*/
 
             if (audioSource.spatialBlend == 0)
             {
@@ -140,23 +123,28 @@ namespace AudioSystem
 
             createdObjReference.endOfClip = new UnityEvent();
 
-            audioReference.Add(createdObjReference);
+            audioReferences.Add(createdObjReference);
 
             audioSource.Play();
+
+            if (fadeIn)
+            {
+                StartCoroutine(FadeIn(audioSource, fadeInDuration, sound.volume));
+            }
         }
 
         IEnumerator Countdown(float seconds, AudioReference reference)
         {
             yield return new WaitForSeconds(seconds);
 
-            for (int i = 0; i <= audioReference.Count; i++)
+            for (int i = 0; i <= audioReferences.Count; i++)
             {
-                if (audioReference[i].objReference == reference.objReference && audioReference[i].requestingObj == reference.requestingObj)
+                if (audioReferences[i].objReference == reference.objReference && audioReferences[i].requestingObj == reference.requestingObj)
                 {
-                    audioReference[i].audioSource.transform.SetParent(audioPoolContainer);
-                    audioReference[i].endOfClip.Invoke();
-                    audioPool.Enqueue(audioReference[i].audioSource);
-                    audioReference.RemoveAt(i);
+                    audioReferences[i].audioSource.transform.SetParent(audioPoolContainer);
+                    audioReferences[i].endOfClip.Invoke();
+                    audioPool.Enqueue(audioReferences[i].audioSource);
+                    audioReferences.RemoveAt(i);
                     yield break;
                 }
             }
@@ -169,23 +157,33 @@ namespace AudioSystem
         {
             int i;
 
-            for (i = 0; i < audioReference.Count; i++)
+            for (i = 0; i < audioReferences.Count; i++)
             {
-                if (audioReference[i].objReference == sound && audioReference[i].requestingObj == gameObject)
+                if (audioReferences[i].objReference == sound && audioReferences[i].requestingObj == gameObject)
                 {
-                    audioReference[i].audioSource.transform.SetParent(audioPoolContainer);
-                    audioPool.Enqueue(audioReference[i].audioSource);
-                    audioReference[i].audioSource.GetComponent<AudioSource>().Stop();
-                    if (audioReference[i].clipLength != null)
+                    audioReferences[i].audioSource.transform.SetParent(audioPoolContainer);
+                    audioPool.Enqueue(audioReferences[i].audioSource);
+
+                    var audioSource = audioReferences[i].audioSource.GetComponent<AudioSource>();
+
+                    if (sound.fadeOut)
                     {
-                        StopCoroutine(audioReference[i].clipLength);
+                        StartCoroutine(FadeOut(audioSource, sound.fadeOutDuration, audioSource.volume));
                     }
-                    audioReference.RemoveAt(i);
+                    else
+                    {
+                        audioSource.Stop();
+                        if (audioReferences[i].clipLength != null)
+                        {
+                            StopCoroutine(audioReferences[i].clipLength);
+                        }
+                        audioReferences.RemoveAt(i);
+                    }
                     return;
                 }
             }
 
-            if (audioReference[i] != null)
+            if (audioReferences[i] != null)
             {
                 Debug.LogWarning("Sound: " + sound + " is not active.");
             }
@@ -206,6 +204,9 @@ namespace AudioSystem
             PlaySound(sound, gameObject);
         }
 
+
+        //might rework this to just check if sound is playing, much more useful, get it to return bool is sound is playing
+
         /// <summary>
         /// Checks to see if the requested sound exists and is playing
         /// </summary>
@@ -213,9 +214,9 @@ namespace AudioSystem
         {
             int i;
 
-            for (i = 0; i < audioReference.Count; i++)
+            for (i = 0; i < audioReferences.Count; i++)
             {
-                if (audioReference[i].objReference == sound && audioReference[i].requestingObj == gameObject)
+                if (audioReferences[i].objReference == sound && audioReferences[i].requestingObj == gameObject)
                 {
                     return;
                 }
@@ -224,19 +225,54 @@ namespace AudioSystem
         }
 
         /// <summary>
-        /// Fires an event when an audio source stops playing
+        /// Fires an event when an audio source stops playing.
         /// </summary>
         public void FireEventWhenSoundFinished(AudioScriptableObject sound, GameObject gameObject, UnityAction reference)
         {
             int i;
 
-            for (i = 0; i < audioReference.Count; i++)
+            for (i = 0; i < audioReferences.Count; i++)
             {
-                if (audioReference[i].objReference == sound && audioReference[i].requestingObj == gameObject)
+                if (audioReferences[i].objReference == sound && audioReferences[i].requestingObj == gameObject)
                 {
-                    audioReference[i].endOfClip.AddListener(reference);
+                    audioReferences[i].endOfClip.AddListener(reference);
                 }
             }
+        }
+
+        /// <summary>
+        /// Fade in audio source.
+        /// </summary>
+        private static IEnumerator FadeIn(AudioSource audioSource, float duration, float targetVolume)
+        {
+            float currentTime = 0;
+            float start = 0;
+
+            while (currentTime < duration)
+            {
+                currentTime += Time.deltaTime;
+                audioSource.volume = Mathf.Lerp(start, targetVolume, currentTime / duration);
+                yield return null;
+            }
+            yield break;
+        }
+
+        /// <summary>
+        /// Fade out audio source.
+        /// </summary>
+        private static IEnumerator FadeOut(AudioSource audioSource, float duration, float targetVolume)
+        {
+            float currentTime = 0;
+            float start = targetVolume;
+
+            while (currentTime < duration)
+            {
+                currentTime += Time.deltaTime;
+                audioSource.volume = Mathf.Lerp(start, 0, currentTime / duration);
+                yield return null;
+            }
+            audioSource.Stop();
+            yield break;
         }
 
         #region -- DEPRECATED --
