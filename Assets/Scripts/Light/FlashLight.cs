@@ -162,13 +162,10 @@ public class FlashLight : MonoBehaviour
         {
             if (ghostHasBeenCaught != ghostsWithinRange)
             {
-                Debug.Log("time to flicker");
                 flickers.Add(StartCoroutine(Flicker()));
             }
             else if (ghostHasBeenCaught == ghostsWithinRange)
             {
-                Debug.Log("stop flicker");
-
                 _flashLightState = FlashLightState.ON;
 
                 if (flickers != null)
