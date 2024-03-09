@@ -275,6 +275,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1787379928}
+  - component: {fileID: 1787379929}
   m_Layer: 0
   m_Name: SoundDesignTesting
   m_TagString: Untagged
@@ -297,3 +298,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1787379929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1787379927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62bcb3522b1534d4c88d007765b2d50f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  one: {fileID: 11400000, guid: aa85c821a517c404d9ed609aae5980c5, type: 2}
+  two: {fileID: 11400000, guid: 9dae8945707b6264d87d8933b698d04f, type: 2}
+  three: {fileID: 0}
+  four: {fileID: 0}
+  five: {fileID: 0}
+  six: {fileID: 0}
+  seven: {fileID: 0}
+  eight: {fileID: 0}
+  nine: {fileID: 0}

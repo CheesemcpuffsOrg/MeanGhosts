@@ -179,12 +179,12 @@ public class SoundDesignTesting : MonoBehaviour
 
     public void OnEnable()
     {
-        controlScheme.Player.Enable();
+        controlScheme.SoundDesignTesting.Enable();
     }
 
     public void OnDisable()
     {
-        controlScheme.Player.Disable();
+        controlScheme.SoundDesignTesting.Disable();
     }
 
 
