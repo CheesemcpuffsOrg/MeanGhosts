@@ -11,10 +11,8 @@ public class AICaughtState : AIState
     [SerializeField] CaughtByBeam caughtByBeam;
 
     [SerializeField] float timeUntilExplode = 2;
-    [SerializeField] float transitionDelay = 1;
 
     Coroutine caughtByBeamCoroutine;
-    Coroutine transitionDelayCoroutine;
 
     [SerializeField]ParticleSystem poofPA;
 
@@ -24,11 +22,6 @@ public class AICaughtState : AIState
         caughtByBeam.caughtEvent.AddListener(Freed);
 
         controller.flashLight.GhostHasBeenCaught(true);
-
-        if (transitionDelayCoroutine != null)
-        {
-            StopCoroutine(transitionDelayCoroutine);
-        }
 
         if (controller.flashLight.flashLightState == FlashLight.FlashLightState.HIGHBEAM)
         {
