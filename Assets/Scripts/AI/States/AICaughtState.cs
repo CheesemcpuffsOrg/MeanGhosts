@@ -1,75 +1,89 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 public class AICaughtState : AIState
 {
 
     [SerializeField] AIController controller;
-    [SerializeField] AIStateManager aiStateManager;
-
-    bool highBeamOnGhost = false;
+    [SerializeField] AIStateManager stateManager;
+    [SerializeField] CaughtByBeam caughtByBeam;
 
     [SerializeField] float timeUntilExplode = 2;
 
-    Coroutine caughtByBeam;
+    Coroutine caughtByBeamCoroutine;
 
     [SerializeField]ParticleSystem poofPA;
 
     public override void EnterState(AIStateManager state)
     {
-        controller.flashLight.highBeamIsActive.AddListener(SpottedByActiveHighBeam);
+        caughtByBeam.caughtByHighBeamEvent.AddListener(HighBeamControl);
+        caughtByBeam.caughtEvent.AddListener(Freed);
+
+        controller.flashLight.GhostHasBeenCaught(true);
+
+        if (controller.flashLight.flashLightState == FlashLight.FlashLightState.HIGHBEAM)
+        {
+            caughtByBeamCoroutine = StartCoroutine(DeathTimer());
+        }
     }
 
     public override void UpdateState(AIStateManager state)
     {
-        if (!state.AnyState.caught)
-        {
-            state.SwitchToTheNextState(state.IdleState);
-        }
 
-        if (!state.AnyState.spottedByHighBeam || !controller.flashLight.flashLightSwitch || !controller.flashLight.beamControl)
-        {
-            if (caughtByBeam != null)
-            {
-                StopCoroutine(caughtByBeam);
-                highBeamOnGhost = false;
-            }
-        }
     }
 
     public override void ExitState(AIStateManager state)
     {
-        if(highBeamOnGhost)
+        
+
+        caughtByBeam.caughtByHighBeamEvent.RemoveListener(HighBeamControl);
+        caughtByBeam.caughtEvent.RemoveListener(Freed);
+
+        
+    }
+
+    private void Freed(bool isCaught)
+    {
+        if (!isCaught)
         {
-            var poof = Instantiate(poofPA, this.transform.position, this.transform.rotation);
-            poof.Play();
-            transform.root.position = controller.spawn.position;
-            state.AnyState.SpottedByHighBeam(false);
-            state.AnyState.SpottedByTorch(false);
-            highBeamOnGhost = false;
-            controller.flashLight.highBeamIsActive.RemoveListener(SpottedByActiveHighBeam);
+            controller.flashLight.GhostHasBeenCaught(false);
+
+            stateManager.SwitchToTheNextState(stateManager.IdleState);
+
         }
     }
 
-    void SpottedByActiveHighBeam()
+    //need to fix this
+    private void HighBeamControl(bool result)
     {
-        //Debug.Log("spotted");
-
-        if (aiStateManager.AnyState.spottedByHighBeam)
+        if (result)
         {
-            highBeamOnGhost = true;
-            caughtByBeam = StartCoroutine(DeathTimer());
+            caughtByBeamCoroutine = StartCoroutine(DeathTimer());
+        }
+        else if(!result) 
+        {
+            if(caughtByBeamCoroutine != null)
+            {
+                StopCoroutine(caughtByBeamCoroutine);
+            }
+
         }
     }
 
     IEnumerator DeathTimer()
     {
-        //Debug.Log("Start timer");
-
         yield return new WaitForSeconds(timeUntilExplode);
 
-        aiStateManager.SwitchToTheNextState(aiStateManager.IdleState);  
-    }
+        controller.flashLight.IsGhostWithinRange(false);
 
+        var poof = Instantiate(poofPA, this.transform.position, this.transform.rotation);
+        poof.Play();
+        transform.root.position = controller.spawn.position;
+        controller.flashLight.GhostHasBeenCaught(false);
+
+        stateManager.SwitchToTheNextState(stateManager.IdleState);  
+    }
+ 
 }

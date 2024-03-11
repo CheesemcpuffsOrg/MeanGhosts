@@ -9,31 +9,29 @@ using UnityEngine.Rendering.Universal;
 
 public class FlashLight : MonoBehaviour
 {
+    public enum FlashLightState { OFF, ON, HIGHBEAM, COOLDOWN, FLICKER }
+    [SerializeField] FlashLightState _flashLightState;
+    public FlashLightState flashLightState => _flashLightState;
 
-    [SerializeField] Light2D highBeam;
-    [SerializeField] Light2D normalBeam;
+    float globalLightDefaultIntensity = 0.04f;
     [SerializeField] Light2D globalLight;
 
-    bool _beamControl = false;
-    bool _flashLightSwitch = false;
-    bool torchOnCooldown = false; 
-
+    [Header ("Default Beam")]
+    [SerializeField] Light2D normalBeam;
     [SerializeField]float defaultNormalBeamIntensity = 0.3f;
-    [SerializeField]float defaultHighBeamIntensity = 0.5f;
-    float globalLightDefaultIntensity = 0.04f;
 
+    [Header ("High Beam")]
+    [SerializeField] Light2D highBeam;
+    [SerializeField] float defaultHighBeamIntensity = 0.5f;
     [SerializeField] float highBeamDuration = 3;
+    Coroutine highBeamPoweringUp;
+    public UnityEvent highBeamIsActive { get; } = new UnityEvent();
     [SerializeField] float torchCooldownDuration = 2;
 
-    public bool flashLightSwitch => _flashLightSwitch;
-    public bool beamControl => _beamControl;
-
-    public UnityEvent highBeamIsActive { get; } = new UnityEvent();
-
-    int ghostsWithinRange = 0;
-
+    [Header("Flicker")]
+    [SerializeField]int ghostsWithinRange = 0;
+    [SerializeField]int ghostHasBeenCaught = 0;
     List<Coroutine> flickers = new List<Coroutine>();
-    Coroutine highBeamPoweringUp;
 
     [Header ("Sounds")]
     [SerializeField] AudioScriptableObject flashLight;
@@ -49,7 +47,7 @@ public class FlashLight : MonoBehaviour
 
     private void Update()
     {
-        if (_beamControl)
+        if (_flashLightState == FlashLightState.HIGHBEAM)
         {
             highBeam.intensity += 0.01f;
         }
@@ -57,31 +55,37 @@ public class FlashLight : MonoBehaviour
 
     public void FlashLightSwitch()
     {
-        if(!torchOnCooldown)
+        if(_flashLightState != FlashLightState.COOLDOWN)
         {
             AudioManager.AudioManagerInstance.PlaySound(flashLight, this.gameObject);
 
-            _flashLightSwitch = !_flashLightSwitch;
-
-            NormalBeamControl();
+            DefaultLightSwitch();
         }
-
     }
 
-    private void NormalBeamControl()
+    private void DefaultLightSwitch()
     {
-        if (_flashLightSwitch)
+        if (_flashLightState == FlashLightState.OFF)
         {
             globalLight.intensity = globalLightDefaultIntensity;
             normalBeam.intensity = defaultNormalBeamIntensity;
             highBeam.intensity = 0;
+            _flashLightState = FlashLightState.ON;
         }
-        else if (!_flashLightSwitch)
+        else if (_flashLightState == FlashLightState.ON || _flashLightState == FlashLightState.HIGHBEAM || _flashLightState == FlashLightState.FLICKER)
         {
             globalLight.intensity = 0;
             normalBeam.intensity = 0;
             highBeam.intensity = 0;
-            _beamControl = false;
+            _flashLightState = FlashLightState.OFF;
+
+            if (flickers != null)
+            {
+                foreach (var flicker in flickers)
+                {
+                    StopCoroutine(flicker);
+                }
+            }
 
             if (highBeamPoweringUp != null)
             {
@@ -90,102 +94,124 @@ public class FlashLight : MonoBehaviour
         }
     }
 
-    //add cd after use 
-    public void BeamControl()
+    public void HighBeamControl()
     {
-        if(_flashLightSwitch)
+        if (_flashLightState == FlashLightState.ON || _flashLightState == FlashLightState.FLICKER)
         {
             AudioManager.AudioManagerInstance.PlaySound(flashLight, this.gameObject);
 
-            _beamControl = !_beamControl;
+            normalBeam.intensity = 0;
+            highBeam.intensity = defaultHighBeamIntensity;
+            globalLight.intensity = 0;
+            highBeamPoweringUp = StartCoroutine(HighBeamPoweringUp());
+            highBeamIsActive.Invoke();
+            _flashLightState = FlashLightState.HIGHBEAM;
 
-            if (_beamControl)
-            {
-                normalBeam.intensity = 0;
-                highBeam.intensity = defaultHighBeamIntensity;
-                globalLight.intensity = 0;
-                highBeamPoweringUp = StartCoroutine(HighBeamPoweringUp());
-                highBeamIsActive.Invoke();
-            }
-            else if (!_beamControl)
-            {
-                globalLight.intensity = globalLightDefaultIntensity;
-                normalBeam.intensity = defaultNormalBeamIntensity;
-                highBeam.intensity = 0;
-                StopCoroutine(highBeamPoweringUp);
-            }
-        } 
-    }
-
-    public void FlickeringTorch(bool result)
-    {
-        if (!torchOnCooldown)
-        {
-            if (result)
-            {
-                ghostsWithinRange++;
-            }
-            else
-            {
-                ghostsWithinRange--;
-            }
-
-            if (ghostsWithinRange > 0 && _flashLightSwitch)
-            {
-                flickers.Add(StartCoroutine(Flicker()));
-            }
-            else if (ghostsWithinRange <= 0)
+            if (flickers != null)
             {
                 foreach (var flicker in flickers)
                 {
                     StopCoroutine(flicker);
                 }
+            }
+        }
+        else if (_flashLightState == FlashLightState.HIGHBEAM)
+        {
+            AudioManager.AudioManagerInstance.PlaySound(flashLight, this.gameObject);
 
-                if (!highBeam)
+            globalLight.intensity = globalLightDefaultIntensity;
+            normalBeam.intensity = defaultNormalBeamIntensity;
+            highBeam.intensity = 0;
+            StopCoroutine(highBeamPoweringUp);
+            _flashLightState = FlashLightState.ON; 
+        }
+
+    }
+
+    public void IsGhostWithinRange(bool result)
+    {
+        if (result)
+        {
+            ghostsWithinRange++;
+            FlickeringTorch();
+        }
+        else
+        {
+            ghostsWithinRange--;
+            FlickeringTorch();
+        }
+    }
+
+    public void GhostHasBeenCaught(bool result)
+    {
+        if (result)
+        {
+            ghostHasBeenCaught++;
+            FlickeringTorch();
+        }
+        else
+        {
+            ghostHasBeenCaught--;
+            FlickeringTorch();
+        }
+    }
+
+    private void FlickeringTorch()
+    {
+        if (_flashLightState == FlashLightState.ON || _flashLightState == FlashLightState.FLICKER)
+        {
+            if (ghostHasBeenCaught != ghostsWithinRange)
+            {
+                flickers.Add(StartCoroutine(Flicker()));
+            }
+            else if (ghostHasBeenCaught == ghostsWithinRange)
+            {
+                _flashLightState = FlashLightState.ON;
+
+                if (flickers != null)
                 {
+                    foreach (var flicker in flickers)
+                    {
+                        StopCoroutine(flicker);
+                    }
+
                     normalBeam.intensity = defaultNormalBeamIntensity;
                 }
-                
-                
             }
         }  
     }
 
     IEnumerator Flicker()
     {
-        _beamControl = false;
+        yield return new WaitForSeconds(1f);
+
+        _flashLightState = FlashLightState.FLICKER;
 
         normalBeam.intensity = 0.1f;
         highBeam.intensity = 0;
 
         yield return new WaitForSeconds(Random.Range(.1f,.2f));
 
-        _beamControl = false;
-
         normalBeam.intensity = defaultNormalBeamIntensity;
 
         yield return new WaitForSeconds(Random.Range(.2f, 3f));
 
-        if( ghostsWithinRange > 0)
-        {
-            StartCoroutine(Flicker());
-        } 
+
+        FlickeringTorch(); 
     }
 
     IEnumerator HighBeamPoweringUp()
     {
         yield return new WaitForSeconds(highBeamDuration);
 
-        torchOnCooldown = true;
+        _flashLightState = FlashLightState.COOLDOWN;
 
         normalBeam.intensity = 0;
         highBeam.intensity = 0;
-        _flashLightSwitch = false;
-        _beamControl = false;
 
         yield return new WaitForSeconds(torchCooldownDuration);
 
-        torchOnCooldown = false;
+        _flashLightState = FlashLightState.OFF;
     }
 
     public void Pause(bool pause)
@@ -194,7 +220,8 @@ public class FlashLight : MonoBehaviour
         {
             normalBeam.intensity = 0;
             highBeam.intensity = 0;
-            _beamControl = false;
+
+            _flashLightState = FlashLightState.OFF;
 
             if (highBeamPoweringUp != null)
             {
@@ -203,7 +230,7 @@ public class FlashLight : MonoBehaviour
         }
         else
         {
-            NormalBeamControl();
+            DefaultLightSwitch();
         }
     }
 }
