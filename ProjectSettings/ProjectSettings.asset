@@ -636,11 +636,11 @@ PlayerSettings:
     m_VersionName: 
   apiCompatibilityLevel: 6
   activeInputHandler: 1
-  cloudProjectId: 
+  cloudProjectId: 3a44c5e5-7391-4ef9-8b83-1cf249615755
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: 
-  organizationId: 
+  projectName: ScreamJam2023
+  organizationId: karljohanlindolf
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   playerDataPath: 
