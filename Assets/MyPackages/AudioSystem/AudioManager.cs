@@ -16,7 +16,7 @@ namespace AudioSystem
         [System.Serializable]
         private class AudioReference
         {
-            public ScriptableObject objReference;
+            public AudioScriptableObject objReference;
             public GameObject requestingObj;
             public GameObject audioSource;
             public Coroutine clipLength;
@@ -55,6 +55,34 @@ namespace AudioSystem
                     StopCoroutine(s.clipLength);
                 }
                 audioReferences.Remove(s);
+            }
+        }
+
+        /// <summary>
+        /// Call this method when you pause the game.
+        /// </summary>
+        public void PauseAllAudio()
+        {
+            foreach (AudioReference s in audioReferences)
+            {
+                if (!s.objReference.playWhilePaused)
+                {
+                    s.audioSource.GetComponent<AudioSource>().Pause();
+                }
+            }
+        }
+
+        /// <summary>
+        ///  Call this method when you unpause the game.
+        /// </summary>
+        public void UnPauseAllAudio()
+        {
+            foreach (AudioReference s in audioReferences)
+            {
+                if (!s.objReference.playWhilePaused)
+                {
+                    s.audioSource.GetComponent<AudioSource>().Play();
+                }
             }
         }
 
