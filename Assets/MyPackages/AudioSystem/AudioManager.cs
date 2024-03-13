@@ -238,7 +238,7 @@ namespace AudioSystem
         /// <summary>
         /// Checks to see if the requested sound exists and is playing
         /// </summary>
-        public void PlaySoundIfNotAlreadyPlaying(AudioScriptableObject sound, GameObject gameObject)
+        public bool IsSoundPlaying(AudioScriptableObject sound, GameObject gameObject)
         {
             int i;
 
@@ -246,10 +246,10 @@ namespace AudioSystem
             {
                 if (audioReferences[i].objReference == sound && audioReferences[i].requestingObj == gameObject)
                 {
-                    return;
+                    return true;
                 }
             }
-            PlaySound(sound, gameObject);
+            return false;
         }
 
         /// <summary>
