@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: sfx_SO_Banging
   m_EditorClassIdentifier: 
   audioClips:
-  - obj: {fileID: 8300000, guid: 04144bc978e803240b2478dfff6c7cb5, type: 3}
+  - obj: {fileID: 8300000, guid: 1a50acaf98e97e84e815fab5978def55, type: 3}
     weight: 100
   audioMixerGroup: {fileID: -9123715879687149167, guid: d8dd63bf224bdc8468fb34784cf4b2fa, type: 2}
   volume: 1

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: sfx_SO_FootSteps
   m_EditorClassIdentifier: 
   audioClips:
-  - obj: {fileID: 8300000, guid: 74efe5ef550f23742bb967e538724b45, type: 3}
+  - obj: {fileID: 8300000, guid: 207f587ae41e8714083f127181cf05a7, type: 3}
     weight: 100
   audioMixerGroup: {fileID: -9123715879687149167, guid: d8dd63bf224bdc8468fb34784cf4b2fa, type: 2}
   volume: 0.3

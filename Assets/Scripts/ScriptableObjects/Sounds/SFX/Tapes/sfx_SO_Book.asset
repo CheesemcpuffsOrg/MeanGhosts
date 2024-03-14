@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: sfx_SO_Book
   m_EditorClassIdentifier: 
   audioClips:
-  - obj: {fileID: 8300000, guid: 1fb78d25041a8044891eb2085f738809, type: 3}
+  - obj: {fileID: 8300000, guid: fd282f2c9a938924fbaa5470ca165cd9, type: 3}
     weight: 100
   audioMixerGroup: {fileID: -9123715879687149167, guid: d8dd63bf224bdc8468fb34784cf4b2fa, type: 2}
   volume: 1

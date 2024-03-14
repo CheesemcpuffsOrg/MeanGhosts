@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: sfx_SO_Beret
   m_EditorClassIdentifier: 
   audioClips:
-  - obj: {fileID: 8300000, guid: a2dcd7519a801ed46840663ad2005a66, type: 3}
+  - obj: {fileID: 8300000, guid: b01360a0afae0a149a06fe986efffaa4, type: 3}
     weight: 100
   audioMixerGroup: {fileID: -41284633283198992, guid: d8dd63bf224bdc8468fb34784cf4b2fa, type: 2}
   volume: 1

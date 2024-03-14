@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: sfx_SO_Knife
   m_EditorClassIdentifier: 
   audioClips:
-  - obj: {fileID: 8300000, guid: de49579a1fff0f54bb3bac281e9f8d42, type: 3}
+  - obj: {fileID: 8300000, guid: e1aa16a726af63843be37f98ace0b943, type: 3}
     weight: 100
   audioMixerGroup: {fileID: -9123715879687149167, guid: d8dd63bf224bdc8468fb34784cf4b2fa, type: 2}
   volume: 1

@@ -45,6 +45,7 @@ public class SoundDesignTesting : MonoBehaviour
 
     void PlaySoundOne(InputAction.CallbackContext playOne)
     {
+Debug.Log("Button Click");
         if(!shiftIsHeld)
         {
             AudioManager.AudioManagerInstance.PlaySound(one, this.gameObject);

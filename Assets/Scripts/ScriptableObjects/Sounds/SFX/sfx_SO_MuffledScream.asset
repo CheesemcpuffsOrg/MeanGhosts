@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: sfx_SO_MuffledScream
   m_EditorClassIdentifier: 
   audioClips:
-  - obj: {fileID: 8300000, guid: d6ec67ffc8f57574ab9e771cc67c72ff, type: 3}
+  - obj: {fileID: 8300000, guid: 127e733187fb02e47b68fa355ecd1753, type: 3}
     weight: 100
   audioMixerGroup: {fileID: -9123715879687149167, guid: d8dd63bf224bdc8468fb34784cf4b2fa, type: 2}
   volume: 1

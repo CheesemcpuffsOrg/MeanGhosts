@@ -346,10 +346,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   one: {fileID: 11400000, guid: aa85c821a517c404d9ed609aae5980c5, type: 2}
   two: {fileID: 11400000, guid: 9dae8945707b6264d87d8933b698d04f, type: 2}
-  three: {fileID: 0}
-  four: {fileID: 0}
-  five: {fileID: 0}
-  six: {fileID: 0}
-  seven: {fileID: 0}
-  eight: {fileID: 0}
-  nine: {fileID: 0}
+  three: {fileID: 11400000, guid: bf12d4d2bb04b2146b9b202233db3710, type: 2}
+  four: {fileID: 11400000, guid: 1b36519834f388645a4b42193fa6d8d1, type: 2}
+  five: {fileID: 11400000, guid: 9603f84813b1a444a9ea27df0ee7ed8c, type: 2}
+  six: {fileID: 11400000, guid: ddefd857dbc4a794e9a616bf86372039, type: 2}
+  seven: {fileID: 11400000, guid: e3f3d2055f6c9db47b38b33405b2e9b6, type: 2}
+  eight: {fileID: 11400000, guid: 973604e773f094c43a2baebd9e3b827e, type: 2}
+  nine: {fileID: 11400000, guid: d11c1a69931741545ba3ca483862f866, type: 2}
