@@ -20,11 +20,12 @@ MonoBehaviour:
   pitch: 1
   pan: 0
   loop: 0
+  playWhilePaused: 0
   fadeIn: 0
   fadeInDuration: 0
   fadeOut: 0
   fadeOutDuration: 0
-  spatialBlend: 0
+  spatialBlend: 1
   dopplerLevel: 0
   rolloffMode: 1
   minDistance: 1
