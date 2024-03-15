@@ -7,6 +7,8 @@ public class AmbientSounds : MonoBehaviour
 {
     [Header("Sounds")]
     [SerializeField] AudioScriptableObject ambientSound;
+    [SerializeField] float minSeconds = 15f;
+    [SerializeField] float maxSeconds = 30f;
 
     // Start is called before the first frame update
     void Start()
@@ -16,10 +18,12 @@ public class AmbientSounds : MonoBehaviour
 
     IEnumerator RandomAmbientSound()
     {
-        yield return new WaitForSeconds(Random.Range(15f, 30f));
+        while (true)
+        {
+            yield return new WaitForSecondsRealtime(Random.Range(minSeconds, maxSeconds));
 
-        AudioManager.AudioManagerInstance.PlaySound(ambientSound, this.gameObject);
-
-        StartCoroutine(RandomAmbientSound());
+            AudioManager.AudioManagerInstance.PlaySound(ambientSound, this.gameObject);
+        }
+        
     }
 }

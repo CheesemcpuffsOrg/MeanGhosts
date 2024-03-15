@@ -138,17 +138,19 @@ public class GameManager : MonoBehaviour
 
         UIManagers.UIManagersInstance.PauseText();
 
-        if (pause == false)
-        {
-            Time.timeScale = 1;
-            player.GetComponentInChildren<FlashLight>().Pause(pause);
-            player.GetComponent<PlayerController>().OnEnable();
-        }
-        else
+        if (pause)
         {
             Time.timeScale = 0;
             player.GetComponentInChildren<FlashLight>().Pause(pause);
             player.GetComponent<PlayerController>().OnDisable();
+            AudioManager.AudioManagerInstance.PauseAllAudio();
+        }
+        else
+        { 
+            Time.timeScale = 1;
+            player.GetComponentInChildren<FlashLight>().Pause(pause);
+            player.GetComponent<PlayerController>().OnEnable();
+            AudioManager.AudioManagerInstance.UnPauseAllAudio();
         }
 
     }

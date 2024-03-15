@@ -10,16 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 760b1e9d61e78084891ed16194867649, type: 3}
-  m_Name: sfx_SO_Beret
+  m_Name: sfx_SO_MainBackgroundMusic
   m_EditorClassIdentifier: 
   audioClips:
-  - obj: {fileID: 8300000, guid: b01360a0afae0a149a06fe986efffaa4, type: 3}
+  - obj: {fileID: 8300000, guid: e08faed865e282344b0101eb5bea6e50, type: 3}
     weight: 100
-  audioMixerGroup: {fileID: -9123715879687149167, guid: d8dd63bf224bdc8468fb34784cf4b2fa, type: 2}
-  volume: 1
+  audioMixerGroup: {fileID: -41284633283198992, guid: d8dd63bf224bdc8468fb34784cf4b2fa, type: 2}
+  volume: 0.2
   pitch: 1
   pan: 0
-  loop: 0
+  loop: 1
+  playWhilePaused: 1
   fadeIn: 0
   fadeInDuration: 0
   fadeOut: 0
@@ -28,5 +29,5 @@ MonoBehaviour:
   dopplerLevel: 0
   rolloffMode: 1
   minDistance: 1
-  maxDistance: 10
+  maxDistance: 30
   source: {fileID: 0}

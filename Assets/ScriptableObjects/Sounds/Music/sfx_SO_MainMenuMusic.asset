@@ -20,6 +20,7 @@ MonoBehaviour:
   pitch: 0.75
   pan: 0
   loop: 1
+  playWhilePaused: 0
   fadeIn: 1
   fadeInDuration: 1
   fadeOut: 1

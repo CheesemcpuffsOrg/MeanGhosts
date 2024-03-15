@@ -18,6 +18,7 @@ public class AudioScriptableObject : ScriptableObject
     [Range(-1f, 1f)]
     public float pan = 0;
     public bool loop = false;
+    public bool playWhilePaused = false;
 
     [Header ("Fade Controls")]
     public bool fadeIn = false;
