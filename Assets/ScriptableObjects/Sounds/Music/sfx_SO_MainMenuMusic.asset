@@ -10,23 +10,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 760b1e9d61e78084891ed16194867649, type: 3}
-  m_Name: sfx_SO_Microphone
+  m_Name: sfx_SO_MainMenuMusic
   m_EditorClassIdentifier: 
   audioClips:
-  - obj: {fileID: 8300000, guid: 0b7a89be293667c4d82a2a3b7100f425, type: 3}
+  - obj: {fileID: 8300000, guid: 0d855742fa9de3f42a54b8f7f324c4d1, type: 3}
     weight: 100
-  audioMixerGroup: {fileID: -9123715879687149167, guid: d8dd63bf224bdc8468fb34784cf4b2fa, type: 2}
+  audioMixerGroup: {fileID: -41284633283198992, guid: d8dd63bf224bdc8468fb34784cf4b2fa, type: 2}
   volume: 1
-  pitch: 1
+  pitch: 0.75
   pan: 0
-  loop: 0
-  fadeIn: 0
-  fadeInDuration: 0
-  fadeOut: 0
-  fadeOutDuration: 0
+  loop: 1
+  playWhilePaused: 0
+  fadeIn: 1
+  fadeInDuration: 1
+  fadeOut: 1
+  fadeOutDuration: 1
   spatialBlend: 0
   dopplerLevel: 0
   rolloffMode: 1
   minDistance: 1
-  maxDistance: 10
+  maxDistance: 30
   source: {fileID: 0}

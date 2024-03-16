@@ -139,7 +139,6 @@ public class PlayerController : MonoBehaviour
     void Interact(InputAction.CallbackContext interact)
     {
         interactEvent.Invoke();
-        Debug.Log("Interact");
     }
 
     public void HeldObject(GameObject holdme)
