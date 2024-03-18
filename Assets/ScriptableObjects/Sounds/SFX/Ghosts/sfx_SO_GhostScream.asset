@@ -13,13 +13,14 @@ MonoBehaviour:
   m_Name: sfx_SO_GhostScream
   m_EditorClassIdentifier: 
   audioClips:
-  - obj: {fileID: 8300000, guid: 3d98f79e3d14d574fb0a27e3d86f44b5, type: 3}
+  - obj: {fileID: 8300000, guid: fe9c478d3d329bf44918476cd9a89a85, type: 3}
     weight: 100
   audioMixerGroup: {fileID: -9123715879687149167, guid: d8dd63bf224bdc8468fb34784cf4b2fa, type: 2}
   volume: 1
   pitch: 1.2
   pan: 0
   loop: 0
+  playWhilePaused: 0
   fadeIn: 0
   fadeInDuration: 0
   fadeOut: 0

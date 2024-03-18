@@ -30,7 +30,9 @@ public class GameManager : MonoBehaviour
     public int score = 0;
     public float timer;
 
-    bool pause = false;
+    bool _isPaused = false;
+    public bool isPaused => _isPaused;
+    
 
     [Header("Tags")]
     [SerializeField] TagScriptableObject playerTag;
@@ -134,23 +136,25 @@ public class GameManager : MonoBehaviour
 
     void Pause(InputAction.CallbackContext pauseGame)
     {
-        pause = !pause;
+        _isPaused = !_isPaused;
 
         UIManagers.UIManagersInstance.PauseText();
 
-        if (pause)
+        if (_isPaused)
         {
-            Time.timeScale = 0;
-            player.GetComponentInChildren<FlashLight>().Pause(pause);
+            
+            player.GetComponentInChildren<FlashLight>().Pause(_isPaused);
             player.GetComponent<PlayerController>().OnDisable();
             AudioManager.AudioManagerInstance.PauseAllAudio();
+            Time.timeScale = 0;
         }
         else
         { 
-            Time.timeScale = 1;
-            player.GetComponentInChildren<FlashLight>().Pause(pause);
+            
+            player.GetComponentInChildren<FlashLight>().Pause(_isPaused);
             player.GetComponent<PlayerController>().OnEnable();
             AudioManager.AudioManagerInstance.UnPauseAllAudio();
+            Time.timeScale = 1;
         }
 
     }
