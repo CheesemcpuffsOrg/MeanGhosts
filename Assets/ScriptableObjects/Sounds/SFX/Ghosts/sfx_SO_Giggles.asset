@@ -13,13 +13,14 @@ MonoBehaviour:
   m_Name: sfx_SO_Giggles
   m_EditorClassIdentifier: 
   audioClips:
-  - obj: {fileID: 8300000, guid: f8b5dfce8b96df94ba6164e7f1d128de, type: 3}
+  - obj: {fileID: 8300000, guid: 7deae906084a1334fb004055f0c9527b, type: 3}
     weight: 100
   audioMixerGroup: {fileID: -9123715879687149167, guid: d8dd63bf224bdc8468fb34784cf4b2fa, type: 2}
   volume: 1
   pitch: 1
   pan: 0
   loop: 0
+  playWhilePaused: 0
   fadeIn: 0
   fadeInDuration: 0
   fadeOut: 0
