@@ -27,7 +27,8 @@ public class PlayerController : MonoBehaviour
     public bool invisible = false;
     public bool safe = false;
 
-    public UnityEvent interactEvent;
+    private UnityEvent _interactEvent;
+    public UnityEvent interactEvent => _interactEvent;
 
     public GameObject heldObject;
 
