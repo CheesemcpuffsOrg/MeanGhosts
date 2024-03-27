@@ -1239,6 +1239,7 @@ GameObject:
   - component: {fileID: 1707787949}
   - component: {fileID: 2202563623034097835}
   - component: {fileID: 5603956582273156422}
+  - component: {fileID: 7343292460737189724}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1332,11 +1333,18 @@ MonoBehaviour:
   flashLight: {fileID: 682050257}
   invisible: 0
   safe: 0
-  interactEvent:
-    m_PersistentCalls:
-      m_Calls: []
   heldObject: {fileID: 0}
   canInteract: 0
+  animController: {fileID: 7343292460737189724}
+  idle: Idle
+  walkUp: Anim_PlayerWalkUp
+  walkUpRight: Anim_PlayerDiagonalUpRight
+  walkRight: Anim_PlayerWalkRight
+  walkDownRight: Anim_PlayerDiagonalDownRight
+  walkDown: Anim_PlayerWalkDown
+  walkDownLeft: Anim_PlayerDiagonalDownLeft
+  walkLeft: Anim_PlayerWalkLeft
+  walkUpLeft: Anim_PlayerDiagonalUpLeft
   footSteps: {fileID: 11400000, guid: 2fe13ab7ce7d98344be17daa805bbdcc, type: 2}
 --- !u!50 &5603956583811793887
 Rigidbody2D:
@@ -1461,6 +1469,19 @@ MonoBehaviour:
   ghostDetectionCollider: {fileID: 3873034666254721772}
   enemyTag: {fileID: 11400000, guid: 1f186d17a18eb0740b62b1dc866d3ce6, type: 2}
   spottableByTorch: {fileID: 11400000, guid: 54449f2dd3c10ce49bbbf34e07ff4da8, type: 2}
+--- !u!114 &7343292460737189724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5603956583811793880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3fafe65204294747af87f407a724555, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 1707787942}
 --- !u!1 &6757774431255388121
 GameObject:
   m_ObjectHideFlags: 0

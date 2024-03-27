@@ -34,14 +34,23 @@ public class PlayerController : MonoBehaviour
 
     public bool canInteract;
 
-    Animator anim;
+    [Header ("Animation")]
+    [SerializeField]AnimationController animController;
+    [SerializeField] string idle;
+    [SerializeField] string walkUp;
+    [SerializeField] string walkUpRight;
+    [SerializeField] string walkRight;
+    [SerializeField] string walkDownRight;
+    [SerializeField] string walkDown;
+    [SerializeField] string walkDownLeft;
+    [SerializeField] string walkLeft;
+    [SerializeField] string walkUpLeft;
 
     [Header ("Sounds")]
     [SerializeField] AudioScriptableObject footSteps;
 
     private void Awake()
     {
-        anim = GetComponent<Animator>();
         controlScheme = new ControlScheme();
         controlScheme.Player.Move.performed += Movement;
         controlScheme.Player.Move.canceled += MovementStopped;
@@ -55,48 +64,22 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (currentMoveInput.y != 0 || currentMoveInput.x != 0) { isMoving = true; } else { isMoving = false; }
+
+        if (isMoving)
+        {
+            WalkAnimation();
+        }
+        else
+        {
+            animController.PlayAnimation(idle);
+        }
+
         SmoothMovement();
 
         PlayFootsteps();
 
         // PlayerRotation();
-    }
-
-    void SmoothMovement()
-    {
-        smoothCurrentMoveInput = Vector2.SmoothDamp(smoothCurrentMoveInput, currentMoveInput, ref currentMovementSmoothVelocity, 0.1f);
-
-        rb.velocity = smoothCurrentMoveInput * speed;
-
-        if (flashLight.transform.rotation.eulerAngles.z > 180)
-        {
-            GetComponent<SpriteRenderer>().flipX = false;
-            if (currentMoveInput.x < 0)
-            {
-                speed = playerSO.speed / 2;
-            }
-            else
-            {
-                speed = playerSO.speed;
-            }
-
-        }
-        else if (flashLight.transform.rotation.eulerAngles.z < 180)
-        {
-            GetComponent<SpriteRenderer>().flipX = true;
-            if (currentMoveInput.x > 0)
-            {
-                speed = playerSO.speed / 2;
-            }
-            else
-            {
-                speed = playerSO.speed;
-            }
-        }
-            
-
-        anim.SetBool("isWalking", isMoving);
-
     }
 
     void Movement(InputAction.CallbackContext move)
@@ -109,10 +92,65 @@ public class PlayerController : MonoBehaviour
         currentMoveInput = move.ReadValue<Vector2>();
     }
 
+    void WalkAnimation()
+    {
+        if (flashLight.transform.rotation.eulerAngles.z > 337.6f || flashLight.transform.rotation.eulerAngles.z < 22.5f)
+        {
+            GetComponent<SpriteRenderer>().flipX = false;
+            animController.PlayAnimation(walkUp);
+        }
+        else if (flashLight.transform.rotation.eulerAngles.z > 22.6f && flashLight.transform.rotation.eulerAngles.z < 67.5f)
+        {
+            GetComponent<SpriteRenderer>().flipX = true;
+            animController.PlayAnimation(walkUpLeft);
+        }
+        else if (flashLight.transform.rotation.eulerAngles.z > 67.6f && flashLight.transform.rotation.eulerAngles.z < 112.5f)
+        {
+            GetComponent<SpriteRenderer>().flipX = true;
+            animController.PlayAnimation(walkLeft);
+        }
+        else if (flashLight.transform.rotation.eulerAngles.z > 112.6f && flashLight.transform.rotation.eulerAngles.z < 157.5f)
+        {
+            GetComponent<SpriteRenderer>().flipX = true;
+            animController.PlayAnimation(walkDownLeft);
+        }
+        else if (flashLight.transform.rotation.eulerAngles.z > 157.6f && flashLight.transform.rotation.eulerAngles.z < 202.5f)
+        {
+            GetComponent<SpriteRenderer>().flipX = false;
+            animController.PlayAnimation(walkDown);
+        }
+        else if (flashLight.transform.rotation.eulerAngles.z > 202.6f && flashLight.transform.rotation.eulerAngles.z < 247.5f)
+        {
+            GetComponent<SpriteRenderer>().flipX = false;
+            animController.PlayAnimation(walkDownRight);
+        }
+        else if (flashLight.transform.rotation.eulerAngles.z > 247.6f && flashLight.transform.rotation.eulerAngles.z < 292.5f)
+        {
+            GetComponent<SpriteRenderer>().flipX = false;
+            animController.PlayAnimation(walkRight);
+        }
+        else if (flashLight.transform.rotation.eulerAngles.z > 292.6f && flashLight.transform.rotation.eulerAngles.z < 337.5f)
+        {
+            GetComponent<SpriteRenderer>().flipX = false;
+            animController.PlayAnimation(walkUpRight);
+        }
+    }
+
+    void SmoothMovement()
+    {
+
+        smoothCurrentMoveInput = Vector2.SmoothDamp(smoothCurrentMoveInput, currentMoveInput, ref currentMovementSmoothVelocity, 0.1f);
+
+        rb.velocity = smoothCurrentMoveInput * speed;
+
+        
+
+    }
+
+    
     void PlayFootsteps()
     {
-        if (currentMoveInput.y != 0 || currentMoveInput.x != 0) { isMoving = true; } else { isMoving = false; }
-
+        
         if (isMoving && !footsteps)
         {
             AudioManager.AudioManagerInstance.PlaySound(footSteps, this.gameObject);

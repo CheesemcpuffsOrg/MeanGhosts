@@ -38,12 +38,12 @@ public class AnimationController : MonoBehaviour
 
         animator.CrossFade(animation.ToString(), transitionTime, layer);
 
-        CurrentlyPlayingAnimations currentReference = new CurrentlyPlayingAnimations();
+        CurrentlyPlayingAnimations reference = new CurrentlyPlayingAnimations();
 
-        currentReference.animation = animation; 
-        currentReference.layer = layer;
+        reference.animation = animation; 
+        reference.layer = layer;
 
-        currentlyPlayingAnimations.Add(currentReference);
+        currentlyPlayingAnimations.Add(reference);
         
     }
 
