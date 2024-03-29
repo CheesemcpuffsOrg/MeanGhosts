@@ -15,7 +15,10 @@ public class PlayerController : MonoBehaviour
     Vector2 currentMoveInput;
     Vector2 smoothCurrentMoveInput;
     Vector2 currentMovementSmoothVelocity;
-    [SerializeField] float speed;
+    float currentSpeed;
+    float defaultSpeed;
+    float defaultSpeedModifier = 1f;
+    [SerializeField] float speedReductionModifier = 0.75f;
 
     [SerializeField] FlashLight flashlight;
     public GameObject flashLight;
@@ -46,6 +49,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] string walkLeft;
     [SerializeField] string walkUpLeft;
 
+    [SerializeField] string walkUpReversed;
+    [SerializeField] string walkUpRightReversed;
+    [SerializeField] string walkRightReversed;
+    [SerializeField] string walkDownRightReversed;
+    [SerializeField] string walkDownReversed;
+    [SerializeField] string walkDownLeftReversed;
+    [SerializeField] string walkLeftReversed;
+    [SerializeField] string walkUpLeftReversed;
+
     [Header ("Sounds")]
     [SerializeField] AudioScriptableObject footSteps;
 
@@ -59,7 +71,8 @@ public class PlayerController : MonoBehaviour
         controlScheme.Player.BeamControl.performed += BeamControl;
         rb = GetComponent<Rigidbody2D>();
         //invisible = true;
-        speed = playerSO.speed;
+        currentSpeed = playerSO.speed;
+        defaultSpeed = playerSO.speed;
     }
 
     private void FixedUpdate()
@@ -92,59 +105,317 @@ public class PlayerController : MonoBehaviour
         currentMoveInput = move.ReadValue<Vector2>();
     }
 
+    #region --WALK ANIMATION --
     void WalkAnimation()
     {
-        if (flashLight.transform.rotation.eulerAngles.z > 337.6f || flashLight.transform.rotation.eulerAngles.z < 22.5f)
+        var torchRotation = flashLight.transform.rotation.eulerAngles;
+        var velocity = rb.velocity;
+        var spriteRenderer = GetComponent<SpriteRenderer>();
+
+        //walk up
+        if(velocity.y > 0.5f && velocity.x > -0.5 && velocity.x < 0.5f)
         {
-            GetComponent<SpriteRenderer>().flipX = false;
-            animController.PlayAnimation(walkUp);
+            if (torchRotation.z > 337.6f || torchRotation.z < 22.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, false, walkUp, defaultSpeedModifier);
+            }
+            else if (torchRotation.z > 22.6f && torchRotation.z < 67.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, true, walkUpLeft, defaultSpeedModifier);
+            }
+            else if (torchRotation.z > 67.6f && torchRotation.z < 112.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, true, walkLeft, defaultSpeedModifier);
+            }
+            else if (torchRotation.z > 112.6f && torchRotation.z < 157.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, true, walkDownLeftReversed, speedReductionModifier);
+            }
+            else if (torchRotation.z > 157.6f && torchRotation.z < 202.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, false, walkDownReversed, speedReductionModifier);
+            }
+            else if (torchRotation.z > 202.6f && torchRotation.z < 247.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, false, walkDownRightReversed, speedReductionModifier);
+            }
+            else if (torchRotation.z > 247.6f && torchRotation.z < 292.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, false, walkRight, defaultSpeedModifier);
+            }
+            else if (torchRotation.z > 292.6f && torchRotation.z < 337.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, false, walkUpRight, defaultSpeedModifier);
+            }
         }
-        else if (flashLight.transform.rotation.eulerAngles.z > 22.6f && flashLight.transform.rotation.eulerAngles.z < 67.5f)
+        // walk up left
+        else if (velocity.y > 0.5f && velocity.x < -0.5)
         {
-            GetComponent<SpriteRenderer>().flipX = true;
-            animController.PlayAnimation(walkUpLeft);
+            if (torchRotation.z > 337.6f || torchRotation.z < 22.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, false, walkUp, defaultSpeedModifier);
+            }
+            else if (torchRotation.z > 22.6f && torchRotation.z < 67.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, true, walkUpLeft, defaultSpeedModifier);
+            }
+            else if (torchRotation.z > 67.6f && torchRotation.z < 112.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, true, walkLeft, defaultSpeedModifier) ;
+            }
+            else if (torchRotation.z > 112.6f && torchRotation.z < 157.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, true, walkDownLeft, defaultSpeedModifier);
+            }
+            else if (torchRotation.z > 157.6f && torchRotation.z < 202.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, false, walkDownReversed, speedReductionModifier); ;
+            }
+            else if (torchRotation.z > 202.6f && torchRotation.z < 247.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, false, walkDownRightReversed, speedReductionModifier);
+            }
+            else if (torchRotation.z > 247.6f && torchRotation.z < 292.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, false, walkRightReversed, speedReductionModifier);
+            }
+            else if (torchRotation.z > 292.6f && torchRotation.z < 337.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, false, walkUpRight, defaultSpeedModifier);
+            }
         }
-        else if (flashLight.transform.rotation.eulerAngles.z > 67.6f && flashLight.transform.rotation.eulerAngles.z < 112.5f)
+        //walk left
+        else if (velocity.x < -0.5f && velocity.y > -0.5 && velocity.y < 0.5f)
         {
-            GetComponent<SpriteRenderer>().flipX = true;
-            animController.PlayAnimation(walkLeft);
+            if (torchRotation.z > 337.6f || torchRotation.z < 22.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, false, walkUp, defaultSpeedModifier);
+            }
+            else if (torchRotation.z > 22.6f && torchRotation.z < 67.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, true, walkUpLeft, defaultSpeedModifier);
+            }
+            else if (torchRotation.z > 67.6f && torchRotation.z < 112.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, true, walkLeft, defaultSpeedModifier);
+            }
+            else if (torchRotation.z > 112.6f && torchRotation.z < 157.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, true, walkDownLeft, defaultSpeedModifier);
+            }
+            else if (torchRotation.z > 157.6f && torchRotation.z < 202.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, false, walkDown, defaultSpeedModifier);
+            }
+            else if (torchRotation.z > 202.6f && torchRotation.z < 247.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, false, walkDownRightReversed, speedReductionModifier);
+            }
+            else if (torchRotation.z > 247.6f && torchRotation.z < 292.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, false, walkRightReversed, speedReductionModifier);
+            }
+            else if (torchRotation.z > 292.6f && torchRotation.z < 337.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, false, walkUpRightReversed, speedReductionModifier);
+            }
         }
-        else if (flashLight.transform.rotation.eulerAngles.z > 112.6f && flashLight.transform.rotation.eulerAngles.z < 157.5f)
+        //walk down left
+        else if (velocity.x < -0.5f && velocity.y < -0.5f)
         {
-            GetComponent<SpriteRenderer>().flipX = true;
-            animController.PlayAnimation(walkDownLeft);
+            if (torchRotation.z > 337.6f || torchRotation.z < 22.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, false, walkUpReversed, speedReductionModifier);
+            }
+            else if (torchRotation.z > 22.6f && torchRotation.z < 67.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, true, walkUpLeft, defaultSpeedModifier);
+            }
+            else if (torchRotation.z > 67.6f && torchRotation.z < 112.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, true, walkLeft, defaultSpeedModifier);
+            }
+            else if (torchRotation.z > 112.6f && torchRotation.z < 157.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, true, walkDownLeft, defaultSpeedModifier);
+            }
+            else if (torchRotation.z > 157.6f && torchRotation.z < 202.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, false, walkDown, defaultSpeedModifier);
+            }
+            else if (torchRotation.z > 202.6f && torchRotation.z < 247.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, false, walkDownRight, defaultSpeedModifier);
+            }
+            else if (torchRotation.z > 247.6f && torchRotation.z < 292.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, false, walkRightReversed, speedReductionModifier);
+            }
+            else if (torchRotation.z > 292.6f && torchRotation.z < 337.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, false, walkUpRightReversed, speedReductionModifier);
+            }
         }
-        else if (flashLight.transform.rotation.eulerAngles.z > 157.6f && flashLight.transform.rotation.eulerAngles.z < 202.5f)
+        //walk down
+        else if (velocity.y < -0.5f && velocity.x > -0.5f && velocity.x < 0.5f)
         {
-            GetComponent<SpriteRenderer>().flipX = false;
-            animController.PlayAnimation(walkDown);
+            if (torchRotation.z > 337.6f || torchRotation.z < 22.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, false, walkUpReversed, speedReductionModifier);
+            }
+            else if (torchRotation.z > 22.6f && torchRotation.z < 67.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, true, walkUpLeftReversed, speedReductionModifier);
+            }
+            else if (torchRotation.z > 67.6f && torchRotation.z < 112.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, true, walkLeft, defaultSpeedModifier);
+            }
+            else if (torchRotation.z > 112.6f && torchRotation.z < 157.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, true, walkDownLeft, defaultSpeedModifier);
+            }
+            else if (torchRotation.z > 157.6f && torchRotation.z < 202.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, false, walkDown, defaultSpeedModifier);
+            }
+            else if (torchRotation.z > 202.6f && torchRotation.z < 247.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, false, walkDownRight, defaultSpeedModifier);
+            }
+            else if (torchRotation.z > 247.6f && torchRotation.z < 292.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, false, walkRight, defaultSpeedModifier);
+            }
+            else if (torchRotation.z > 292.6f && torchRotation.z < 337.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, false, walkUpRightReversed, speedReductionModifier);
+            }
         }
-        else if (flashLight.transform.rotation.eulerAngles.z > 202.6f && flashLight.transform.rotation.eulerAngles.z < 247.5f)
+        //walk down right
+        else if (velocity.y < -0.5f && velocity.x > 0.5f)
         {
-            GetComponent<SpriteRenderer>().flipX = false;
-            animController.PlayAnimation(walkDownRight);
+            if (torchRotation.z > 337.6f || torchRotation.z < 22.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, false, walkUpReversed, speedReductionModifier);
+            }
+            else if (torchRotation.z > 22.6f && torchRotation.z < 67.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, true, walkUpLeftReversed, speedReductionModifier);
+            }
+            else if (torchRotation.z > 67.6f && torchRotation.z < 112.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, true, walkLeftReversed, speedReductionModifier);
+            }
+            else if (torchRotation.z > 112.6f && torchRotation.z < 157.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, true, walkDownLeft, defaultSpeedModifier);
+            }
+            else if (torchRotation.z > 157.6f && torchRotation.z < 202.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, false, walkDown, defaultSpeedModifier);
+            }
+            else if (torchRotation.z > 202.6f && torchRotation.z < 247.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, false, walkDownRight, defaultSpeedModifier);
+            }
+            else if (torchRotation.z > 247.6f && torchRotation.z < 292.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, false, walkRight, defaultSpeedModifier);
+            }
+            else if (torchRotation.z > 292.6f && torchRotation.z < 337.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, false, walkUpRight, defaultSpeedModifier);
+            }
         }
-        else if (flashLight.transform.rotation.eulerAngles.z > 247.6f && flashLight.transform.rotation.eulerAngles.z < 292.5f)
+        //walk right
+        else if (velocity.x > 0.5f && velocity.y < 0.5f && velocity.y > -0.5f)
         {
-            GetComponent<SpriteRenderer>().flipX = false;
-            animController.PlayAnimation(walkRight);
+            if (torchRotation.z > 337.6f || torchRotation.z < 22.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, false, walkUp, defaultSpeedModifier);
+            }
+            else if (torchRotation.z > 22.6f && torchRotation.z < 67.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, true, walkUpLeftReversed, speedReductionModifier);
+            }
+            else if (torchRotation.z > 67.6f && torchRotation.z < 112.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, true, walkLeftReversed, speedReductionModifier);
+            }
+            else if (torchRotation.z > 112.6f && torchRotation.z < 157.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, true, walkDownLeftReversed, speedReductionModifier);
+            }
+            else if (torchRotation.z > 157.6f && torchRotation.z < 202.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, false, walkDown, defaultSpeedModifier);
+            }
+            else if (torchRotation.z > 202.6f && torchRotation.z < 247.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, false, walkDownRight, defaultSpeedModifier);
+            }
+            else if (torchRotation.z > 247.6f && torchRotation.z < 292.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, false, walkRight, defaultSpeedModifier);
+            }
+            else if (torchRotation.z > 292.6f && torchRotation.z < 337.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, false, walkUpRight, defaultSpeedModifier);
+            }
         }
-        else if (flashLight.transform.rotation.eulerAngles.z > 292.6f && flashLight.transform.rotation.eulerAngles.z < 337.5f)
+        //walk right up
+        else if (velocity.x > 0.5f && velocity.y > 0.5f)
         {
-            GetComponent<SpriteRenderer>().flipX = false;
-            animController.PlayAnimation(walkUpRight);
+            if (torchRotation.z > 337.6f || torchRotation.z < 22.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, false, walkUp, defaultSpeedModifier);
+            }
+            else if (torchRotation.z > 22.6f && torchRotation.z < 67.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, true, walkUpLeft, defaultSpeedModifier);
+            }
+            else if (torchRotation.z > 67.6f && torchRotation.z < 112.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, true, walkLeftReversed, speedReductionModifier);
+            }
+            else if (torchRotation.z > 112.6f && torchRotation.z < 157.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, true, walkDownLeftReversed, speedReductionModifier);
+            }
+            else if (torchRotation.z > 157.6f && torchRotation.z < 202.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, false, walkDownReversed, speedReductionModifier);
+            }
+            else if (torchRotation.z > 202.6f && torchRotation.z < 247.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, false, walkDownRight, defaultSpeedModifier);
+            }
+            else if (torchRotation.z > 247.6f && torchRotation.z < 292.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, false, walkRight, defaultSpeedModifier);
+            }
+            else if (torchRotation.z > 292.6f && torchRotation.z < 337.5f)
+            {
+                WalkAnimationModifiers(spriteRenderer, false, walkUpRight, defaultSpeedModifier);
+            }
         }
     }
 
+    private void WalkAnimationModifiers(SpriteRenderer spriteRenderer, bool flipSprite, string animationName, float speedMultiplier)
+    {
+        spriteRenderer.flipX = flipSprite;
+        animController.PlayAnimation(animationName);
+        currentSpeed = defaultSpeed * speedMultiplier;
+    }
+
+    #endregion
+
     void SmoothMovement()
     {
-
         smoothCurrentMoveInput = Vector2.SmoothDamp(smoothCurrentMoveInput, currentMoveInput, ref currentMovementSmoothVelocity, 0.1f);
 
-        rb.velocity = smoothCurrentMoveInput * speed;
-
-        
-
+        rb.velocity = smoothCurrentMoveInput * currentSpeed;
     }
 
     

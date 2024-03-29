@@ -1328,7 +1328,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerSO: {fileID: 11400000, guid: dd93b7730bf3f6c4d9be96e450a9a8b7, type: 2}
-  speed: 5
+  speedReductionModifier: 0.5
   flashlight: {fileID: 1938226130}
   flashLight: {fileID: 682050257}
   invisible: 0
@@ -1345,6 +1345,14 @@ MonoBehaviour:
   walkDownLeft: Anim_PlayerDiagonalDownLeft
   walkLeft: Anim_PlayerWalkLeft
   walkUpLeft: Anim_PlayerDiagonalUpLeft
+  walkUpReversed: Anim_PlayerWalkUpReversed
+  walkUpRightReversed: Anim_PlayerDiagonalUpRightReversed
+  walkRightReversed: Anim_PlayerWalkRightReversed
+  walkDownRightReversed: Anim_PlayerDiagonalDownRightReversed
+  walkDownReversed: Anim_PlayerWalkDownReversed
+  walkDownLeftReversed: Anim_PlayerDiagonalDownLeftReversed
+  walkLeftReversed: Anim_PlayerWalkLeftReversed
+  walkUpLeftReversed: Anim_PlayerDiagonalUpLeftReversed
   footSteps: {fileID: 11400000, guid: 2fe13ab7ce7d98344be17daa805bbdcc, type: 2}
 --- !u!50 &5603956583811793887
 Rigidbody2D:
