@@ -236,7 +236,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 1
   m_SpriteSortPoint: 0
 --- !u!95 &6925159469005380708
 Animator:
@@ -336,7 +336,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spottedInterfaces:
   - {fileID: 8852358032143981071}
-  visibleToCamera: 0
   playerTag: {fileID: 11400000, guid: 245989d67fe58824aacae9258831b138, type: 2}
 --- !u!1 &6925159469467064000
 GameObject:

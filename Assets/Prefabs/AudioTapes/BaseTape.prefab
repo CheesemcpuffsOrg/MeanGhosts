@@ -82,7 +82,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 1
   m_SpriteSortPoint: 1
 --- !u!1 &5139797150655077945
 GameObject:
@@ -149,7 +149,7 @@ Transform:
   - {fileID: 8763545920592540893}
   - {fileID: 8817789993280194090}
   m_Father: {fileID: 0}
-  m_RootOrder: 26
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5821012371180903158
 SpriteRenderer:
@@ -201,7 +201,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 1
   m_SpriteSortPoint: 0
 --- !u!114 &5821012371180903156
 MonoBehaviour:
@@ -215,9 +215,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9011556b9381e3044a2fce3a50d8e6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nameOfTape: Beret
-  soundDisk: {fileID: 0}
-  audioScriptableObject: {fileID: 0}
+  tapeAudio: {fileID: 0}
 --- !u!58 &5821012371180903152
 CircleCollider2D:
   m_ObjectHideFlags: 0
