@@ -47,7 +47,7 @@ public class FlashLight : MonoBehaviour
 
     private void Update()
     {
-        if (_flashLightState == FlashLightState.HIGHBEAM)
+        if (_flashLightState == FlashLightState.HIGHBEAM && !GameManager.GameManagerInstance.isPaused)
         {
             highBeam.intensity += 0.01f;
         }
@@ -220,8 +220,7 @@ public class FlashLight : MonoBehaviour
         {
             normalBeam.intensity = 0;
             highBeam.intensity = 0;
-
-            _flashLightState = FlashLightState.OFF;
+            globalLight.intensity = 0;
 
             if (highBeamPoweringUp != null)
             {
@@ -230,7 +229,13 @@ public class FlashLight : MonoBehaviour
         }
         else
         {
-            DefaultLightSwitch();
+            if(_flashLightState != FlashLightState.OFF)
+            {
+                highBeam.intensity = 0;
+                globalLight.intensity = globalLightDefaultIntensity;
+                normalBeam.intensity = defaultNormalBeamIntensity;
+                _flashLightState = FlashLightState.ON;
+            }
         }
     }
 }
