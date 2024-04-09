@@ -10,16 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 760b1e9d61e78084891ed16194867649, type: 3}
-  m_Name: sfx_SO_Blood Scream
+  m_Name: sfx_SO_Ambient_Crows
   m_EditorClassIdentifier: 
   audioClips:
-  - obj: {fileID: 8300000, guid: caacf32f191c78446b98b0e4b51ff853, type: 3}
+  - obj: {fileID: 8300000, guid: d915392d202be9b4883c91df4d3c1128, type: 3}
     weight: 100
   audioMixerGroup: {fileID: -9123715879687149167, guid: d8dd63bf224bdc8468fb34784cf4b2fa, type: 2}
   volume: 1
   pitch: 2
   pan: 0
   loop: 0
+  playWhilePaused: 0
   fadeIn: 0
   fadeInDuration: 0
   fadeOut: 0

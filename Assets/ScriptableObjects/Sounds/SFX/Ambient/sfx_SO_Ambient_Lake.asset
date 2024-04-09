@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 760b1e9d61e78084891ed16194867649, type: 3}
-  m_Name: sfx_SO_Lake
+  m_Name: sfx_SO_Ambient_Lake
   m_EditorClassIdentifier: 
   audioClips:
   - obj: {fileID: 8300000, guid: c216dc80c6c6ecb47ad878844fe6ff20, type: 3}
