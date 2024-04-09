@@ -107,6 +107,7 @@ namespace AudioSystem
             if (sound == null)
             {
                 Debug.LogError($"You are missing a sound SO from the gameobject {gameObject.name}");
+                return;
             }
 
             AudioSource audioSource = obj.GetComponent<AudioSource>();
