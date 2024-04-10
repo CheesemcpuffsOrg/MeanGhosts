@@ -31,7 +31,11 @@ namespace AudioSystem
         [SerializeField] Transform audioPoolContainer;
         [SerializeField] Transform activeSounds;
 
+        [SerializeField] int StackingAudioLimiter = 5;
+
         //bool reduceOtherAudios = false;
+
+        //add a check that limits the number of calls made for a specific sound
 
         private void Awake()
         {
@@ -92,7 +96,7 @@ namespace AudioSystem
             Coroutine clipLength = null;
             GameObject obj;
 
-            //take obj from audio pool, if there are none create a new object
+            //take obj from audio pool, if there are none create a new object.
             if (audioPool.Count > 0)
             {
                 obj = audioPool.Dequeue();
@@ -110,9 +114,27 @@ namespace AudioSystem
 
             AudioSource audioSource = obj.GetComponent<AudioSource>();
 
-            audioSource.clip = (AudioClip)RandomUtility.ObjectPoolCalculator(sound.audioClips);
-            
-            foreach(var clip in sound.audioClips)
+            var audioClip = (AudioClip)RandomUtility.ObjectPoolCalculator(sound.audioClips);
+
+            //Prevent audio flooding by limiting the number of active audio sources can contain the same audio clip.
+            var stack = 0;
+
+            foreach (AudioReference s in audioReferences)
+            {
+                if (s.audioSource == audioClip)
+                {
+                    stack++;
+                }
+            }
+
+            if(stack > StackingAudioLimiter)
+            {
+                return;
+            }
+
+            audioSource.clip = audioClip;
+
+            foreach (var clip in sound.audioClips)
             {
                 if(clip.obj == audioSource.clip)
                 {
