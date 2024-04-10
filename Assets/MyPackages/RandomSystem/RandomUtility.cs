@@ -10,23 +10,27 @@ public class ObjectPool<T>
 {
     public T obj;
     [Range(0, 100)]
-    public int weight = 100;   
+    public int weight = 100;
 }
+
 
 public static class RandomUtility
 {
-    public static object ObjectPoolCalculator<T>(List<ObjectPool<T>> list)
+    /// <summary>
+    /// Accepts a list of objects and returns a random value based on a weighting system.
+    /// </summary>
+    public static T ObjectPoolCalculator<T>(IEnumerable<ObjectPool<T>> list)
     {
         int combinedWeight = 0;
 
-        foreach (ObjectPool<T> pool in list)
+        foreach (var pool in list)
         {
             combinedWeight += pool.weight;
         }
 
         var random = Random.Range(0, combinedWeight);
 
-        foreach (ObjectPool<T> pool in list)
+        foreach (var pool in list)
         {
             random -= pool.weight;
 
@@ -35,10 +39,14 @@ public static class RandomUtility
                 return pool.obj;
             }
         }
-
-        return null;
+        
+        return default;
     }
 
+
+    /// <summary>
+    /// Accepts a percentage from 0-100 and returns true or false.
+    /// </summary>
     public static bool RandomPercentage(int percent)
     {
         int random = Random.Range(0, 100);
@@ -50,6 +58,9 @@ public static class RandomUtility
         return false;
     }
 
+    /// <summary>
+    /// Accepts a list and returns the same list randomly re-ordered.
+    /// </summary>
     public static List<T> RandomListSort<T>(List<T> list)
     {
         //return list.OrderBy(t => Random.value).ToList();

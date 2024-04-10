@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -7,14 +9,20 @@ using UnityEngine.Audio;
 public class AudioScriptableObject : ScriptableObject
 {
 
-    public List<ObjectPool<AudioClip>> audioClips;
+    [Serializable]
+    public class AudioList<T> : ObjectPool<T>
+    {
+        [Range(0f, 1f)]
+        public float volume = 1;
+        [Range(.1f, 3f)]
+        public float pitch = 1;
+    }
+
+    public List<AudioList<AudioClip>> audioClips;
 
     public AudioMixerGroup audioMixerGroup;
 
-    [Range(0f, 1f), Header ("Basic Controls")]
-    public float volume = 1;
-    [Range(.1f, 3f)]
-    public float pitch = 1;
+    [Header ("Basic Controls")]
     [Range(-1f, 1f)]
     public float pan = 0;
     public bool loop = false;

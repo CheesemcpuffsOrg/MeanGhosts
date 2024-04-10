@@ -1,10 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Rendering;
 
 //Joshua 
 
@@ -13,7 +11,7 @@ namespace AudioSystem
 
     public class AudioManager : MonoBehaviour
     {
-        [System.Serializable]
+        [Serializable]
         private class AudioReference
         {
             public AudioScriptableObject objReference;
@@ -25,7 +23,7 @@ namespace AudioSystem
 
         public static AudioManager AudioManagerInstance;
 
-        List<AudioReference> audioReferences = new List<AudioReference>();
+        [SerializeField] List<AudioReference> audioReferences = new List<AudioReference>();
         Queue<GameObject> audioPool = new Queue<GameObject>();
 
         [SerializeField] GameObject audioObjPrefab;
@@ -113,18 +111,26 @@ namespace AudioSystem
             AudioSource audioSource = obj.GetComponent<AudioSource>();
 
             audioSource.clip = (AudioClip)RandomUtility.ObjectPoolCalculator(sound.audioClips);
+            
+            foreach(var clip in sound.audioClips)
+            {
+                if(clip.obj == audioSource.clip)
+                {
+                    audioSource.volume = clip.volume;
+                    audioSource.pitch = clip.pitch;
+                }
+            }
+
             audioSource.outputAudioMixerGroup = sound.audioMixerGroup;
-            audioSource.volume = sound.volume;
-            audioSource.pitch = sound.pitch;
             audioSource.loop = sound.loop;
-            var fadeIn = sound.fadeIn;
-            var fadeInDuration = sound.fadeInDuration;
             audioSource.panStereo = sound.pan;
             audioSource.spatialBlend = sound.spatialBlend;
             audioSource.rolloffMode = sound.rolloffMode;
             audioSource.minDistance = sound.minDistance;
             audioSource.maxDistance = sound.maxDistance;
             audioSource.dopplerLevel = sound.dopplerLevel;
+            var fadeIn = sound.fadeIn;
+            var fadeInDuration = sound.fadeInDuration;
 
             if (audioSource.spatialBlend == 0)
             {
@@ -158,7 +164,7 @@ namespace AudioSystem
 
             if (fadeIn)
             {
-                StartCoroutine(FadeIn(audioSource, fadeInDuration, sound.volume));
+                StartCoroutine(FadeIn(audioSource, fadeInDuration, audioSource.volume));
             }
         }
 
@@ -202,12 +208,14 @@ namespace AudioSystem
                     else
                     {
                         audioSource.Stop();
-                        if (audioReferences[i].clipLength != null)
-                        {
-                            StopCoroutine(audioReferences[i].clipLength);
-                        }
-                        audioReferences.RemoveAt(i);
                     }
+
+                    if (audioReferences[i].clipLength != null)
+                    {
+                        StopCoroutine(audioReferences[i].clipLength);
+                    }
+                    audioReferences.RemoveAt(i);
+
                     return;
                 }
             }
@@ -233,11 +241,8 @@ namespace AudioSystem
             PlaySound(sound, gameObject);
         }
 
-
-        //might rework this to just check if sound is playing, much more useful, get it to return bool is sound is playing
-
         /// <summary>
-        /// Checks to see if the requested sound exists and is playing
+        /// Checks to see if the requested sound exists and is playing.
         /// </summary>
         public bool IsSoundPlaying(AudioScriptableObject sound, GameObject gameObject)
         {
