@@ -114,7 +114,6 @@ Transform:
   m_Children:
   - {fileID: 1316690783}
   - {fileID: 1519881411}
-  - {fileID: 7444623296840589774}
   - {fileID: 1163263800}
   - {fileID: 496340505}
   m_Father: {fileID: 5603956583811793884}
@@ -1388,6 +1387,67 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00e5314a5ac4a8d408899c995a36e0cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &4193148602011175688
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8325059955388079684}
+  - component: {fileID: 6084764701047237307}
+  - component: {fileID: 6224310322677323374}
+  m_Layer: 0
+  m_Name: PlayerCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8325059955388079684
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4193148602011175688}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5603956583811793884}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6084764701047237307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4193148602011175688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00e5314a5ac4a8d408899c995a36e0cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!70 &6224310322677323374
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4193148602011175688}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 0.5, y: 1}
+  m_Direction: 0
 --- !u!1 &5603956583811793880
 GameObject:
   m_ObjectHideFlags: 0
@@ -1404,7 +1464,6 @@ GameObject:
   - component: {fileID: 5603956583811793890}
   - component: {fileID: 1707787943}
   - component: {fileID: 1707787942}
-  - component: {fileID: 1707787949}
   - component: {fileID: 2202563623034097835}
   - component: {fileID: 5603956582273156422}
   - component: {fileID: 7343292460737189724}
@@ -1428,6 +1487,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 682050258}
+  - {fileID: 7444623296840589774}
+  - {fileID: 8325059955388079684}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1571,7 +1632,7 @@ CapsuleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5603956583811793880}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -1600,19 +1661,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &1707787949
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5603956583811793880}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fb19a23ec2992f45893efde7b861f2e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  controller: {fileID: 5603956583811793886}
 --- !u!114 &2202563623034097835
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1640,9 +1688,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flashLight: {fileID: 1938226130}
+  playerController: {fileID: 5603956583811793886}
   normalBeamCollider: {fileID: 8628142734393488056}
   highBeamCollider: {fileID: 6264919721026474418}
   ghostDetectionCollider: {fileID: 3873034666254721772}
+  playerCollider: {fileID: 6084764701047237307}
   enemyTag: {fileID: 11400000, guid: 1f186d17a18eb0740b62b1dc866d3ce6, type: 2}
   spottableByTorch: {fileID: 11400000, guid: 54449f2dd3c10ce49bbbf34e07ff4da8, type: 2}
 --- !u!114 &7343292460737189724
@@ -1683,12 +1733,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6757774431255388121}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.14, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.13999939, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 682050258}
+  m_Father: {fileID: 5603956583811793884}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!58 &6447016474562612971

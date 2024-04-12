@@ -38,10 +38,6 @@ namespace AudioSystem
         int activeAudioPriority = 0;
         float reductionAmount = 0.25f;
 
-        //method that plays audio taking into account priority, subscribes to event
-        //this method sets a vector 2 to hold the priority level and how many are active
-        //while the y is greater than 0 all new sounds that are played reduced audio
-
         private void Awake()
         {
             AudioManagerInstance = this;
@@ -255,7 +251,7 @@ namespace AudioSystem
         } 
 
         /// <summary>
-        /// The following method allows for dynamic control over the lowering and highering of all audios based on the priority of the SO parameter.
+        /// The following method allows for dynamic control over the lowering and highering of all audios based on the priority of the SO parameter .
         /// </summary>
         public void DynamicVolumePrioritySystem(AudioScriptableObject sound, bool systemIsActive)
         {

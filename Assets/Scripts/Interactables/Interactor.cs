@@ -4,12 +4,13 @@ using UnityEngine;
 
 //Joshua - 2023/11/22
 
+//deprecated
 namespace Interactable
 {
     public class Interactor : MonoBehaviour
     {
 
-        [SerializeField] PlayerController controller;
+        /*[SerializeField] PlayerController controller;
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
@@ -25,7 +26,7 @@ namespace Interactable
             {
                 controller.interactEvent.AddListener(collision.gameObject.GetComponent<IInteractable>().Interact);
             }
-        }
+        }*/
     }
 }
 

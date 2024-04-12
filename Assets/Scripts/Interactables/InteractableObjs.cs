@@ -21,11 +21,11 @@ public class InteractableObjs : MonoBehaviour
 
     protected void OnTriggerExit2D(Collider2D other)
     {
-        if (TagExtensions.HasTag(other.gameObject, playerTag))
+        /*if (TagExtensions.HasTag(other.gameObject, playerTag))
         {
             other.GetComponent<PlayerController>().interactEvent.RemoveListener(Interact);
             
-        }
+        }*/
     }
 
     protected virtual void Interact()

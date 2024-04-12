@@ -63,6 +63,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        _interactEvent = new UnityEvent();
         controlScheme = new ControlScheme();
         controlScheme.Player.Move.performed += Movement;
         controlScheme.Player.Move.canceled += MovementStopped;
