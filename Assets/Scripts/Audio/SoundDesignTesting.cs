@@ -47,13 +47,18 @@ public class SoundDesignTesting : MonoBehaviour
     {
         if(!shiftIsHeld)
         {
-            AudioManager.AudioManagerInstance.PlaySound(one, this.gameObject);
+            AudioManager.AudioManagerInstance.PlaySound(one, this.gameObject, PleaseFireMe);
         }
         else
         {
             AudioManager.AudioManagerInstance.StopSound(one, this.gameObject);
         }
         
+    }
+
+    void PleaseFireMe()
+    {
+        Debug.Log("event fired");
     }
 
     void PlaySoundTwo(InputAction.CallbackContext playTwo)

@@ -135,7 +135,7 @@ AudioMixerController:
   - guid: 2ceb65c4362a57f498ecdd0c61b54e3f
     name: musicVol
   - guid: 4fb013e2fb587de4b9ce4bef9b003d93
-    name: MyExposedParam 2
+    name: sfxVol
   m_AudioMixerGroupViews:
   - guids:
     - fc39f8a72ac746c44aee6e8c68c74db6
@@ -192,7 +192,10 @@ AudioMixerSnapshotController:
     e028b9101db587447a224cb5a4b6fc50: 75
     f7083f104d286bb4089dae0d903fa0d8: 0.0283
     1cc8c1200e6c65742afacccb572fdf93: 149
+    ddd9964051a0c3344bc17db0627df330: 1.82
+    44e6ff40f8a47094c9cab15f2ad38a69: 5583
     acf58350c58033547be2d81f3bad8f2f: 1746
+    183911614fef54748b833f7cb6d34089: 1.54
     e0b8a581acc5fd640bbf3265fdee0f13: 0
     35763b81b9b523a4f99d0896dbef67ee: -467
     9a4d4c91f9a59954ca5c035746333cfd: 0
@@ -226,6 +229,7 @@ AudioMixerSnapshotController:
     7fb636a790952334f86a5ce5d69bdae5: 29.9
     c2ea4db7de7bfcf44bb93067c7cfb3bc: 1
     08e116d737319a84994849fb0fe5d20f: 0
+    a61c1e686b7f2ae499c26cb4cd8740de: -10.867776
     f6d96078113f6a64e97abafece8f5612: -3672
     f6424298a7e81f9449316efa238b5e11: 0.649
     19bcb1d8c61bf67488ff79b2a8164d94: 33222
@@ -256,6 +260,7 @@ AudioMixerSnapshotController:
     1f46832fa8d15de40ae86f34c49417e5: 0
     b7ecab8f971431d43a0b327550fe2bf6: 20
     ca4614bf3413dc8439d45495f96819ed: 1218
+    a49ccecfb8099a34bb6abd1915736705: 30
   m_TransitionOverrides: {}
 --- !u!244 &2312903045718045184
 AudioMixerEffectController:

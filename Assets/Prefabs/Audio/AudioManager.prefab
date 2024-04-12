@@ -77,10 +77,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c828086ffbf934649b91fe71dc20987a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soundDisks: []
+  audioReferences: []
   audioObjPrefab: {fileID: 309743425668855579, guid: b87362b532db6ca4fadc7200249fe7d1, type: 3}
   audioPoolContainer: {fileID: 5394109193465863813}
   activeSounds: {fileID: 5394109192159908248}
+  StackingAudioLimiter: 5
 --- !u!1 &5394109193465863812
 GameObject:
   m_ObjectHideFlags: 0

@@ -25,6 +25,8 @@ public class AudioScriptableObject : ScriptableObject
     [Header ("Basic Controls")]
     [Range(-1f, 1f)]
     public float pan = 0;
+    [Range(1, 10)]
+    public int audioPriority = 5;
     public bool loop = false;
     public bool playWhilePaused = false;
 
