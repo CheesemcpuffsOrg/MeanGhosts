@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: sfx_SO_FootSteps
   m_EditorClassIdentifier: 
   audioClips:
-  - obj: {fileID: 8300000, guid: 207f587ae41e8714083f127181cf05a7, type: 3}
+  - obj:
+      audioClip: {fileID: 8300000, guid: b5f5e901b7d521043b53dab66757b730, type: 3}
+      volume: 1
+      pitch: 1
     weight: 100
-    volume: 1
-    pitch: 1
   audioMixerGroup: {fileID: -9123715879687149167, guid: d8dd63bf224bdc8468fb34784cf4b2fa, type: 2}
   pan: 0
   audioPriority: 5
