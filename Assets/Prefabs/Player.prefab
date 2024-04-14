@@ -141,7 +141,9 @@ MonoBehaviour:
   torchCooldownDuration: 2
   ghostsWithinRange: 0
   ghostHasBeenCaught: 0
-  flashLight: {fileID: 11400000, guid: bf12d4d2bb04b2146b9b202233db3710, type: 2}
+  flashLightSwitch: {fileID: 11400000, guid: 88c86a800de58684a8272405c8d7a4a2, type: 2}
+  flashLightCharge: {fileID: 11400000, guid: fa50dc3264c6e8149ab7dcaf7fe1e2a7, type: 2}
+  flashLightFlicker: {fileID: 11400000, guid: 66d71744fea40b445b3c2e3834fde264, type: 2}
 --- !u!1 &1163263799
 GameObject:
   m_ObjectHideFlags: 0
