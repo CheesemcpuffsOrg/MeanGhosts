@@ -33,7 +33,7 @@ public class PickUps : InteractableObjs
             player.GetComponent<PlayerController>().HeldObject(this.gameObject);
          //   SoundManager.SoundManagerInstance.PlayOneShotSound("PickUp");
             string sendThis = null;
-            UIManagers.UIManagersInstance.EnableItemImage(sendThis = this.gameObject.name.Replace("(Clone)", string.Empty));
+            UIContainer.UIContainerInstance.EnableItemImage(sendThis = this.gameObject.name.Replace("(Clone)", string.Empty));
 
         }
 
@@ -56,13 +56,13 @@ public class PickUps : InteractableObjs
     {
         base.OnTriggerEnter2D(collision);
 
-        UIManagers.UIManagersInstance.PickUpItem();
+        UIContainer.UIContainerInstance.PickUpItem();
     }
 
     private new void OnTriggerExit2D(Collider2D collision)
     {
         base.OnTriggerExit2D(collision);
 
-        UIManagers.UIManagersInstance.PickUpItem();
+        UIContainer.UIContainerInstance.PickUpItem();
     }
 }

@@ -27,10 +27,10 @@ public class PlayerCollisions : MonoBehaviour
         highBeamCollider.OnTriggerExit2D_Action += HighBeamOnTriggerExit2D;
 
         ghostDetectionCollider.OnTriggerEnter2D_Action += GhostDetectionOnTriggerEnter2D;
-        ghostDetectionCollider.OnTriggerExit2D_Action = GhostDetectionOnTriggerExit2D;
+        ghostDetectionCollider.OnTriggerExit2D_Action += GhostDetectionOnTriggerExit2D;
 
         playerCollider.OnTriggerEnter2D_Action += InteractableDetectionOnTriggerEnter2D;
-        playerCollider.OnTriggerExit2D_Action = InteractableDetectionOnTriggerExit2D;
+        playerCollider.OnTriggerExit2D_Action += InteractableDetectionOnTriggerExit2D;
     }
 
     private void NormalBeamOnTriggerEnter2D(Collider2D other)
@@ -84,9 +84,9 @@ public class PlayerCollisions : MonoBehaviour
     private void InteractableDetectionOnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.TryGetComponent<IInteractable>(out IInteractable interactable))
-        {
-           // playerController.AddListenerToInteractEvent(other.gameObject.GetComponent<IInteractable>().Interact);
-            playerController.interactEvent.AddListener(other.gameObject.GetComponent<IInteractable>().Interact);
+        { 
+            playerController.interactEvent.AddListener(interactable.Interact);
+            interactable.Collision(true);
         }
     }
 
@@ -94,8 +94,8 @@ public class PlayerCollisions : MonoBehaviour
     {
         if (other.gameObject.TryGetComponent<IInteractable>(out IInteractable interactable))
         {
-            //playerController.RemoveListenerFromInteractEvent(other.gameObject.GetComponent<IInteractable>().Interact);
-            playerController.interactEvent.AddListener(other.gameObject.GetComponent<IInteractable>().Interact);
+            playerController.interactEvent.AddListener(interactable.Interact);
+            interactable.Collision(false);
         }
     }
 }

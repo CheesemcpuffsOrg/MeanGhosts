@@ -439,7 +439,7 @@ public class PlayerController : MonoBehaviour
     {
         flashlight.FlashLightSwitch();
 
-        UIManagers.UIManagersInstance.DisableLampText();
+        UIContainer.UIContainerInstance.DisableLampText();
     }
 
     void BeamControl(InputAction.CallbackContext beam)
@@ -501,7 +501,7 @@ public class PlayerController : MonoBehaviour
             heldObject.GetComponent<Collider2D>().enabled = true;
             heldObject = null;
             //  SoundManager.SoundManagerInstance.PlayOneShotSound("PickUp");
-            UIManagers.UIManagersInstance.DisableItemImage();
+            UIContainer.UIContainerInstance.DisableItemImage();
         }
 
     }

@@ -5,20 +5,20 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Audio;
 
+[Serializable]
+public class AudioList
+{
+    public AudioClip audioClip;
+    [Range(0f, 1f)]
+    public float volume = 1;
+    [Range(.1f, 3f)]
+    public float pitch = 1;
+}
+
 [CreateAssetMenu(fileName = "Audio", menuName = "ScriptableObject/Audio")]
 public class AudioScriptableObject : ScriptableObject
 {
-
-    [Serializable]
-    public class AudioList<T> : ObjectPool<T>
-    {
-        [Range(0f, 1f)]
-        public float volume = 1;
-        [Range(.1f, 3f)]
-        public float pitch = 1;
-    }
-
-    public List<AudioList<AudioClip>> audioClips;
+    public List<ObjectPool<AudioList>> audioClips;
 
     public AudioMixerGroup audioMixerGroup;
 

@@ -15,16 +15,17 @@ MonoBehaviour:
   audioClips:
   - obj: {fileID: 8300000, guid: 0b7a89be293667c4d82a2a3b7100f425, type: 3}
     weight: 100
+    volume: 1
+    pitch: 1
   audioMixerGroup: {fileID: -9123715879687149167, guid: d8dd63bf224bdc8468fb34784cf4b2fa, type: 2}
-  volume: 1
-  pitch: 1
   pan: 0
+  audioPriority: 9
   loop: 0
   playWhilePaused: 0
   fadeIn: 0
-  fadeInDuration: 0
+  fadeInDuration: 1
   fadeOut: 0
-  fadeOutDuration: 0
+  fadeOutDuration: 1
   spatialBlend: 1
   dopplerLevel: 0
   rolloffMode: 1

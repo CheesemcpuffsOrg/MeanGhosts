@@ -24,6 +24,10 @@ PrefabInstance:
       propertyPath: audioScriptableObject
       value: 
       objectReference: {fileID: 11400000, guid: 1b36519834f388645a4b42193fa6d8d1, type: 2}
+    - target: {fileID: 5821012371180903158, guid: cf5e45ace3c1c514ea81482d4c8621c3, type: 3}
+      propertyPath: m_MaskInteraction
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5821012371180903159, guid: cf5e45ace3c1c514ea81482d4c8621c3, type: 3}
       propertyPath: m_RootOrder
       value: 0

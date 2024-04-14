@@ -63,7 +63,7 @@ public class GameManager : MonoBehaviour
     {
         if (score == 6)
         {
-            UIManagers.UIManagersInstance.Winner();
+            UIContainer.UIContainerInstance.Winner();
             player.GetComponent<PlayerController>().OnDisable();
             player.GetComponent<PlayerController>().flashLight.SetActive(false);
             // player.GetComponent<Player.PlayerController>().flashLightState = false;
@@ -138,7 +138,7 @@ public class GameManager : MonoBehaviour
     {
         _isPaused = !_isPaused;
 
-        UIManagers.UIManagersInstance.PauseText();
+        UIContainer.UIContainerInstance.PauseText();
 
         if (_isPaused)
         {
@@ -164,7 +164,7 @@ public class GameManager : MonoBehaviour
         player.GetComponent<PlayerController>().OnDisable();
         player.GetComponent<PlayerController>().flashLight.SetActive(false);
         //player.GetComponent<Player.PlayerController>().flashLightState = false;
-        UIManagers.UIManagersInstance.GameOver();
+        UIContainer.UIContainerInstance.GameOver();
     }
 
     public void RestartGame()

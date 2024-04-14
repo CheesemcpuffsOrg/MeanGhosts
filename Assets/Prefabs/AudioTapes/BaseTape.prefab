@@ -93,8 +93,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8763545920592540893}
+  - component: {fileID: 2622305974821220660}
+  - component: {fileID: 6394992589035979937}
   m_Layer: 0
-  m_Name: Audio
+  m_Name: AudioRangeDetection
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -115,6 +117,34 @@ Transform:
   m_Father: {fileID: 5821012371180903159}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2622305974821220660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5139797150655077945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00e5314a5ac4a8d408899c995a36e0cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!58 &6394992589035979937
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5139797150655077945}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 4
 --- !u!1 &5821012371180903155
 GameObject:
   m_ObjectHideFlags: 0
@@ -216,6 +246,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tapeAudio: {fileID: 0}
+  audioRangeDetection: {fileID: 2622305974821220660}
+  playerTag: {fileID: 11400000, guid: 245989d67fe58824aacae9258831b138, type: 2}
 --- !u!58 &5821012371180903152
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -231,4 +263,4 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 1
+  m_Radius: 1.5

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using System.Linq;
+using Unity.VisualScripting;
 
 //Joshua 
 
@@ -36,7 +37,7 @@ namespace AudioSystem
         [SerializeField] int StackingAudioLimiter = 5;
 
         int activeAudioPriority = 0;
-        float reductionAmount = 0.25f;
+        float reductionAmount = 0.5f;
 
         private void Awake()
         {
@@ -74,15 +75,15 @@ namespace AudioSystem
                 obj = Instantiate(audioObjPrefab);
             }
 
-            var audioClip = (AudioClip)RandomUtility.ObjectPoolCalculator(sound.audioClips);
+            var audioListVariable = RandomUtility.ObjectPoolCalculator(sound.audioClips);
 
-            AudioFloodPrevention(audioClip);
+            AudioFloodPrevention(audioListVariable);
 
             var audioSource = obj.GetComponent<AudioSource>();
 
-            PopulateTheAudioSource(sound, gameObject, obj, audioClip, audioSource);
+            PopulateTheAudioSource(sound, gameObject, obj, audioListVariable, audioSource);
 
-            CreateAudioReference(sound, gameObject, obj, audioSource);
+            CreateAudioReference(sound, gameObject, obj, audioSource, audioListVariable);
 
             audioSource.Play();
 
@@ -117,7 +118,7 @@ namespace AudioSystem
 
                     if (sound.fadeOut)
                     {
-                        StartCoroutine(FadeOut(audioSource, sound.fadeOutDuration, audioSource.volume));
+                        StartCoroutine(FadeOut(audioSource, sound.fadeOutDuration));
                     }
                     else
                     {
@@ -232,6 +233,52 @@ namespace AudioSystem
         }
 
         /// <summary>
+        /// The following method allows for dynamic control over the lowering and highering of all audios based on the priority of the SO parameter .
+        /// </summary>
+        public void DynamicVolumePrioritySystem(AudioScriptableObject sound, bool systemIsActive)
+        {
+            if (sound == null)
+            {
+                Debug.LogError($"You are missing a sound SO from the gameobject {gameObject.name}");
+                return;
+            }
+
+            var fadeDuration = 0.5f;
+
+            if (systemIsActive && sound.audioPriority >= activeAudioPriority)
+            {
+                activeAudioPriority = sound.audioPriority;
+
+                foreach (var s in audioReferences)
+                {
+                    if(s.objReference.audioPriority < activeAudioPriority)
+                    {
+                        var audioSource = s.audioSource.GetComponent<AudioSource>();
+                        var volume = audioSource.volume;
+                        StartCoroutine(FadeOut(audioSource, fadeDuration, (volume * reductionAmount)));
+                    }
+                }
+            }
+            else
+            {
+                foreach (var s in audioReferences)
+                {
+                    if (s.objReference.audioPriority < activeAudioPriority)
+                    {
+                        var audioSource = s.audioSource.GetComponent<AudioSource>();
+                        StartCoroutine(FadeIn(s.audioSource.GetComponent<AudioSource>(), fadeDuration, s.volume, audioSource.volume));
+                    }
+                }
+
+                activeAudioPriority = 0;
+            }
+        }
+
+        #endregion
+
+        #region -- PRIVATE METHODS --
+
+        /// <summary>
         /// Fires an event when an audio source stops playing.
         /// </summary>
         private void FireEventWhenSoundFinished(AudioScriptableObject sound, GameObject gameObject, UnityAction reference)
@@ -247,50 +294,8 @@ namespace AudioSystem
                     s.endOfClip.AddListener(reference);
                     return;
                 }
-            } 
-        } 
-
-        /// <summary>
-        /// The following method allows for dynamic control over the lowering and highering of all audios based on the priority of the SO parameter .
-        /// </summary>
-        public void DynamicVolumePrioritySystem(AudioScriptableObject sound, bool systemIsActive)
-        {
-            if (sound == null)
-            {
-                Debug.LogError($"You are missing a sound SO from the gameobject {gameObject.name}");
-                return;
-            }
-
-            if (systemIsActive && sound.audioPriority >= activeAudioPriority)
-            {
-                activeAudioPriority = sound.audioPriority;
-
-                foreach (var s in audioReferences)
-                {
-                    if(s.objReference.audioPriority < activeAudioPriority)
-                    {
-                        var volume = s.audioSource.GetComponent<AudioSource>().volume;
-                        s.audioSource.GetComponent<AudioSource>().volume = volume * reductionAmount;
-                    }
-                }
-            }
-            else if (!systemIsActive)
-            {
-                activeAudioPriority = 0;
-
-                foreach (var s in audioReferences)
-                {
-                    if (s.objReference.audioPriority < activeAudioPriority)
-                    {
-                        s.audioSource.GetComponent<AudioSource>().volume = s.volume;
-                    }
-                }
             }
         }
-
-        #endregion
-
-        #region -- PRIVATE METHODS --
 
         /// <summary>
         /// This will turn any non-looping audio into a oneshot
@@ -327,15 +332,14 @@ namespace AudioSystem
         /// <summary>
         /// Fade in audio source.
         /// </summary>
-        private static IEnumerator FadeIn(AudioSource audioSource, float duration, float targetVolume)
+        private static IEnumerator FadeIn(AudioSource audioSource, float duration, float targetVolume, float startingVolume = 0)
         {
             float currentTime = 0;
-            float start = 0;
 
             while (currentTime < duration)
             {
                 currentTime += Time.deltaTime;
-                audioSource.volume = Mathf.Lerp(start, targetVolume, currentTime / duration);
+                audioSource.volume = Mathf.Lerp(startingVolume, targetVolume, currentTime / duration);
                 yield return null;
             }
             yield break;
@@ -344,31 +348,36 @@ namespace AudioSystem
         /// <summary>
         /// Fade out audio source.
         /// </summary>
-        private static IEnumerator FadeOut(AudioSource audioSource, float duration, float targetVolume)
+        private static IEnumerator FadeOut(AudioSource audioSource, float duration, float targetVolume = 0)
         {
-            float currentTime = 0;
-            float start = targetVolume;
+            var currentTime = 0f;
+            var currentVolume = audioSource.volume;
 
             while (currentTime < duration)
             {
                 currentTime += Time.deltaTime;
-                audioSource.volume = Mathf.Lerp(start, 0, currentTime / duration);
+                audioSource.volume = Mathf.Lerp(currentVolume, targetVolume, currentTime / duration);
                 yield return null;
             }
-            audioSource.Stop();
+
+            if(audioSource.volume <= 0)
+            {
+                audioSource.Stop();
+            }
+            
             yield break;
         }
 
         /// <summary>
         /// Prevent audio flooding by deleting the oldest audio source when the limit is exceeded.
         /// </summary>
-        private void AudioFloodPrevention(AudioClip audioClip)
+        private void AudioFloodPrevention(AudioList audioListVariable)
         {
             var stack = 0;
 
             foreach (AudioReference s in audioReferences)
             {
-                if (s.audioSource == audioClip)
+                if (s.audioSource == audioListVariable.audioClip)
                 {
                     stack++;
                 }
@@ -378,7 +387,7 @@ namespace AudioSystem
             {
                 foreach (AudioReference s in audioReferences)
                 {
-                    if (s.audioSource == audioClip)
+                    if (s.audioSource == audioListVariable.audioClip)
                     {
                         s.audioSource.transform.SetParent(audioPoolContainer);
                         audioPool.Enqueue(s.audioSource);
@@ -399,28 +408,21 @@ namespace AudioSystem
             }
         }
 
-        private void PopulateTheAudioSource(AudioScriptableObject sound, GameObject gameObject, GameObject obj, AudioClip audioClip, AudioSource audioSource)
+        private void PopulateTheAudioSource(AudioScriptableObject sound, GameObject gameObject, GameObject obj, AudioList audioListVariable, AudioSource audioSource)
         {
-            audioSource.clip = audioClip;
-
-            foreach (var clip in sound.audioClips)
+            audioSource.clip = audioListVariable.audioClip;
+            
+            //check if a high priority sound has been played.
+            if (activeAudioPriority > 0 && sound.audioPriority < activeAudioPriority)
             {
-                if (clip.obj == audioSource.clip)
-                {
-                    //check if a high priority sound has been played.
-                    if (activeAudioPriority > 0 && sound.audioPriority < activeAudioPriority)
-                    {
-                        audioSource.volume = clip.volume * reductionAmount;
-                    }
-                    else
-                    {
-                        audioSource.volume = clip.volume;
-                    }
-
-                    audioSource.pitch = clip.pitch;
-                }
+                audioSource.volume = audioListVariable.volume * reductionAmount;
+            }
+            else
+            {
+                audioSource.volume = audioListVariable.volume;
             }
 
+            audioSource.pitch = audioListVariable.pitch;
             audioSource.outputAudioMixerGroup = sound.audioMixerGroup;
             audioSource.loop = sound.loop;
             audioSource.panStereo = sound.pan;
@@ -442,14 +444,14 @@ namespace AudioSystem
             }
         }
 
-        private void CreateAudioReference(AudioScriptableObject sound, GameObject gameObject, GameObject obj, AudioSource audioSource)
+        private void CreateAudioReference(AudioScriptableObject sound, GameObject gameObject, GameObject obj, AudioSource audioSource, AudioList audioListVariable)
         {
             var createdObjReference = new AudioReference();
 
             createdObjReference.objReference = sound;
             createdObjReference.requestingObj = gameObject;
             createdObjReference.audioSource = obj;
-            createdObjReference.volume = audioSource.volume;
+            createdObjReference.volume = audioListVariable.volume;
 
             Coroutine clipLength = null;
 
