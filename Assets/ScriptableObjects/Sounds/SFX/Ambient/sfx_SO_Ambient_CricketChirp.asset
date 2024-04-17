@@ -13,12 +13,14 @@ MonoBehaviour:
   m_Name: sfx_SO_Ambient_CricketChirp
   m_EditorClassIdentifier: 
   audioClips:
-  - obj: {fileID: 8300000, guid: 69529050f2913a94c9c49171b5735cee, type: 3}
+  - obj:
+      audioClip: {fileID: 8300000, guid: 69529050f2913a94c9c49171b5735cee, type: 3}
+      volume: 1
+      pitch: 1
     weight: 100
   audioMixerGroup: {fileID: -9123715879687149167, guid: d8dd63bf224bdc8468fb34784cf4b2fa, type: 2}
-  volume: 1
-  pitch: 2
   pan: 0
+  audioPriority: 5
   loop: 0
   playWhilePaused: 0
   fadeIn: 0

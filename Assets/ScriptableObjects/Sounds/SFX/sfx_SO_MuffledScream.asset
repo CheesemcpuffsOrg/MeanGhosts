@@ -13,13 +13,16 @@ MonoBehaviour:
   m_Name: sfx_SO_MuffledScream
   m_EditorClassIdentifier: 
   audioClips:
-  - obj: {fileID: 8300000, guid: 127e733187fb02e47b68fa355ecd1753, type: 3}
+  - obj:
+      audioClip: {fileID: 8300000, guid: 127e733187fb02e47b68fa355ecd1753, type: 3}
+      volume: 1
+      pitch: 1
     weight: 100
   audioMixerGroup: {fileID: -9123715879687149167, guid: d8dd63bf224bdc8468fb34784cf4b2fa, type: 2}
-  volume: 1
-  pitch: 1
   pan: 0
+  audioPriority: 5
   loop: 0
+  playWhilePaused: 0
   fadeIn: 0
   fadeInDuration: 0
   fadeOut: 0

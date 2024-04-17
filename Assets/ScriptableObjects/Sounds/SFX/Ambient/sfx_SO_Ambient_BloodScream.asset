@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: sfx_SO_Ambient_BloodScream
   m_EditorClassIdentifier: 
   audioClips:
-  - obj: {fileID: 8300000, guid: 6d6ae2a2ac21de34e935c398da370f3f, type: 3}
+  - obj:
+      audioClip: {fileID: 8300000, guid: a9a8dd089dee2044eabaf2b83eddfe40, type: 3}
+      volume: 1
+      pitch: 1
     weight: 100
-    volume: 1
-    pitch: 1
   audioMixerGroup: {fileID: -9123715879687149167, guid: d8dd63bf224bdc8468fb34784cf4b2fa, type: 2}
   pan: 0
   audioPriority: 5
