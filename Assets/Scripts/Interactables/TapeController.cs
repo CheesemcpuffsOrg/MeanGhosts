@@ -19,7 +19,7 @@ namespace Interactable
         [SerializeField] private Collision2DProxy audioRangeDetection;
 
         [Header ("Tags")]
-        [SerializeField] TagScriptableObject playerTag;
+        [SerializeField] TagScriptableObject playerColliderTag;
 
         private void Start()
         {
@@ -58,7 +58,7 @@ namespace Interactable
 
         private void AudioDetectionOnTriggerEnter2D(Collider2D other)
         {
-            if(TagExtensions.HasTag(other.gameObject, playerTag))
+            if(TagExtensions.HasTag(other.gameObject, playerColliderTag))
             {
                 if (AudioManager.AudioManagerInstance.IsSoundPlaying(tapeAudio, this.gameObject))
                 {
@@ -69,7 +69,7 @@ namespace Interactable
 
         private void AudioDetectionOnTriggerExit2D(Collider2D other)
         {
-            if (TagExtensions.HasTag(other.gameObject, playerTag))
+            if (TagExtensions.HasTag(other.gameObject, playerColliderTag))
             {
                 if (AudioManager.AudioManagerInstance.IsSoundPlaying(tapeAudio, this.gameObject))
                 {   

@@ -142,7 +142,6 @@ public class GameManager : MonoBehaviour
 
         if (_isPaused)
         {
-            
             player.GetComponentInChildren<FlashLight>().Pause(_isPaused);
             player.GetComponent<PlayerController>().OnDisable();
             AudioManager.AudioManagerInstance.PauseAllAudio();

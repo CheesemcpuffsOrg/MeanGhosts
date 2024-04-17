@@ -3,8 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using System.Linq;
-using Unity.VisualScripting;
 
 //Joshua 
 
@@ -34,7 +32,8 @@ namespace AudioSystem
         [SerializeField] Transform audioPoolContainer;
         [SerializeField] Transform activeSounds;
 
-        [SerializeField] int StackingAudioLimiter = 5;
+        [SerializeField, Tooltip("This int controls the max number of one type of audio clip that can be played before the oldest audio clip is cancelled")] 
+        int StackingAudioLimiter = 5;
 
         int activeAudioPriority = 0;
         float reductionAmount = 0.5f;
@@ -317,6 +316,7 @@ namespace AudioSystem
 
                     audioPool.Enqueue(s.audioSource);
                     audioReferences.Remove(s);
+
                     yield break;
                 }
             }
@@ -457,7 +457,8 @@ namespace AudioSystem
 
             if (!audioSource.loop)
             {
-                clipLength = StartCoroutine(Countdown(audioSource.clip.length, createdObjReference));
+                var lengthCalculatingPitch = audioSource.clip.length / Math.Abs(audioListVariable.pitch);
+                clipLength = StartCoroutine(Countdown(lengthCalculatingPitch, createdObjReference));
             }
 
             createdObjReference.clipLength = clipLength;
