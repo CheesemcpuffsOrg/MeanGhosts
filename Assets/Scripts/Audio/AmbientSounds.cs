@@ -6,24 +6,15 @@ using UnityEngine;
 public class AmbientSounds : MonoBehaviour
 {
     [Header("Sounds")]
-    [SerializeField] AudioScriptableObject ambientSound;
-    [SerializeField] float minSeconds = 15f;
-    [SerializeField] float maxSeconds = 30f;
+    [SerializeField] AudioScriptableObject crickets;
+    [SerializeField] AudioScriptableObject cicadas;
+    [SerializeField] AudioScriptableObject wind;
 
-    // Start is called before the first frame update
-    void Start()
+
+    private void Start()
     {
-        StartCoroutine(RandomAmbientSound());
-    }
-
-    IEnumerator RandomAmbientSound()
-    {
-        while (true)
-        {
-            yield return new WaitForSecondsRealtime(Random.Range(minSeconds, maxSeconds));
-
-            AudioManager.AudioManagerInstance.PlaySound(ambientSound, this.gameObject);
-        }
-        
+        AudioManager.AudioManagerInstance.PlaySound(crickets, this.gameObject);
+        AudioManager.AudioManagerInstance.PlaySound(cicadas, this.gameObject);
+        AudioManager.AudioManagerInstance.PlaySound(wind, this.gameObject);
     }
 }

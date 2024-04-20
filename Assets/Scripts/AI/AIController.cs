@@ -9,6 +9,7 @@ public class AIController : MonoBehaviour
     public AIScriptableObjects stats => _stats;
 
     GameObject _player;
+    GameObject _playerCollider;
 
     public GameObject player => _player;
 
@@ -29,11 +30,13 @@ public class AIController : MonoBehaviour
 
     [Header ("Tags")]
     [SerializeField] TagScriptableObject playerTag;
+    [SerializeField] TagScriptableObject playerCollider;
 
     // Start is called before the first frame update
     void Start()
     {
         _player = TagExtensions.FindWithTag(gameObject, playerTag);
+        _playerCollider = TagExtensions.FindWithTag(gameObject, playerCollider);
 
         _flashLight = player.GetComponentInChildren<FlashLight>();
 
@@ -49,7 +52,7 @@ public class AIController : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         
-        if (collision.gameObject.tag == "Player")
+        if (TagExtensions.HasTag(collision.gameObject, playerCollider))
         {
             GameManager.GameManagerInstance.GameOver();
         }

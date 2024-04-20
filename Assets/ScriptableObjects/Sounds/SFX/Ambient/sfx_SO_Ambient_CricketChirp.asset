@@ -21,7 +21,7 @@ MonoBehaviour:
   audioMixerGroup: {fileID: -9123715879687149167, guid: d8dd63bf224bdc8468fb34784cf4b2fa, type: 2}
   pan: 0
   audioPriority: 5
-  loop: 0
+  loop: 1
   playWhilePaused: 0
   fadeIn: 0
   fadeInDuration: 0
