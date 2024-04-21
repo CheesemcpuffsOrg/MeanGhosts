@@ -65,7 +65,7 @@ public class GameManager : MonoBehaviour
         {
             UIContainer.UIContainerInstance.Winner();
             player.GetComponent<PlayerController>().OnDisable();
-            player.GetComponent<PlayerController>().flashLight.SetActive(false);
+            //player.GetComponent<PlayerController>().flashLightObj.SetActive(false);
             // player.GetComponent<Player.PlayerController>().flashLightState = false;
         }
 
@@ -161,7 +161,7 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         player.GetComponent<PlayerController>().OnDisable();
-        player.GetComponent<PlayerController>().flashLight.SetActive(false);
+        //player.GetComponent<PlayerController>().flashLightObj.SetActive(false);
         //player.GetComponent<Player.PlayerController>().flashLightState = false;
         UIContainer.UIContainerInstance.GameOver();
     }

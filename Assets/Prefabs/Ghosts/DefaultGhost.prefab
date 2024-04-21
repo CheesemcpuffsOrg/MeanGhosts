@@ -291,6 +291,7 @@ MonoBehaviour:
   _spawn: {fileID: 0}
   _anim: {fileID: 6925159469005380708}
   playerTag: {fileID: 11400000, guid: 245989d67fe58824aacae9258831b138, type: 2}
+  playerCollider: {fileID: 11400000, guid: 22d061278a70bfe4187df8c6e373d33d, type: 2}
 --- !u!70 &650324298
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
