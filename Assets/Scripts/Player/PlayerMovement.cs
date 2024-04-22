@@ -5,26 +5,29 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+
+    [Header("Objects")]
     [SerializeField] PlayerController controller;
     [SerializeField] AnimationController animController;
     [SerializeField] PlayerSO playerSO;
-    [SerializeField] Rigidbody2D rb;
-
+    [SerializeField] Rigidbody2D rigidBody;
     [SerializeField] GameObject flashLightObj;
+    [SerializeField] SpriteRenderer spriteRenderer;
 
-    Vector2 currentMoveInput;
-    Vector2 smoothCurrentMoveInput;
-    Vector2 currentMovementSmoothVelocity;
-    float currentSpeed;
-    float defaultSpeed;
-    float defaultSpeedModifier = 1f;
+    [Header("Modifiers")]
     [SerializeField] float speedReductionModifier = 0.5f;
 
-    bool isMoving = false;
-    bool footsteps = false;
-
     [Header("Animation")]
-    [SerializeField] string idle;
+    //idle
+    [SerializeField] string idleUp;
+    [SerializeField] string idleUpRight;
+    [SerializeField] string idleRight;
+    [SerializeField] string idleDownRight;
+    [SerializeField] string idleDown;
+    [SerializeField] string idleDownLeft;
+    [SerializeField] string idleLeft;
+    [SerializeField] string idleUpLeft;
+    //walk forward
     [SerializeField] string walkUp;
     [SerializeField] string walkUpRight;
     [SerializeField] string walkRight;
@@ -33,7 +36,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] string walkDownLeft;
     [SerializeField] string walkLeft;
     [SerializeField] string walkUpLeft;
-
+    //walk backwards
     [SerializeField] string walkUpReversed;
     [SerializeField] string walkUpRightReversed;
     [SerializeField] string walkRightReversed;
@@ -45,6 +48,15 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Sounds")]
     [SerializeField] AudioScriptableObject footSteps;
+
+    Vector2 currentMoveInput;
+    Vector2 smoothCurrentMoveInput;
+    Vector2 currentMovementSmoothVelocity;
+    float currentSpeed;
+    float defaultSpeed;
+    float defaultSpeedModifier = 1f;
+    bool isMoving = false;
+    bool footsteps = false;
 
     // Start is called before the first frame update
     void Start()
@@ -58,13 +70,16 @@ public class PlayerMovement : MonoBehaviour
     {
         PlayFootsteps();
 
+        var torchRotation = flashLightObj.transform.rotation.eulerAngles;
+        
         if (isMoving)
         {
-            WalkAnimation();
+            var velocity = rigidBody.velocity;
+            WalkAnimation(velocity, torchRotation);
         }
         else
         {
-            animController.PlayAnimation(idle);
+            IdleAnimation(torchRotation);
         }
     }
 
@@ -72,7 +87,8 @@ public class PlayerMovement : MonoBehaviour
     {
         currentMoveInput = controller.currentMoveInput;
 
-        if (currentMoveInput.y != 0 || currentMoveInput.x != 0) { isMoving = true; } else { isMoving = false; }
+        var velocity = rigidBody.velocity;
+        if (velocity.y > 0.1 || velocity.x > 0.1 || velocity.y < -0.1 || velocity.x < -0.1) { isMoving = true; } else { isMoving = false; }
 
         SmoothMovement();
     }
@@ -81,7 +97,7 @@ public class PlayerMovement : MonoBehaviour
     {
         smoothCurrentMoveInput = Vector2.SmoothDamp(smoothCurrentMoveInput, currentMoveInput, ref currentMovementSmoothVelocity, 0.1f);
 
-        rb.velocity = smoothCurrentMoveInput * currentSpeed;
+        rigidBody.velocity = smoothCurrentMoveInput * currentSpeed;
     }
 
 
@@ -100,47 +116,97 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    #region --WALK ANIMATION --
-    void WalkAnimation()
+    private void WalkAnimationModifiers(bool flipSprite, string animationName, float speedMultiplier)
     {
-        var torchRotation = flashLightObj.transform.rotation.eulerAngles;
-        var velocity = rb.velocity;
-        var spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer.flipX = flipSprite;
+        animController.PlayAnimation(animationName);
+        currentSpeed = defaultSpeed * speedMultiplier;
+    }
 
+    private void IdleAnimationModifiers(bool flipSprite, string animationName)
+    {
+        spriteRenderer.flipX = flipSprite;
+        animController.PlayAnimation(animationName);
+    }
+
+    #region --IDLE ANIMATION --
+
+    void IdleAnimation(Vector3 torchRotation)
+    {
+        if (torchRotation.z > 337.6f || torchRotation.z < 22.5f)
+        {
+            IdleAnimationModifiers(false, idleUp);
+        }
+        else if (torchRotation.z > 22.6f && torchRotation.z < 67.5f)
+        {
+            IdleAnimationModifiers(true, idleUpLeft);
+        }
+        else if (torchRotation.z > 67.6f && torchRotation.z < 112.5f)
+        {
+            IdleAnimationModifiers(true, idleLeft);
+        }
+        else if (torchRotation.z > 112.6f && torchRotation.z < 157.5f)
+        {
+            IdleAnimationModifiers(true, idleDownLeft);
+        }
+        else if (torchRotation.z > 157.6f && torchRotation.z < 202.5f)
+        {
+            IdleAnimationModifiers(false, idleDown);
+        }
+        else if (torchRotation.z > 202.6f && torchRotation.z < 247.5f)
+        {
+            IdleAnimationModifiers(false, idleDownRight);
+        }
+        else if (torchRotation.z > 247.6f && torchRotation.z < 292.5f)
+        {
+            IdleAnimationModifiers(false, idleRight);
+        }
+        else if (torchRotation.z > 292.6f && torchRotation.z < 337.5f)
+        {
+            IdleAnimationModifiers(false, idleUpRight);
+        }
+    }
+
+    #endregion
+
+    #region --WALK ANIMATION --
+    void WalkAnimation(Vector2 velocity, Vector3 torchRotation)
+    {
+        
         //walk up
         if (velocity.y > 0.5f && velocity.x > -0.5 && velocity.x < 0.5f)
         {
             if (torchRotation.z > 337.6f || torchRotation.z < 22.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, false, walkUp, defaultSpeedModifier);
+                WalkAnimationModifiers(false, walkUp, defaultSpeedModifier);
             }
             else if (torchRotation.z > 22.6f && torchRotation.z < 67.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, true, walkUpLeft, defaultSpeedModifier);
+                WalkAnimationModifiers(true, walkUpLeft, defaultSpeedModifier);
             }
             else if (torchRotation.z > 67.6f && torchRotation.z < 112.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, true, walkLeft, defaultSpeedModifier);
+                WalkAnimationModifiers(true, walkLeft, defaultSpeedModifier);
             }
             else if (torchRotation.z > 112.6f && torchRotation.z < 157.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, true, walkDownLeftReversed, speedReductionModifier);
+                WalkAnimationModifiers(true, walkDownLeftReversed, speedReductionModifier);
             }
             else if (torchRotation.z > 157.6f && torchRotation.z < 202.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, false, walkDownReversed, speedReductionModifier);
+                WalkAnimationModifiers(false, walkDownReversed, speedReductionModifier);
             }
             else if (torchRotation.z > 202.6f && torchRotation.z < 247.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, false, walkDownRightReversed, speedReductionModifier);
+                WalkAnimationModifiers(false, walkDownRightReversed, speedReductionModifier);
             }
             else if (torchRotation.z > 247.6f && torchRotation.z < 292.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, false, walkRight, defaultSpeedModifier);
+                WalkAnimationModifiers(false, walkRight, defaultSpeedModifier);
             }
             else if (torchRotation.z > 292.6f && torchRotation.z < 337.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, false, walkUpRight, defaultSpeedModifier);
+                WalkAnimationModifiers(false, walkUpRight, defaultSpeedModifier);
             }
         }
         // walk up left
@@ -148,35 +214,35 @@ public class PlayerMovement : MonoBehaviour
         {
             if (torchRotation.z > 337.6f || torchRotation.z < 22.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, false, walkUp, defaultSpeedModifier);
+                WalkAnimationModifiers(false, walkUp, defaultSpeedModifier);
             }
             else if (torchRotation.z > 22.6f && torchRotation.z < 67.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, true, walkUpLeft, defaultSpeedModifier);
+                WalkAnimationModifiers(true, walkUpLeft, defaultSpeedModifier);
             }
             else if (torchRotation.z > 67.6f && torchRotation.z < 112.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, true, walkLeft, defaultSpeedModifier);
+                WalkAnimationModifiers(true, walkLeft, defaultSpeedModifier);
             }
             else if (torchRotation.z > 112.6f && torchRotation.z < 157.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, true, walkDownLeft, defaultSpeedModifier);
+                WalkAnimationModifiers(true, walkDownLeft, defaultSpeedModifier);
             }
             else if (torchRotation.z > 157.6f && torchRotation.z < 202.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, false, walkDownReversed, speedReductionModifier); ;
+                WalkAnimationModifiers(false, walkDownReversed, speedReductionModifier); ;
             }
             else if (torchRotation.z > 202.6f && torchRotation.z < 247.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, false, walkDownRightReversed, speedReductionModifier);
+                WalkAnimationModifiers(false, walkDownRightReversed, speedReductionModifier);
             }
             else if (torchRotation.z > 247.6f && torchRotation.z < 292.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, false, walkRightReversed, speedReductionModifier);
+                WalkAnimationModifiers(false, walkRightReversed, speedReductionModifier);
             }
             else if (torchRotation.z > 292.6f && torchRotation.z < 337.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, false, walkUpRight, defaultSpeedModifier);
+                WalkAnimationModifiers(false, walkUpRight, defaultSpeedModifier);
             }
         }
         //walk left
@@ -184,35 +250,35 @@ public class PlayerMovement : MonoBehaviour
         {
             if (torchRotation.z > 337.6f || torchRotation.z < 22.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, false, walkUp, defaultSpeedModifier);
+                WalkAnimationModifiers(false, walkUp, defaultSpeedModifier);
             }
             else if (torchRotation.z > 22.6f && torchRotation.z < 67.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, true, walkUpLeft, defaultSpeedModifier);
+                WalkAnimationModifiers(true, walkUpLeft, defaultSpeedModifier);
             }
             else if (torchRotation.z > 67.6f && torchRotation.z < 112.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, true, walkLeft, defaultSpeedModifier);
+                WalkAnimationModifiers(true, walkLeft, defaultSpeedModifier);
             }
             else if (torchRotation.z > 112.6f && torchRotation.z < 157.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, true, walkDownLeft, defaultSpeedModifier);
+                WalkAnimationModifiers(true, walkDownLeft, defaultSpeedModifier);
             }
             else if (torchRotation.z > 157.6f && torchRotation.z < 202.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, false, walkDown, defaultSpeedModifier);
+                WalkAnimationModifiers(false, walkDown, defaultSpeedModifier);
             }
             else if (torchRotation.z > 202.6f && torchRotation.z < 247.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, false, walkDownRightReversed, speedReductionModifier);
+                WalkAnimationModifiers(false, walkDownRightReversed, speedReductionModifier);
             }
             else if (torchRotation.z > 247.6f && torchRotation.z < 292.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, false, walkRightReversed, speedReductionModifier);
+                WalkAnimationModifiers(false, walkRightReversed, speedReductionModifier);
             }
             else if (torchRotation.z > 292.6f && torchRotation.z < 337.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, false, walkUpRightReversed, speedReductionModifier);
+                WalkAnimationModifiers(false, walkUpRightReversed, speedReductionModifier);
             }
         }
         //walk down left
@@ -220,35 +286,35 @@ public class PlayerMovement : MonoBehaviour
         {
             if (torchRotation.z > 337.6f || torchRotation.z < 22.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, false, walkUpReversed, speedReductionModifier);
+                WalkAnimationModifiers(false, walkUpReversed, speedReductionModifier);
             }
             else if (torchRotation.z > 22.6f && torchRotation.z < 67.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, true, walkUpLeft, defaultSpeedModifier);
+                WalkAnimationModifiers(true, walkUpLeft, defaultSpeedModifier);
             }
             else if (torchRotation.z > 67.6f && torchRotation.z < 112.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, true, walkLeft, defaultSpeedModifier);
+                WalkAnimationModifiers(true, walkLeft, defaultSpeedModifier);
             }
             else if (torchRotation.z > 112.6f && torchRotation.z < 157.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, true, walkDownLeft, defaultSpeedModifier);
+                WalkAnimationModifiers(true, walkDownLeft, defaultSpeedModifier);
             }
             else if (torchRotation.z > 157.6f && torchRotation.z < 202.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, false, walkDown, defaultSpeedModifier);
+                WalkAnimationModifiers(false, walkDown, defaultSpeedModifier);
             }
             else if (torchRotation.z > 202.6f && torchRotation.z < 247.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, false, walkDownRight, defaultSpeedModifier);
+                WalkAnimationModifiers(false, walkDownRight, defaultSpeedModifier);
             }
             else if (torchRotation.z > 247.6f && torchRotation.z < 292.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, false, walkRightReversed, speedReductionModifier);
+                WalkAnimationModifiers(false, walkRightReversed, speedReductionModifier);
             }
             else if (torchRotation.z > 292.6f && torchRotation.z < 337.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, false, walkUpRightReversed, speedReductionModifier);
+                WalkAnimationModifiers(false, walkUpRightReversed, speedReductionModifier);
             }
         }
         //walk down
@@ -256,35 +322,35 @@ public class PlayerMovement : MonoBehaviour
         {
             if (torchRotation.z > 337.6f || torchRotation.z < 22.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, false, walkUpReversed, speedReductionModifier);
+                WalkAnimationModifiers(false, walkUpReversed, speedReductionModifier);
             }
             else if (torchRotation.z > 22.6f && torchRotation.z < 67.5f)
-            {
-                WalkAnimationModifiers(spriteRenderer, true, walkUpLeftReversed, speedReductionModifier);
+            {   
+                WalkAnimationModifiers(true, walkUpLeftReversed, speedReductionModifier);
             }
             else if (torchRotation.z > 67.6f && torchRotation.z < 112.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, true, walkLeft, defaultSpeedModifier);
+                WalkAnimationModifiers(true, walkLeft, defaultSpeedModifier);
             }
             else if (torchRotation.z > 112.6f && torchRotation.z < 157.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, true, walkDownLeft, defaultSpeedModifier);
+                WalkAnimationModifiers(true, walkDownLeft, defaultSpeedModifier);
             }
             else if (torchRotation.z > 157.6f && torchRotation.z < 202.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, false, walkDown, defaultSpeedModifier);
+                WalkAnimationModifiers(false, walkDown, defaultSpeedModifier);
             }
             else if (torchRotation.z > 202.6f && torchRotation.z < 247.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, false, walkDownRight, defaultSpeedModifier);
+                WalkAnimationModifiers(false, walkDownRight, defaultSpeedModifier);
             }
             else if (torchRotation.z > 247.6f && torchRotation.z < 292.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, false, walkRight, defaultSpeedModifier);
+                WalkAnimationModifiers(false, walkRight, defaultSpeedModifier);
             }
             else if (torchRotation.z > 292.6f && torchRotation.z < 337.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, false, walkUpRightReversed, speedReductionModifier);
+                WalkAnimationModifiers(false, walkUpRightReversed, speedReductionModifier);
             }
         }
         //walk down right
@@ -292,35 +358,35 @@ public class PlayerMovement : MonoBehaviour
         {
             if (torchRotation.z > 337.6f || torchRotation.z < 22.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, false, walkUpReversed, speedReductionModifier);
+                WalkAnimationModifiers(false, walkUpReversed, speedReductionModifier);
             }
             else if (torchRotation.z > 22.6f && torchRotation.z < 67.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, true, walkUpLeftReversed, speedReductionModifier);
+                WalkAnimationModifiers(true, walkUpLeftReversed, speedReductionModifier);
             }
             else if (torchRotation.z > 67.6f && torchRotation.z < 112.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, true, walkLeftReversed, speedReductionModifier);
+                WalkAnimationModifiers(true, walkLeftReversed, speedReductionModifier);
             }
             else if (torchRotation.z > 112.6f && torchRotation.z < 157.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, true, walkDownLeft, defaultSpeedModifier);
+                WalkAnimationModifiers(true, walkDownLeft, defaultSpeedModifier);
             }
             else if (torchRotation.z > 157.6f && torchRotation.z < 202.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, false, walkDown, defaultSpeedModifier);
+                WalkAnimationModifiers(false, walkDown, defaultSpeedModifier);
             }
             else if (torchRotation.z > 202.6f && torchRotation.z < 247.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, false, walkDownRight, defaultSpeedModifier);
+                WalkAnimationModifiers(false, walkDownRight, defaultSpeedModifier);
             }
             else if (torchRotation.z > 247.6f && torchRotation.z < 292.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, false, walkRight, defaultSpeedModifier);
+                WalkAnimationModifiers(false, walkRight, defaultSpeedModifier);
             }
             else if (torchRotation.z > 292.6f && torchRotation.z < 337.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, false, walkUpRight, defaultSpeedModifier);
+                WalkAnimationModifiers(false, walkUpRight, defaultSpeedModifier);
             }
         }
         //walk right
@@ -328,35 +394,35 @@ public class PlayerMovement : MonoBehaviour
         {
             if (torchRotation.z > 337.6f || torchRotation.z < 22.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, false, walkUp, defaultSpeedModifier);
+                WalkAnimationModifiers(false, walkUp, defaultSpeedModifier);
             }
             else if (torchRotation.z > 22.6f && torchRotation.z < 67.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, true, walkUpLeftReversed, speedReductionModifier);
+                WalkAnimationModifiers(true, walkUpLeftReversed, speedReductionModifier);
             }
             else if (torchRotation.z > 67.6f && torchRotation.z < 112.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, true, walkLeftReversed, speedReductionModifier);
+                WalkAnimationModifiers(true, walkLeftReversed, speedReductionModifier);
             }
             else if (torchRotation.z > 112.6f && torchRotation.z < 157.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, true, walkDownLeftReversed, speedReductionModifier);
+                WalkAnimationModifiers(true, walkDownLeftReversed, speedReductionModifier);
             }
             else if (torchRotation.z > 157.6f && torchRotation.z < 202.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, false, walkDown, defaultSpeedModifier);
+                WalkAnimationModifiers(false, walkDown, defaultSpeedModifier);
             }
             else if (torchRotation.z > 202.6f && torchRotation.z < 247.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, false, walkDownRight, defaultSpeedModifier);
+                WalkAnimationModifiers(false, walkDownRight, defaultSpeedModifier);
             }
             else if (torchRotation.z > 247.6f && torchRotation.z < 292.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, false, walkRight, defaultSpeedModifier);
+                WalkAnimationModifiers(false, walkRight, defaultSpeedModifier);
             }
             else if (torchRotation.z > 292.6f && torchRotation.z < 337.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, false, walkUpRight, defaultSpeedModifier);
+                WalkAnimationModifiers(false, walkUpRight, defaultSpeedModifier);
             }
         }
         //walk right up
@@ -364,45 +430,38 @@ public class PlayerMovement : MonoBehaviour
         {
             if (torchRotation.z > 337.6f || torchRotation.z < 22.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, false, walkUp, defaultSpeedModifier);
+                WalkAnimationModifiers(false, walkUp, defaultSpeedModifier);
             }
             else if (torchRotation.z > 22.6f && torchRotation.z < 67.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, true, walkUpLeft, defaultSpeedModifier);
+                WalkAnimationModifiers(true, walkUpLeft, defaultSpeedModifier);
             }
             else if (torchRotation.z > 67.6f && torchRotation.z < 112.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, true, walkLeftReversed, speedReductionModifier);
+                WalkAnimationModifiers(true, walkLeftReversed, speedReductionModifier);
             }
             else if (torchRotation.z > 112.6f && torchRotation.z < 157.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, true, walkDownLeftReversed, speedReductionModifier);
+                WalkAnimationModifiers(true, walkDownLeftReversed, speedReductionModifier);
             }
             else if (torchRotation.z > 157.6f && torchRotation.z < 202.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, false, walkDownReversed, speedReductionModifier);
+                WalkAnimationModifiers(false, walkDownReversed, speedReductionModifier);
             }
             else if (torchRotation.z > 202.6f && torchRotation.z < 247.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, false, walkDownRight, defaultSpeedModifier);
+                WalkAnimationModifiers(false, walkDownRight, defaultSpeedModifier);
             }
             else if (torchRotation.z > 247.6f && torchRotation.z < 292.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, false, walkRight, defaultSpeedModifier);
+                WalkAnimationModifiers(false, walkRight, defaultSpeedModifier);
             }
             else if (torchRotation.z > 292.6f && torchRotation.z < 337.5f)
             {
-                WalkAnimationModifiers(spriteRenderer, false, walkUpRight, defaultSpeedModifier);
+                WalkAnimationModifiers(false, walkUpRight, defaultSpeedModifier);
             }
         }
     }
-
-    private void WalkAnimationModifiers(SpriteRenderer spriteRenderer, bool flipSprite, string animationName, float speedMultiplier)
-    {
-        spriteRenderer.flipX = flipSprite;
-        animController.PlayAnimation(animationName);
-        currentSpeed = defaultSpeed * speedMultiplier;
-    }
-
+        
     #endregion
 }

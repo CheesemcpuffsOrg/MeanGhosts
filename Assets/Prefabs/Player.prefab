@@ -1642,10 +1642,18 @@ MonoBehaviour:
   controller: {fileID: 5603956583811793886}
   animController: {fileID: 7343292460737189724}
   playerSO: {fileID: 11400000, guid: dd93b7730bf3f6c4d9be96e450a9a8b7, type: 2}
-  rb: {fileID: 5603956583811793887}
+  rigidBody: {fileID: 5603956583811793887}
   flashLightObj: {fileID: 682050257}
+  spriteRenderer: {fileID: 5603956583811793885}
   speedReductionModifier: 0.5
-  idle: 
+  idleUp: Anim_PlayerUpIdle
+  idleUpRight: Anim_PlayerUpRightIdle
+  idleRight: Anim_PlayerRightIdle
+  idleDownRight: Anim_PlayerDownRightIdle
+  idleDown: Anim_PlayerDownIdle
+  idleDownLeft: Anim_PlayerDownLeftIdle
+  idleLeft: Anim_PlayerLeftIdle
+  idleUpLeft: Anim_PlayerUpLeftIdle
   walkUp: Anim_PlayerWalkUp
   walkUpRight: Anim_PlayerDiagonalUpRight
   walkRight: Anim_PlayerWalkRight
