@@ -96,7 +96,7 @@ AnimatorStateMachine:
     m_Position: {x: 280, y: 180, z: 0}
   - serializedVersion: 1
     m_StateMachine: {fileID: 8378747482644018175}
-    m_Position: {x: 280, y: 320, z: 0}
+    m_Position: {x: 280, y: 240, z: 0}
   m_AnyStateTransitions: []
   m_EntryTransitions: []
   m_StateMachineTransitions: {}
@@ -798,7 +798,7 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: IdleSTate
+  m_Name: IdleState
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: -8853464054414363679}
