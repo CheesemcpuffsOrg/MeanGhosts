@@ -9,18 +9,15 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    public ControlScheme controlScheme;
+    ControlScheme controlScheme;
 
-    Vector2 _currentMoveInput;
-    public Vector2 currentMoveInput => _currentMoveInput;
+    public event Action<Vector2> onMoveInputChange;
+    public event Action interactEvent;
 
     [SerializeField] FlashLight flashlight;
 
     public bool invisible = false;
     public bool safe = false;
-
-    private UnityEvent _interactEvent;
-    public UnityEvent interactEvent => _interactEvent;
 
     public GameObject heldObject;
 
@@ -28,8 +25,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        _interactEvent = new UnityEvent();
-        controlScheme = new ControlScheme();
+        controlScheme = new ControlScheme(); 
         controlScheme.Player.Move.performed += Movement;
         controlScheme.Player.Move.canceled += MovementStopped;
         controlScheme.Player.Flashlight.performed += FlashLight;
@@ -39,12 +35,12 @@ public class PlayerController : MonoBehaviour
 
     void Movement(InputAction.CallbackContext move)
     {
-        _currentMoveInput = move.ReadValue<Vector2>();
+        onMoveInputChange.Invoke(move.ReadValue<Vector2>());
     }
 
     void MovementStopped(InputAction.CallbackContext move)
     {
-        _currentMoveInput = move.ReadValue<Vector2>();
+        onMoveInputChange.Invoke(move.ReadValue<Vector2>());
     }
 
     void FlashLight(InputAction.CallbackContext onoff)
@@ -87,7 +83,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.tag == "SafeZone")
         {
             PlayerInvisible();
-            interactEvent.AddListener(SafeZoneDrop);
+            interactEvent += SafeZoneDrop;
         }
     }
 
@@ -96,7 +92,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.tag == "SafeZone")
         {
             PlayerInvisible();
-            interactEvent.RemoveListener(SafeZoneDrop);
+            interactEvent -= SafeZoneDrop;
         }
     }
 

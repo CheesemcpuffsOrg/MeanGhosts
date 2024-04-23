@@ -1,6 +1,7 @@
 using AudioSystem;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -85,12 +86,15 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        currentMoveInput = controller.currentMoveInput;
-
         var velocity = rigidBody.velocity;
         if (velocity.y > 0.1 || velocity.x > 0.1 || velocity.y < -0.1 || velocity.x < -0.1) { isMoving = true; } else { isMoving = false; }
 
         SmoothMovement();
+    }
+
+    private void ReactToInput(Vector2 input)
+    {
+        currentMoveInput = input;
     }
 
     void SmoothMovement()
@@ -462,6 +466,16 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
-        
+
     #endregion
+
+    private void OnEnable()
+    {
+        controller.onMoveInputChange += ReactToInput;
+    }
+
+    private void OnDisable()
+    {
+        controller.onMoveInputChange -= ReactToInput;
+    }
 }

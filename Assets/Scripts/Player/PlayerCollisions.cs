@@ -85,7 +85,7 @@ public class PlayerCollisions : MonoBehaviour
     {
         if (other.gameObject.TryGetComponent<IInteractable>(out IInteractable interactable))
         { 
-            playerController.interactEvent.AddListener(interactable.Interact);
+            playerController.interactEvent += interactable.Interact;
             interactable.Collision(true);
         }
     }
@@ -94,7 +94,7 @@ public class PlayerCollisions : MonoBehaviour
     {
         if (other.gameObject.TryGetComponent<IInteractable>(out IInteractable interactable))
         {
-            playerController.interactEvent.AddListener(interactable.Interact);
+            playerController.interactEvent -= interactable.Interact;
             interactable.Collision(false);
         }
     }
