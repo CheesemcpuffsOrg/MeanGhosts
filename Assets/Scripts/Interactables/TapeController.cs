@@ -30,7 +30,7 @@ namespace Interactable
 
         }
 
-        public void Collision(bool hasCollided)
+        public void InteractionPrompt(bool hasCollided)
         {
             if (hasCollided)
             {

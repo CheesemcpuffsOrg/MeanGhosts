@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
     {
         player = TagExtensions.FindWithTag(gameObject, playerTag);
 
-        PlaceItems();
+       // PlaceItems();
 
         PlaceAudioTapes();
 
@@ -64,7 +64,7 @@ public class GameManager : MonoBehaviour
         if (score == 6)
         {
             UIContainer.UIContainerInstance.Winner();
-            player.GetComponent<PlayerController>().OnDisable();
+            GameplayInputManager.GameplayInputManagerInstance.OnDisable();
             //player.GetComponent<PlayerController>().flashLightObj.SetActive(false);
             // player.GetComponent<Player.PlayerController>().flashLightState = false;
         }
@@ -143,7 +143,7 @@ public class GameManager : MonoBehaviour
         if (_isPaused)
         {
             player.GetComponentInChildren<FlashLight>().Pause(_isPaused);
-            player.GetComponent<PlayerController>().OnDisable();
+            GameplayInputManager.GameplayInputManagerInstance.OnDisable();
             AudioManager.AudioManagerInstance.PauseAllAudio();
             Time.timeScale = 0;
         }
@@ -151,7 +151,7 @@ public class GameManager : MonoBehaviour
         { 
             
             player.GetComponentInChildren<FlashLight>().Pause(_isPaused);
-            player.GetComponent<PlayerController>().OnEnable();
+            GameplayInputManager.GameplayInputManagerInstance.OnEnable();
             AudioManager.AudioManagerInstance.UnPauseAllAudio();
             Time.timeScale = 1;
         }
@@ -160,7 +160,7 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        player.GetComponent<PlayerController>().OnDisable();
+        GameplayInputManager.GameplayInputManagerInstance.OnDisable();
         //player.GetComponent<PlayerController>().flashLightObj.SetActive(false);
         //player.GetComponent<Player.PlayerController>().flashLightState = false;
         UIContainer.UIContainerInstance.GameOver();

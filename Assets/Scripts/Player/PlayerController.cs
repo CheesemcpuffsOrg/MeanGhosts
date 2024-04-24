@@ -1,19 +1,12 @@
 using AudioSystem;
 using System;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.InputSystem;
 
 //Joshua 2023/12/02
 
 
 public class PlayerController : MonoBehaviour
 {
-    ControlScheme controlScheme;
-
-    public event Action<Vector2> onMoveInputChange;
-    public event Action interactEvent;
-
     [SerializeField] FlashLight flashlight;
 
     public bool invisible = false;
@@ -22,43 +15,6 @@ public class PlayerController : MonoBehaviour
     public GameObject heldObject;
 
     public bool canInteract;
-
-    private void Awake()
-    {
-        controlScheme = new ControlScheme(); 
-        controlScheme.Player.Move.performed += Movement;
-        controlScheme.Player.Move.canceled += MovementStopped;
-        controlScheme.Player.Flashlight.performed += FlashLight;
-        controlScheme.Player.Interact.performed += Interact;
-        controlScheme.Player.BeamControl.performed += BeamControl;
-    }
-
-    void Movement(InputAction.CallbackContext move)
-    {
-        onMoveInputChange.Invoke(move.ReadValue<Vector2>());
-    }
-
-    void MovementStopped(InputAction.CallbackContext move)
-    {
-        onMoveInputChange.Invoke(move.ReadValue<Vector2>());
-    }
-
-    void FlashLight(InputAction.CallbackContext onoff)
-    {
-        flashlight.FlashLightSwitch();
-
-        UIContainer.UIContainerInstance.DisableLampText();
-    }
-
-    void BeamControl(InputAction.CallbackContext beam)
-    {
-        flashlight.HighBeamControl();
-    }
-
-    void Interact(InputAction.CallbackContext interact)
-    {
-        interactEvent.Invoke();
-    }
 
     public void HeldObject(GameObject holdme)
     {
@@ -83,7 +39,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.tag == "SafeZone")
         {
             PlayerInvisible();
-            interactEvent += SafeZoneDrop;
+           // interactEvent += SafeZoneDrop;
         }
     }
 
@@ -92,7 +48,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.tag == "SafeZone")
         {
             PlayerInvisible();
-            interactEvent -= SafeZoneDrop;
+           // interactEvent -= SafeZoneDrop;
         }
     }
 
@@ -134,16 +90,6 @@ public class PlayerController : MonoBehaviour
             }*//*
 
         }*/
-
-    public void OnEnable()
-    {
-        controlScheme.Player.Enable();
-    }
-
-    public void OnDisable()
-    {
-        controlScheme.Player.Disable();
-    }
 }
 
 

@@ -12,7 +12,6 @@ public class PlayerCollisions : MonoBehaviour
     [SerializeField] private Collision2DProxy normalBeamCollider;
     [SerializeField] private Collision2DProxy highBeamCollider;
     [SerializeField] private Collision2DProxy ghostDetectionCollider;
-    [SerializeField] private Collision2DProxy playerCollider;
 
     [Header ("Tags")]
     [SerializeField] TagScriptableObject enemyTag;
@@ -29,8 +28,6 @@ public class PlayerCollisions : MonoBehaviour
         ghostDetectionCollider.OnTriggerEnter2D_Action += GhostDetectionOnTriggerEnter2D;
         ghostDetectionCollider.OnTriggerExit2D_Action += GhostDetectionOnTriggerExit2D;
 
-        playerCollider.OnTriggerEnter2D_Action += InteractableDetectionOnTriggerEnter2D;
-        playerCollider.OnTriggerExit2D_Action += InteractableDetectionOnTriggerExit2D;
     }
 
     private void NormalBeamOnTriggerEnter2D(Collider2D other)
@@ -78,24 +75,6 @@ public class PlayerCollisions : MonoBehaviour
         if (TagExtensions.HasTag(other.gameObject, enemyTag))
         {
             flashLight.IsGhostWithinRange(false);
-        }
-    }
-
-    private void InteractableDetectionOnTriggerEnter2D(Collider2D other)
-    {
-        if (other.gameObject.TryGetComponent<IInteractable>(out IInteractable interactable))
-        { 
-            playerController.interactEvent += interactable.Interact;
-            interactable.Collision(true);
-        }
-    }
-
-    private void InteractableDetectionOnTriggerExit2D(Collider2D other)
-    {
-        if (other.gameObject.TryGetComponent<IInteractable>(out IInteractable interactable))
-        {
-            playerController.interactEvent -= interactable.Interact;
-            interactable.Collision(false);
         }
     }
 }

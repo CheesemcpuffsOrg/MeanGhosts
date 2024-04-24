@@ -5,32 +5,44 @@ using UnityEngine;
 
 public class InteractableObjs : MonoBehaviour
 {
-    public GameObject player;
+    [SerializeField] GameObject interactableObj;
+    private IInteractable interactable;
 
-    [SerializeField] TagScriptableObject playerTag;
+    [Header("Collision Proxies")]
+    [SerializeField] private Collision2DProxy interactionCollider;
 
-    protected void OnTriggerEnter2D(Collider2D other)
+    [Header ("Tags")]
+    [SerializeField] TagScriptableObject playerCollision;
+
+    private void Start()
     {
-        if (TagExtensions.HasTag(other.gameObject, playerTag))
+        interactionCollider.OnTriggerEnter2D_Action += InteractionColliderOnTriggerEnter2D;
+        interactionCollider.OnTriggerExit2D_Action += InteractionColliderOnTriggerExit2D;
+
+        interactable = interactableObj.GetComponent<IInteractable>();
+    }
+
+    protected void InteractionColliderOnTriggerEnter2D(Collider2D obj)
+    {
+        if (TagExtensions.HasTag(obj.gameObject, playerCollision))
         {
-            //other.GetComponent<PlayerController>().interactEvent.AddListener();
-            player = other.gameObject;
-            
+            interactable.InteractionPrompt(true);
+            GameplayInputManager.GameplayInputManagerInstance.interactEvent += interactable.Interact;
         }
     }
 
-    protected void OnTriggerExit2D(Collider2D other)
+    protected void InteractionColliderOnTriggerExit2D(Collider2D obj)
     {
-        /*if (TagExtensions.HasTag(other.gameObject, playerTag))
+        if (TagExtensions.HasTag(obj.gameObject, playerCollision))
         {
-            other.GetComponent<PlayerController>().interactEvent.RemoveListener(Interact);
-            
-        }*/
+            interactable.InteractionPrompt(false);
+            GameplayInputManager.GameplayInputManagerInstance.interactEvent += interactable.Interact;
+        }
     }
 
-    protected virtual void Interact()
+    private void OnDisable()
     {
-        //this is inherited
-       // Debug.Log("Interact");
+        GameplayInputManager.GameplayInputManagerInstance.interactEvent += interactable.Interact;
+        interactable.InteractionPrompt(false);
     }
 }

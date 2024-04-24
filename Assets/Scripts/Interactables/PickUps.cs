@@ -18,7 +18,7 @@ public class PickUps : InteractableObjs
         }
     }
 
-    protected override void Interact()
+   /* protected override void Interact()
     {
         base.Interact();
 
@@ -50,9 +50,9 @@ public class PickUps : InteractableObjs
             this.transform.parent.GetComponent<DropOnGrave>().objectOnGrave = null;
             this.gameObject.transform.parent = null;
         }
-    }
+    }*/
 
-    private new void OnTriggerEnter2D(Collider2D collision)
+    /*private new void OnTriggerEnter2D(Collider2D collision)
     {
         base.OnTriggerEnter2D(collision);
 
@@ -64,5 +64,5 @@ public class PickUps : InteractableObjs
         base.OnTriggerExit2D(collision);
 
         UIContainer.UIContainerInstance.PickUpItem();
-    }
+    }*/
 }

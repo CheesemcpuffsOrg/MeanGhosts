@@ -18,7 +18,7 @@ public class FlashLight : MonoBehaviour
 
     [Header ("Default Beam")]
     [SerializeField] Light2D normalBeam;
-    [SerializeField]float defaultNormalBeamIntensity = 0.3f;
+    [SerializeField] float defaultNormalBeamIntensity = 0.3f;
 
     [Header ("High Beam")]
     [SerializeField] Light2D highBeam;
@@ -44,7 +44,6 @@ public class FlashLight : MonoBehaviour
     {
         normalBeam.intensity = 0;
         highBeam.intensity = 0;
-
     }
 
     private void Update()
@@ -55,7 +54,7 @@ public class FlashLight : MonoBehaviour
         }
     }
 
-    public void FlashLightSwitch()
+    /*public void FlashLightSwitch()
     {
         if(_flashLightState != FlashLightState.COOLDOWN)
         {
@@ -63,37 +62,46 @@ public class FlashLight : MonoBehaviour
 
             DefaultLightSwitch();
         }
-    }
+    }*/
 
     private void DefaultLightSwitch()
     {
-        if (_flashLightState == FlashLightState.OFF)
+        if (_flashLightState != FlashLightState.COOLDOWN)
         {
-            globalLight.intensity = globalLightDefaultIntensity;
-            normalBeam.intensity = defaultNormalBeamIntensity;
-            highBeam.intensity = 0;
-            _flashLightState = FlashLightState.ON;
-        }
-        else if (_flashLightState == FlashLightState.ON || _flashLightState == FlashLightState.HIGHBEAM || _flashLightState == FlashLightState.FLICKER)
-        {
-            globalLight.intensity = 0;
-            normalBeam.intensity = 0;
-            highBeam.intensity = 0;
-            _flashLightState = FlashLightState.OFF;
+            AudioManager.AudioManagerInstance.PlaySound(flashLightSwitch, this.gameObject);
 
-            if (flickers != null)
+            //DefaultLightSwitch();
+
+            if (_flashLightState == FlashLightState.OFF)
             {
-                foreach (var flicker in flickers)
+                globalLight.intensity = globalLightDefaultIntensity;
+                normalBeam.intensity = defaultNormalBeamIntensity;
+                highBeam.intensity = 0;
+                _flashLightState = FlashLightState.ON;
+            }
+            else if (_flashLightState == FlashLightState.ON || _flashLightState == FlashLightState.HIGHBEAM || _flashLightState == FlashLightState.FLICKER)
+            {
+                globalLight.intensity = 0;
+                normalBeam.intensity = 0;
+                highBeam.intensity = 0;
+                _flashLightState = FlashLightState.OFF;
+
+                if (flickers != null)
                 {
-                    StopCoroutine(flicker);
+                    foreach (var flicker in flickers)
+                    {
+                        StopCoroutine(flicker);
+                    }
+                }
+
+                if (highBeamPoweringUp != null)
+                {
+                    StopCoroutine(highBeamPoweringUp);
                 }
             }
-
-            if (highBeamPoweringUp != null)
-            {
-                StopCoroutine(highBeamPoweringUp);
-            }
         }
+
+        
     }
 
     public void HighBeamControl()
@@ -249,5 +257,17 @@ public class FlashLight : MonoBehaviour
                 _flashLightState = FlashLightState.ON;
             }
         }
+    }
+
+    private void OnEnable()
+    {
+        GameplayInputManager.GameplayInputManagerInstance.FlashlightEvent += DefaultLightSwitch;
+        GameplayInputManager.GameplayInputManagerInstance.HighBeamEvent += HighBeamControl;
+    }
+
+    private void OnDisable()
+    {
+        GameplayInputManager.GameplayInputManagerInstance.FlashlightEvent -= DefaultLightSwitch;
+        GameplayInputManager.GameplayInputManagerInstance.HighBeamEvent -= HighBeamControl;
     }
 }

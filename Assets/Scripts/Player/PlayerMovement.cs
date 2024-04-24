@@ -8,7 +8,6 @@ public class PlayerMovement : MonoBehaviour
 {
 
     [Header("Objects")]
-    [SerializeField] PlayerController controller;
     [SerializeField] AnimationController animController;
     [SerializeField] PlayerSO playerSO;
     [SerializeField] Rigidbody2D rigidBody;
@@ -471,11 +470,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnEnable()
     {
-        controller.onMoveInputChange += ReactToInput;
+        GameplayInputManager.GameplayInputManagerInstance.onMoveInputChangeEvent += ReactToInput;
     }
 
     private void OnDisable()
     {
-        controller.onMoveInputChange -= ReactToInput;
+        GameplayInputManager.GameplayInputManagerInstance.onMoveInputChangeEvent -= ReactToInput;
     }
 }

@@ -9,6 +9,6 @@ interface IInteractable {
     /// </summary>
     public void Interact();
 
-    public void Collision(bool hasCollided);
+    public void InteractionPrompt(bool hasCollided);
 
 }
