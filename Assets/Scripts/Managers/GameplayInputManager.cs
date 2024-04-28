@@ -29,24 +29,24 @@ public class GameplayInputManager : MonoBehaviour
 
     void Movement(InputAction.CallbackContext move)
     {
-        onMoveInputChangeEvent.Invoke(move.ReadValue<Vector2>());
+        onMoveInputChangeEvent?.Invoke(move.ReadValue<Vector2>());
     }
 
     void MovementStopped(InputAction.CallbackContext move)
     {
-        onMoveInputChangeEvent.Invoke(move.ReadValue<Vector2>());
+        onMoveInputChangeEvent?.Invoke(move.ReadValue<Vector2>());
     }
 
     void FlashLight(InputAction.CallbackContext onoff)
     {
-        FlashlightEvent.Invoke();
+        FlashlightEvent?.Invoke();
 
         UIContainer.UIContainerInstance.DisableLampText();
     }
 
     void BeamControl(InputAction.CallbackContext beam)
     {
-        HighBeamEvent.Invoke();
+        HighBeamEvent?.Invoke();
     }
 
     void Interact(InputAction.CallbackContext interact)
