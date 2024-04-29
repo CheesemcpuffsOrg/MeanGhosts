@@ -8,7 +8,7 @@ using TMPro;
 
 namespace Interactable
 {
-    public class TapeController : MonoBehaviour, IInteractable
+    public class TapeInteractable : MonoBehaviour, IInteractable
     {
         TMP_Text playTapeText;
 

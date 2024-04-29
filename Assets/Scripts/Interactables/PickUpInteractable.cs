@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem.HID;
 
-public class PickUps : InteractableObjs
+public class PickUpInteractable : InteractableObjs
 {
     [SerializeField] string graveName;
     [SerializeField]GameObject ghost;

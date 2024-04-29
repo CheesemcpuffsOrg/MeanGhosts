@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 
-public class DropOnGrave : InteractableObjs
+public class DropInteractble : InteractableObjs
 {
     [SerializeField]GameObject heldObject;
 
