@@ -1,14 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem.HID;
 
-public class PickUpInteractable : InteractableObjs
+public class PickUpInteractable : InteractableObjs, IInteractable
 {
     [SerializeField] string graveName;
     [SerializeField]GameObject ghost;
+
+    public void Interact()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void InteractionPrompt(bool hasCollided)
+    {
+        throw new System.NotImplementedException();
+    }
 
     private void Start()
     {
