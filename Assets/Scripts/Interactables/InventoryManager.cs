@@ -5,9 +5,9 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 [Serializable]
-public struct Item
+public struct ItemInfo
 {
-    public string name;
+    public ItemScriptableObject itemScriptableObject;
     public int amount;
 }
 
@@ -15,22 +15,25 @@ public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager InventoryManagerInstance;
 
-    private Dictionary<string, Item> itemDictionary = new Dictionary<string, Item>();
+    public event Action<ItemInfo> ItemAdded;
+
+    private Dictionary<string, ItemInfo> itemDictionary = new Dictionary<string, ItemInfo>();
 
     void Start()
     {
         InventoryManagerInstance = this;
     }
 
-    public void AddItem(Item itemToAdd)
+    public void AddItem(ItemInfo itemToAdd)
     {
-        if (itemDictionary.TryGetValue(itemToAdd.name, out Item existingItem))
+        if (itemDictionary.TryGetValue(itemToAdd.itemScriptableObject.name, out ItemInfo existingItem))
         {
             existingItem.amount += itemToAdd.amount;
+            ItemAdded.Invoke(itemToAdd);
             return;
         }
 
-        itemDictionary.Add(itemToAdd.name, itemToAdd);
-        
+        itemDictionary.Add(itemToAdd.itemScriptableObject.name, itemToAdd);
+        ItemAdded.Invoke(itemToAdd);
     }
 }

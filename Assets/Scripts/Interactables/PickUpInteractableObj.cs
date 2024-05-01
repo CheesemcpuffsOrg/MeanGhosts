@@ -1,13 +1,14 @@
 using UnityEngine;
 
-public class PickUpInteractable : InteractableObjs, IInteractable
+public class PickUpInteractableObj : MonoBehaviour, IInteractable
 {
-    [SerializeField] string graveName;
-    [SerializeField]GameObject ghost;
+    [SerializeField] ItemInfo itemInfo;
+
+    [SerializeField] Collider2D interactCollider;
 
     public void Interact()
     {
-        throw new System.NotImplementedException();
+        InventoryManager.InventoryManagerInstance.AddItem(itemInfo);
     }
 
     public void InteractionPrompt(bool hasCollided)
@@ -15,13 +16,13 @@ public class PickUpInteractable : InteractableObjs, IInteractable
         throw new System.NotImplementedException();
     }
 
-    private void Start()
+    /*private void Start()
     {
         if (ghost == null)
         {
             ghost = GameObject.Find(graveName);
         }
-    }
+    }*/
 
    /* protected override void Interact()
     {

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class InteractableObjs : MonoBehaviour
 {
-    [SerializeField] GameObject interactableObj;
+    [SerializeField] GameObject interactableObjType;
     private IInteractable interactable;
 
     [Header("Collision Proxies")]
@@ -19,7 +19,7 @@ public class InteractableObjs : MonoBehaviour
         interactionCollider.OnTriggerEnter2D_Action += InteractionColliderOnTriggerEnter2D;
         interactionCollider.OnTriggerExit2D_Action += InteractionColliderOnTriggerExit2D;
 
-        interactable = interactableObj.GetComponent<IInteractable>();
+        interactable = interactableObjType.GetComponent<IInteractable>();
     }
 
     protected void InteractionColliderOnTriggerEnter2D(Collider2D obj)
