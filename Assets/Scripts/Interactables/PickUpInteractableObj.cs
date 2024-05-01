@@ -4,8 +4,6 @@ public class PickUpInteractableObj : MonoBehaviour, IInteractable
 {
     [SerializeField] ItemInfo itemInfo;
 
-    [SerializeField] Collider2D interactCollider;
-
     public void Interact()
     {
         InventoryManager.InventoryManagerInstance.AddItem(itemInfo);
