@@ -8,7 +8,7 @@ using TMPro;
 
 namespace Interactable
 {
-    public class TapeInteractableObj : MonoBehaviour, IInteractable
+    public class TapeInteractableObj : InteractableObjs, IInteractable
     {
         TMP_Text playTapeText;
 
@@ -18,16 +18,14 @@ namespace Interactable
         [Header ("Collision Proxies")]
         [SerializeField] private Collision2DProxy audioRangeDetection;
 
-        [Header ("Tags")]
-        [SerializeField] TagScriptableObject playerColliderTag;
-
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
+
             playTapeText = UIContainer.UIContainerInstance.playTapeText;
 
             audioRangeDetection.OnTriggerEnter2D_Action += AudioDetectionOnTriggerEnter2D;
             audioRangeDetection.OnTriggerExit2D_Action += AudioDetectionOnTriggerExit2D;
-
         }
 
         public void InteractionPrompt(bool hasCollided)

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PickUpInteractableObj : MonoBehaviour, IInteractable
+public class PickUpInteractableObj : InteractableObjs, IInteractable
 {
     [SerializeField] ItemInfo itemInfo;
 

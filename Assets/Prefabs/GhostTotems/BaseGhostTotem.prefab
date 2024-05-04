@@ -94,7 +94,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3471370388661674184}
   - component: {fileID: 3471370388661674185}
-  - component: {fileID: 5540288054141638326}
   - component: {fileID: 3471370388661674183}
   - component: {fileID: 7479090027871898852}
   - component: {fileID: 3471370388661674187}
@@ -173,21 +172,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &5540288054141638326
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3471370388661674188}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73e3b28a53d153b43a81523ccdac9920, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  interactableObjType: {fileID: 3471370388661674188}
-  interactionCollider: {fileID: 7479090027871898852}
-  playerCollision: {fileID: 11400000, guid: 22d061278a70bfe4187df8c6e373d33d, type: 2}
 --- !u!114 &3471370388661674183
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -200,6 +184,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a1a21c3b4d963349975faf2d51327c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interactionCollider: {fileID: 0}
+  playerColliderTag: {fileID: 0}
   itemInfo:
     itemScriptableObject: {fileID: 0}
     amount: 1
