@@ -56,8 +56,19 @@ namespace AudioSystem
                 return;
             }
 
+            if (sound.singleInstanceAudio)
+            {
+                foreach (AudioReference reference in audioReferences)
+                {
+                    if (reference.objReference == sound)
+                    {
+                        return;
+                    }
+                }
+            }
+
             //priority system
-            if(audioReferences.Count >= 32)
+            if (audioReferences.Count >= 32)
             {
 
             }
@@ -74,15 +85,15 @@ namespace AudioSystem
                 obj = Instantiate(audioObjPrefab);
             }
 
-            var audioListVariable = RandomUtility.ObjectPoolCalculator(sound.audioClips);
+            var chosenAudioClip = RandomUtility.ObjectPoolCalculator(sound.audioClips);
 
-            AudioFloodPrevention(audioListVariable);
+            AudioFloodPrevention(chosenAudioClip);
 
             var audioSource = obj.GetComponent<AudioSource>();
 
-            PopulateTheAudioSource(sound, gameObject, obj, audioListVariable, audioSource);
+            PopulateTheAudioSource(sound, gameObject, obj, chosenAudioClip, audioSource);
 
-            CreateAudioReference(sound, gameObject, obj, audioSource, audioListVariable);
+            CreateAudioReference(sound, gameObject, obj, audioSource, chosenAudioClip);
 
             audioSource.Play();
 
