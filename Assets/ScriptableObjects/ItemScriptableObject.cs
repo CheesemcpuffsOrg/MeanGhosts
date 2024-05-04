@@ -8,4 +8,5 @@ public class ItemScriptableObject : ScriptableObject
     public string name;
 
     public GameObject itemPrefab;
+    public Sprite inventorySprite;
 }

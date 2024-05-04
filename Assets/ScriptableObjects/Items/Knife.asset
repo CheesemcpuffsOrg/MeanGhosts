@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 878c6aac395302444a724a9ca598d74e, type: 3}
   m_Name: Knife
   m_EditorClassIdentifier: 
-  name: BeretTotem
+  name: KnifeTotem
   itemPrefab: {fileID: 6020924666412757271, guid: ec6c7664d1ff31b43a5b8ab6167f0c99, type: 3}
