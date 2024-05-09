@@ -20,15 +20,9 @@ public class AudioScriptableObject : ScriptableObject
 {
     public List<ObjectPool<AudioList>> audioClips;
 
-    public AudioMixerGroup audioMixerGroup;
-
     [Header ("Basic Controls")]
-    [Range(-1f, 1f)]
-    public float pan = 0;
-    [Range(1, 10)]
-    public int audioPriority = 5;
+    public AudioMixerGroup audioMixerGroup;
     public bool loop = false;
-    public bool playWhilePaused = false;
 
     [Header ("Fade Controls")]
     public bool fadeIn = false;
@@ -40,9 +34,19 @@ public class AudioScriptableObject : ScriptableObject
     public float spatialBlend = 0;
     [Range(0f, 5f)]
     public float dopplerLevel = 0;
+    [Range(-1f, 1f)]
+    public float pan = 0;
     public AudioRolloffMode rolloffMode = AudioRolloffMode.Linear;
     public float minDistance = 1;
     public float maxDistance = 30;
+
+    [Header("Advanced Controls")]
+    [Range(1, 10), Tooltip("This determines the importance of the audio")]
+    public int audioPriority = 5;
+    [Tooltip("If this is set to true, only one instance of this audio can be active")]
+    public bool singleInstanceAudio = false;
+    [Tooltip("Allows the audio to play while the game is paused")]
+    public bool playWhilePaused = false;
 
     [HideInInspector]
     public AudioSource source;

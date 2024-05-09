@@ -44,6 +44,8 @@ public class FlashLight : MonoBehaviour
     {
         normalBeam.intensity = 0;
         highBeam.intensity = 0;
+
+        OnStartOnEnable();
     }
 
     private void Update()
@@ -53,16 +55,6 @@ public class FlashLight : MonoBehaviour
             highBeam.intensity += 0.01f;
         }
     }
-
-    /*public void FlashLightSwitch()
-    {
-        if(_flashLightState != FlashLightState.COOLDOWN)
-        {
-            AudioManager.AudioManagerInstance.PlaySound(flashLightSwitch, this.gameObject);
-
-            DefaultLightSwitch();
-        }
-    }*/
 
     private void DefaultLightSwitch()
     {
@@ -259,7 +251,7 @@ public class FlashLight : MonoBehaviour
         }
     }
 
-    private void OnEnable()
+    private void OnStartOnEnable()
     {
         GameplayInputManager.GameplayInputManagerInstance.FlashlightEvent += DefaultLightSwitch;
         GameplayInputManager.GameplayInputManagerInstance.HighBeamEvent += HighBeamControl;
