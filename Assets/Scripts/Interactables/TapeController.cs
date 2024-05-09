@@ -38,7 +38,11 @@ namespace Interactable
             }
             else
             {
-                playTapeText.enabled = false;
+                if(playTapeText != null)//to prevent weird error when game is ended
+                {
+                    playTapeText.enabled = false;
+                }
+                
             }
         }
 
