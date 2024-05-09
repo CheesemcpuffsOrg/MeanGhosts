@@ -277,7 +277,7 @@ namespace AudioSystem
                 return;
             }
 
-            var fadeDuration = 0.5f;
+            var fadeDuration = 1f;
 
             if (systemIsActive && sound.audioPriority >= activeAudioPriority)
             {
