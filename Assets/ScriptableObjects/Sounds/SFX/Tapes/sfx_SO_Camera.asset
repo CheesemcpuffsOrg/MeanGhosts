@@ -18,18 +18,19 @@ MonoBehaviour:
       volume: 1
       pitch: 1
     weight: 100
-  audioMixerGroup: {fileID: -9123715879687149167, guid: d8dd63bf224bdc8468fb34784cf4b2fa, type: 2}
-  pan: 0
-  audioPriority: 9
+  audioMixerGroup: {fileID: 5306305170555216093, guid: d8dd63bf224bdc8468fb34784cf4b2fa, type: 2}
   loop: 0
-  playWhilePaused: 0
   fadeIn: 0
   fadeInDuration: 1
   fadeOut: 0
   fadeOutDuration: 1
   spatialBlend: 1
   dopplerLevel: 0
+  pan: 0
   rolloffMode: 1
   minDistance: 1
   maxDistance: 10
+  audioPriority: 9
+  singleInstanceAudio: 0
+  playWhilePaused: 0
   source: {fileID: 0}
