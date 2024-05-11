@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
 
-public class GameplayInputManager : MonoBehaviour
+public class InputManager : MonoBehaviour
 {
-    public static GameplayInputManager GameplayInputManagerInstance;
+    public static InputManager GameplayInputManagerInstance;
 
     ControlScheme controlScheme;
 
@@ -15,18 +15,25 @@ public class GameplayInputManager : MonoBehaviour
     public event Action FlashlightEvent;
     public event Action HighBeamEvent;
 
+    public event Action<bool> pauseEvent;
+    bool isPaused = false;
+
     void Awake()
     {
         GameplayInputManagerInstance = this;
 
         controlScheme = new ControlScheme();
+
         controlScheme.Player.Move.performed += Movement;
         controlScheme.Player.Move.canceled += MovementStopped;
         controlScheme.Player.Flashlight.performed += FlashLight;
         controlScheme.Player.Interact.performed += Interact;
         controlScheme.Player.BeamControl.performed += BeamControl;
+
+        controlScheme.Pause.Pause.performed += Pause;
     }
 
+    #region -- PLAYER CONTROLS --
     void Movement(InputAction.CallbackContext move)
     {
         onMoveInputChangeEvent?.Invoke(move.ReadValue<Vector2>());
@@ -53,14 +60,55 @@ public class GameplayInputManager : MonoBehaviour
     {
         interactEvent?.Invoke();
     }
+    #endregion
 
-    public void OnEnable()
+    #region --PAUSE--
+    void Pause(InputAction.CallbackContext pauseGame)
+    {
+        pauseEvent?.Invoke(isPaused);
+        isPaused = !isPaused;
+    }
+    #endregion
+
+    #region --DISABLE AND ENABLE CONTROLS --
+    public void EnablePlayerActions()
     {
         controlScheme.Player.Enable();
     }
 
-    public void OnDisable()
+    public void DisablePlayerActions()
     {
         controlScheme.Player.Disable();
     }
+
+    public void EnablePauseActions()
+    {
+        controlScheme.Pause.Enable();
+    }
+
+    public void DisablePauseActions()
+    {
+        controlScheme.Pause.Disable();
+    }
+
+    public void EnableAllInputs()
+    {
+        controlScheme.Enable();
+    }
+
+    public void DisableAllInputs()
+    {
+        controlScheme.Disable();
+    }
+
+    private void OnEnable()
+    {
+        EnableAllInputs();
+    }
+
+    private void OnDisable()
+    {
+        DisableAllInputs();
+    }
+    #endregion
 }

@@ -64,7 +64,7 @@ public class GameManager : MonoBehaviour
         if (score == 6)
         {
             UIContainer.UIContainerInstance.Winner();
-            GameplayInputManager.GameplayInputManagerInstance.OnDisable();
+            InputManager.GameplayInputManagerInstance.DisablePlayerActions();
             //player.GetComponent<PlayerController>().flashLightObj.SetActive(false);
             // player.GetComponent<Player.PlayerController>().flashLightState = false;
         }
@@ -143,7 +143,7 @@ public class GameManager : MonoBehaviour
         if (_isPaused)
         {
             player.GetComponentInChildren<FlashLight>().Pause(_isPaused);
-            GameplayInputManager.GameplayInputManagerInstance.OnDisable();
+            InputManager.GameplayInputManagerInstance.DisablePlayerActions();
             AudioManager.AudioManagerInstance.PauseAllAudio();
             Time.timeScale = 0;
         }
@@ -151,7 +151,7 @@ public class GameManager : MonoBehaviour
         { 
             
             player.GetComponentInChildren<FlashLight>().Pause(_isPaused);
-            GameplayInputManager.GameplayInputManagerInstance.OnEnable();
+            InputManager.GameplayInputManagerInstance.EnablePlayerActions();
             AudioManager.AudioManagerInstance.UnPauseAllAudio();
             Time.timeScale = 1;
         }
@@ -160,7 +160,7 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        GameplayInputManager.GameplayInputManagerInstance.OnDisable();
+        InputManager.GameplayInputManagerInstance.DisablePlayerActions();
         //player.GetComponent<PlayerController>().flashLightObj.SetActive(false);
         //player.GetComponent<Player.PlayerController>().flashLightState = false;
         UIContainer.UIContainerInstance.GameOver();

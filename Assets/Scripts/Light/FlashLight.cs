@@ -253,13 +253,13 @@ public class FlashLight : MonoBehaviour
 
     private void OnStartOnEnable()
     {
-        GameplayInputManager.GameplayInputManagerInstance.FlashlightEvent += DefaultLightSwitch;
-        GameplayInputManager.GameplayInputManagerInstance.HighBeamEvent += HighBeamControl;
+        InputManager.GameplayInputManagerInstance.FlashlightEvent += DefaultLightSwitch;
+        InputManager.GameplayInputManagerInstance.HighBeamEvent += HighBeamControl;
     }
 
     private void OnDisable()
     {
-        GameplayInputManager.GameplayInputManagerInstance.FlashlightEvent -= DefaultLightSwitch;
-        GameplayInputManager.GameplayInputManagerInstance.HighBeamEvent -= HighBeamControl;
+        InputManager.GameplayInputManagerInstance.FlashlightEvent -= DefaultLightSwitch;
+        InputManager.GameplayInputManagerInstance.HighBeamEvent -= HighBeamControl;
     }
 }
