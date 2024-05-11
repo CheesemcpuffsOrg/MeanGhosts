@@ -2,6 +2,7 @@ using AudioSystem;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Transactions;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -67,6 +68,7 @@ public class PlayerMovement : MonoBehaviour
     float defaultSpeedModifier = 1f;
     bool isMoving = false;
     bool footsteps = false;
+    bool started = false;
 
     // Start is called before the first frame update
     void Start()
@@ -74,7 +76,8 @@ public class PlayerMovement : MonoBehaviour
         currentSpeed = playerSO.speed;
         defaultSpeed = playerSO.speed;
 
-        OnStartOnEnable();
+        started = true;
+        OnStartOrEnable();
     }
 
     // Update is called once per frame
@@ -480,9 +483,14 @@ public class PlayerMovement : MonoBehaviour
 
     #endregion
 
-    private void OnStartOnEnable()
+    private void OnStartOrEnable()
     {
         InputManager.GameplayInputManagerInstance.onMoveInputChangeEvent += ReactToInput;
+    }
+
+    private void OnEnable()
+    {
+        if (started) OnStartOrEnable();
     }
 
     private void OnDisable()

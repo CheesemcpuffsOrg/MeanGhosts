@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 878c6aac395302444a724a9ca598d74e, type: 3}
+  m_Name: Knife
+  m_EditorClassIdentifier: 
+  name: KnifeTotem
+  itemPrefab: {fileID: 6020924666412757271, guid: ec6c7664d1ff31b43a5b8ab6167f0c99, type: 3}

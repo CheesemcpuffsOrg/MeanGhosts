@@ -155,7 +155,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5821012371180903159}
   - component: {fileID: 5821012371180903158}
-  - component: {fileID: 1970618181969608520}
   - component: {fileID: 5821012371180903156}
   m_Layer: 0
   m_Name: BaseTape
@@ -234,21 +233,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 1
   m_SpriteSortPoint: 0
---- !u!114 &1970618181969608520
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5821012371180903155}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73e3b28a53d153b43a81523ccdac9920, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  interactableObj: {fileID: 5821012371180903155}
-  interactionCollider: {fileID: 8935007371982895827}
-  playerCollision: {fileID: 11400000, guid: 22d061278a70bfe4187df8c6e373d33d, type: 2}
 --- !u!114 &5821012371180903156
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -261,9 +245,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9011556b9381e3044a2fce3a50d8e6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interactionCollider: {fileID: 8935007371982895827}
+  playerColliderTag: {fileID: 11400000, guid: 22d061278a70bfe4187df8c6e373d33d, type: 2}
   tapeAudio: {fileID: 0}
   audioRangeDetection: {fileID: 2622305974821220660}
-  playerColliderTag: {fileID: 0}
 --- !u!1 &8948361784592296624
 GameObject:
   m_ObjectHideFlags: 0
