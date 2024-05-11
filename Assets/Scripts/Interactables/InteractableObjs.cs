@@ -29,6 +29,7 @@ public class InteractableObjs : MonoBehaviour
         if (TagExtensions.HasTag(obj.gameObject, playerColliderTag))
         {
             interactable.InteractionPrompt(true);
+            InputManager.GameplayInputManagerInstance.interactEvent += interactable.Interact;
         }
     }
 
@@ -37,13 +38,13 @@ public class InteractableObjs : MonoBehaviour
         if (TagExtensions.HasTag(obj.gameObject, playerColliderTag))
         {
             interactable.InteractionPrompt(false);
-            GameplayInputManager.GameplayInputManagerInstance.interactEvent -= interactable.Interact;
+            InputManager.GameplayInputManagerInstance.interactEvent -= interactable.Interact;
         }
     }
 
     protected virtual void OnDisable()
     {
-        GameplayInputManager.GameplayInputManagerInstance.interactEvent -= interactable.Interact;
+        InputManager.GameplayInputManagerInstance.interactEvent -= interactable.Interact;
         interactable.InteractionPrompt(false);
     }
 }
