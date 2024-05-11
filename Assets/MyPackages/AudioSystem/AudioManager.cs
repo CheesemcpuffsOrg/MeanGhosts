@@ -14,8 +14,8 @@ namespace AudioSystem
         [Serializable]
         private class AudioReference
         {
-            public AudioScriptableObject objReference;
-            public GameObject requestingObj;
+            public AudioScriptableObject scriptableObjectReference;
+            public GameObject gameObjectReference;
             public GameObject audioSource;
             public Coroutine clipLength;
             public UnityEvent endOfClip;
@@ -56,10 +56,27 @@ namespace AudioSystem
                 return;
             }
 
-            //priority system
-            if(audioReferences.Count >= 32)
+            if (sound.singleInstanceAudio)
             {
+                foreach (AudioReference reference in audioReferences)
+                {
+                    if (reference.scriptableObjectReference == sound)
+                    {
+                        return;
+                    }
+                }
+            }
 
+            //priority system
+            if (audioReferences.Count >= 32)
+            {
+                foreach(AudioReference reference in audioReferences)
+                {
+                    if(sound.audioPriority > reference.scriptableObjectReference.audioPriority)
+                    {
+                        StopSound(reference.scriptableObjectReference, reference.gameObjectReference);
+                    }
+                }
             }
 
             GameObject obj;
@@ -74,15 +91,15 @@ namespace AudioSystem
                 obj = Instantiate(audioObjPrefab);
             }
 
-            var audioListVariable = RandomUtility.ObjectPoolCalculator(sound.audioClips);
+            var chosenAudioClip = RandomUtility.ObjectPoolCalculator(sound.audioClips);
 
-            AudioFloodPrevention(audioListVariable);
+            AudioFloodPrevention(chosenAudioClip);
 
             var audioSource = obj.GetComponent<AudioSource>();
 
-            PopulateTheAudioSource(sound, gameObject, obj, audioListVariable, audioSource);
+            PopulateTheAudioSource(sound, gameObject, obj, chosenAudioClip, audioSource);
 
-            CreateAudioReference(sound, gameObject, obj, audioSource, audioListVariable);
+            CreateAudioReference(sound, gameObject, obj, audioSource, chosenAudioClip);
 
             audioSource.Play();
 
@@ -108,7 +125,7 @@ namespace AudioSystem
 
             foreach (var s in audioReferences)
             {
-                if (s.objReference == sound && s.requestingObj == gameObject)
+                if (s.scriptableObjectReference == sound && s.gameObjectReference == gameObject)
                 {
                     s.audioSource.transform.SetParent(audioPoolContainer);
                     audioPool.Enqueue(s.audioSource);
@@ -150,7 +167,9 @@ namespace AudioSystem
         {
             foreach (AudioReference s in audioReferences)
             {
-                s.audioSource.transform.SetParent(audioPoolContainer);
+                StopSound(s.scriptableObjectReference, s.gameObjectReference);
+
+                /*s.audioSource.transform.SetParent(audioPoolContainer);
                 audioPool.Enqueue(s.audioSource);
                 s.audioSource.GetComponent<AudioSource>().Stop();
 
@@ -164,7 +183,23 @@ namespace AudioSystem
                     StopCoroutine(s.clipLength);
                 }
 
-                audioReferences.Remove(s);
+                audioReferences.Remove(s);*/
+            }
+        }
+
+
+        /// <summary>
+        /// Call this method to stop all audio that has been called from a gameobject
+        /// </summary>
+        /// <param name="gameObject"></param>
+        public void StopAllAudioFromGameObject(GameObject gameObject)
+        {
+            foreach(AudioReference s in audioReferences)
+            {
+                if(s.gameObjectReference == gameObject)
+                {
+                    StopSound(s.scriptableObjectReference, s.gameObjectReference);
+                }
             }
         }
 
@@ -175,7 +210,7 @@ namespace AudioSystem
         {
             foreach (AudioReference s in audioReferences)
             {
-                if (!s.objReference.playWhilePaused)
+                if (!s.scriptableObjectReference.playWhilePaused)
                 {
                     s.audioSource.GetComponent<AudioSource>().Pause();
                 }
@@ -189,7 +224,7 @@ namespace AudioSystem
         {
             foreach (AudioReference s in audioReferences)
             {
-                if (!s.objReference.playWhilePaused)
+                if (!s.scriptableObjectReference.playWhilePaused)
                 {
                     s.audioSource.GetComponent<AudioSource>().Play();
                 }
@@ -223,7 +258,7 @@ namespace AudioSystem
 
             foreach (var s in audioReferences)
             {
-                if (s.objReference == sound && s.requestingObj == gameObject)
+                if (s.scriptableObjectReference == sound && s.gameObjectReference == gameObject)
                 {
                     return true;
                 }
@@ -242,7 +277,7 @@ namespace AudioSystem
                 return;
             }
 
-            var fadeDuration = 0.5f;
+            var fadeDuration = 1f;
 
             if (systemIsActive && sound.audioPriority >= activeAudioPriority)
             {
@@ -250,7 +285,7 @@ namespace AudioSystem
 
                 foreach (var s in audioReferences)
                 {
-                    if(s.objReference.audioPriority < activeAudioPriority)
+                    if(s.scriptableObjectReference.audioPriority < activeAudioPriority)
                     {
                         var audioSource = s.audioSource.GetComponent<AudioSource>();
                         var volume = audioSource.volume;
@@ -262,7 +297,7 @@ namespace AudioSystem
             {
                 foreach (var s in audioReferences)
                 {
-                    if (s.objReference.audioPriority < activeAudioPriority)
+                    if (s.scriptableObjectReference.audioPriority < activeAudioPriority)
                     {
                         var audioSource = s.audioSource.GetComponent<AudioSource>();
                         StartCoroutine(FadeIn(s.audioSource.GetComponent<AudioSource>(), fadeDuration, s.volume, audioSource.volume));
@@ -288,7 +323,7 @@ namespace AudioSystem
 
             foreach (var s in reversableList)
             {
-                if (s.objReference == sound && s.requestingObj == gameObject)
+                if (s.scriptableObjectReference == sound && s.gameObjectReference == gameObject)
                 {
                     s.endOfClip.AddListener(reference);
                     return;
@@ -305,7 +340,7 @@ namespace AudioSystem
 
             foreach(var s in audioReferences)
             {
-                if (s.objReference == reference.objReference && s.requestingObj == reference.requestingObj)
+                if (s.scriptableObjectReference == reference.scriptableObjectReference && s.gameObjectReference == reference.gameObjectReference)
                 {
                     s.audioSource.transform.SetParent(audioPoolContainer);
 
@@ -389,7 +424,9 @@ namespace AudioSystem
                 {
                     if (s.audioSource == audioListVariable.audioClip)
                     {
-                        s.audioSource.transform.SetParent(audioPoolContainer);
+                        StopSound(s.scriptableObjectReference, s.gameObjectReference);
+
+                        /*s.audioSource.transform.SetParent(audioPoolContainer);
                         audioPool.Enqueue(s.audioSource);
 
                         var audioSource = s.audioSource.GetComponent<AudioSource>();
@@ -400,7 +437,7 @@ namespace AudioSystem
                         {
                             StopCoroutine(s.clipLength);
                         }
-                        audioReferences.Remove(s);
+                        audioReferences.Remove(s);*/
 
                         return;
                     }
@@ -448,8 +485,8 @@ namespace AudioSystem
         {
             var createdObjReference = new AudioReference();
 
-            createdObjReference.objReference = sound;
-            createdObjReference.requestingObj = gameObject;
+            createdObjReference.scriptableObjectReference = sound;
+            createdObjReference.gameObjectReference = gameObject;
             createdObjReference.audioSource = obj;
             createdObjReference.volume = audioListVariable.volume;
 
