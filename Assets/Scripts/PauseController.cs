@@ -1,36 +1,49 @@
+using AudioSystem;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PauseController : MonoBehaviour 
 {
+    bool started;
 
     private void Start()
     {
-        
+        started = true;
+        OnStartOrEnable();
     }
 
-    /*void Pause(InputAction.CallbackContext pauseGame)
+    void Pause(bool isPaused)
     {
-        _isPaused = !_isPaused;
+        UIContainer.UIContainerInstance.PauseText(isPaused);
 
-        UIContainer.UIContainerInstance.PauseText();
-
-        if (_isPaused)
+        if (isPaused)
         {
-            player.GetComponentInChildren<FlashLight>().Pause(_isPaused);
-            InputManager.GameplayInputManagerInstance.DisablePlayerActions();
+            InputManager.InputManagerInstance.DisablePlayerActions();
             AudioManager.AudioManagerInstance.PauseAllAudio();
             Time.timeScale = 0;
         }
         else
         {
-
-            player.GetComponentInChildren<FlashLight>().Pause(_isPaused);
-            InputManager.GameplayInputManagerInstance.EnablePlayerActions();
+            InputManager.InputManagerInstance.EnablePlayerActions();
             AudioManager.AudioManagerInstance.UnPauseAllAudio();
             Time.timeScale = 1;
         }
 
-    }*/
+    }
+
+    void OnStartOrEnable()
+    {
+        InputManager.InputManagerInstance.pauseEvent += Pause;
+    }
+
+    private void OnEnable()
+    {
+        if(started) { OnStartOrEnable(); }
+    }
+
+    private void OnDisable()
+    {
+        InputManager.InputManagerInstance.pauseEvent -= Pause;
+    }
 }

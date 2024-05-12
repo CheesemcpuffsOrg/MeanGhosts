@@ -239,6 +239,8 @@ public class FlashLight : MonoBehaviour
             if (highBeamPoweringUp != null)
             {
                 StopCoroutine(highBeamPoweringUp);
+                _flashLightState = FlashLightState.OFF;
+                AudioManager.AudioManagerInstance.StopSound(flashLightCharge, this.gameObject);
             }
         }
         else
@@ -255,8 +257,9 @@ public class FlashLight : MonoBehaviour
 
     private void OnStartOrEnable()
     {
-        InputManager.GameplayInputManagerInstance.FlashlightEvent += DefaultLightSwitch;
-        InputManager.GameplayInputManagerInstance.HighBeamEvent += HighBeamControl;
+        InputManager.InputManagerInstance.FlashlightEvent += DefaultLightSwitch;
+        InputManager.InputManagerInstance.HighBeamEvent += HighBeamControl;
+        InputManager.InputManagerInstance.pauseEvent += Pause;
     }
 
     private void OnEnable()
@@ -266,7 +269,8 @@ public class FlashLight : MonoBehaviour
 
     private void OnDisable()
     {
-        InputManager.GameplayInputManagerInstance.FlashlightEvent -= DefaultLightSwitch;
-        InputManager.GameplayInputManagerInstance.HighBeamEvent -= HighBeamControl;
+        InputManager.InputManagerInstance.FlashlightEvent -= DefaultLightSwitch;
+        InputManager.InputManagerInstance.HighBeamEvent -= HighBeamControl;
+        InputManager.InputManagerInstance.pauseEvent -= Pause;
     }
 }

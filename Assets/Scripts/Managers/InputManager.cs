@@ -6,7 +6,7 @@ using System;
 
 public class InputManager : MonoBehaviour
 {
-    public static InputManager GameplayInputManagerInstance;
+    public static InputManager InputManagerInstance;
 
     ControlScheme controlScheme;
 
@@ -20,7 +20,7 @@ public class InputManager : MonoBehaviour
 
     void Awake()
     {
-        GameplayInputManagerInstance = this;
+        InputManagerInstance = this;
 
         controlScheme = new ControlScheme();
 
@@ -65,8 +65,8 @@ public class InputManager : MonoBehaviour
     #region --PAUSE--
     void Pause(InputAction.CallbackContext pauseGame)
     {
-        pauseEvent?.Invoke(isPaused);
         isPaused = !isPaused;
+        pauseEvent?.Invoke(isPaused);
     }
     #endregion
 

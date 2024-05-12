@@ -485,7 +485,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnStartOrEnable()
     {
-        InputManager.GameplayInputManagerInstance.onMoveInputChangeEvent += ReactToInput;
+        InputManager.InputManagerInstance.onMoveInputChangeEvent += ReactToInput;
     }
 
     private void OnEnable()
@@ -495,6 +495,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnDisable()
     {
-        InputManager.GameplayInputManagerInstance.onMoveInputChangeEvent -= ReactToInput;
+        InputManager.InputManagerInstance.onMoveInputChangeEvent -= ReactToInput;
     }
 }

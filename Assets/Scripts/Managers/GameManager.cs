@@ -14,9 +14,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager GameManagerInstance;
 
-    public ControlScheme controlScheme;
-
-    GameObject player;
+    [HideInInspector] public GameObject player { get; private set; } 
 
     /*Camera cam;
     float camHeight, camWidth;*/
@@ -40,9 +38,6 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         GameManagerInstance = this;
-
-        controlScheme = new ControlScheme();
-        controlScheme.Pause.Pause.performed += Pause;
     }
 
     private void Start()
@@ -64,7 +59,7 @@ public class GameManager : MonoBehaviour
         if (score == 6)
         {
             UIContainer.UIContainerInstance.Winner();
-            InputManager.GameplayInputManagerInstance.DisablePlayerActions();
+            InputManager.InputManagerInstance.DisablePlayerActions();
             //player.GetComponent<PlayerController>().flashLightObj.SetActive(false);
             // player.GetComponent<Player.PlayerController>().flashLightState = false;
         }
@@ -134,33 +129,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void Pause(InputAction.CallbackContext pauseGame)
-    {
-        _isPaused = !_isPaused;
-
-        UIContainer.UIContainerInstance.PauseText();
-
-        if (_isPaused)
-        {
-            player.GetComponentInChildren<FlashLight>().Pause(_isPaused);
-            InputManager.GameplayInputManagerInstance.DisablePlayerActions();
-            AudioManager.AudioManagerInstance.PauseAllAudio();
-            Time.timeScale = 0;
-        }
-        else
-        { 
-            
-            player.GetComponentInChildren<FlashLight>().Pause(_isPaused);
-            InputManager.GameplayInputManagerInstance.EnablePlayerActions();
-            AudioManager.AudioManagerInstance.UnPauseAllAudio();
-            Time.timeScale = 1;
-        }
-
-    }
-
     public void GameOver()
     {
-        InputManager.GameplayInputManagerInstance.DisablePlayerActions();
+        InputManager.InputManagerInstance.DisablePlayerActions();
         //player.GetComponent<PlayerController>().flashLightObj.SetActive(false);
         //player.GetComponent<Player.PlayerController>().flashLightState = false;
         UIContainer.UIContainerInstance.GameOver();
@@ -169,16 +140,6 @@ public class GameManager : MonoBehaviour
     public void RestartGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }
-
-    void OnEnable()
-    {
-        controlScheme.Pause.Enable();
-    }
-
-    void OnDisable()
-    {
-        controlScheme.Pause.Disable();
     }
 }
 

@@ -97,9 +97,10 @@ public class UIContainer : MonoBehaviour
         itemImage.enabled = false;
     }
 
-    public void PauseText()
+    public void PauseText(bool isPaused)
     {
-        if (pauseText.enabled == true)
+
+        if (!isPaused)
         {
             pauseText.enabled = false;
 
