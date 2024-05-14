@@ -38,6 +38,7 @@ public class FlashLight : MonoBehaviour
     [SerializeField] AudioScriptableObject flashLightCharge;
     [SerializeField] AudioScriptableObject flashLightFlicker;
 
+    bool started = false;
 
     // Start is called before the first frame update
     void Start()
@@ -45,7 +46,8 @@ public class FlashLight : MonoBehaviour
         normalBeam.intensity = 0;
         highBeam.intensity = 0;
 
-        OnStartOnEnable();
+        started = true;
+        OnStartOrEnable();
     }
 
     private void Update()
@@ -237,6 +239,8 @@ public class FlashLight : MonoBehaviour
             if (highBeamPoweringUp != null)
             {
                 StopCoroutine(highBeamPoweringUp);
+                _flashLightState = FlashLightState.OFF;
+                AudioManager.AudioManagerInstance.StopSound(flashLightCharge, this.gameObject);
             }
         }
         else
@@ -251,15 +255,22 @@ public class FlashLight : MonoBehaviour
         }
     }
 
-    private void OnStartOnEnable()
+    private void OnStartOrEnable()
     {
-        GameplayInputManager.GameplayInputManagerInstance.FlashlightEvent += DefaultLightSwitch;
-        GameplayInputManager.GameplayInputManagerInstance.HighBeamEvent += HighBeamControl;
+        InputManager.InputManagerInstance.FlashlightEvent += DefaultLightSwitch;
+        InputManager.InputManagerInstance.HighBeamEvent += HighBeamControl;
+        InputManager.InputManagerInstance.pauseEvent += Pause;
+    }
+
+    private void OnEnable()
+    {
+        if (started) OnStartOrEnable();
     }
 
     private void OnDisable()
     {
-        GameplayInputManager.GameplayInputManagerInstance.FlashlightEvent -= DefaultLightSwitch;
-        GameplayInputManager.GameplayInputManagerInstance.HighBeamEvent -= HighBeamControl;
+        InputManager.InputManagerInstance.FlashlightEvent -= DefaultLightSwitch;
+        InputManager.InputManagerInstance.HighBeamEvent -= HighBeamControl;
+        InputManager.InputManagerInstance.pauseEvent -= Pause;
     }
 }

@@ -5,44 +5,46 @@ using UnityEngine;
 
 public class InteractableObjs : MonoBehaviour
 {
-    [SerializeField] GameObject interactableObj;
     private IInteractable interactable;
 
-    [Header("Collision Proxies")]
-    [SerializeField] private Collision2DProxy interactionCollider;
+    [Header("Parent Collision Proxies")]
+    [SerializeField] protected Collision2DProxy interactionCollider;
 
-    [Header ("Tags")]
-    [SerializeField] TagScriptableObject playerCollision;
+    [Header ("Parent Tags")]
+    [SerializeField] protected TagScriptableObject playerColliderTag;
 
-    private void Start()
+    protected virtual void Start()
     {
-        interactionCollider.OnTriggerEnter2D_Action += InteractionColliderOnTriggerEnter2D;
-        interactionCollider.OnTriggerExit2D_Action += InteractionColliderOnTriggerExit2D;
-
-        interactable = interactableObj.GetComponent<IInteractable>();
+        if(interactionCollider != null)
+        {
+            interactionCollider.OnTriggerEnter2D_Action += InteractionColliderOnTriggerEnter2D;
+            interactionCollider.OnTriggerExit2D_Action += InteractionColliderOnTriggerExit2D;
+        }
+        
+        interactable = this.gameObject.GetComponent<IInteractable>();
     }
 
-    protected void InteractionColliderOnTriggerEnter2D(Collider2D obj)
+    private void InteractionColliderOnTriggerEnter2D(Collider2D obj)
     {
-        if (TagExtensions.HasTag(obj.gameObject, playerCollision))
+        if (TagExtensions.HasTag(obj.gameObject, playerColliderTag))
         {
             interactable.InteractionPrompt(true);
-            GameplayInputManager.GameplayInputManagerInstance.interactEvent += interactable.Interact;
+            InputManager.InputManagerInstance.interactEvent += interactable.Interact;
         }
     }
 
-    protected void InteractionColliderOnTriggerExit2D(Collider2D obj)
+    private void InteractionColliderOnTriggerExit2D(Collider2D obj)
     {
-        if (TagExtensions.HasTag(obj.gameObject, playerCollision))
+        if (TagExtensions.HasTag(obj.gameObject, playerColliderTag))
         {
             interactable.InteractionPrompt(false);
-            GameplayInputManager.GameplayInputManagerInstance.interactEvent += interactable.Interact;
+            InputManager.InputManagerInstance.interactEvent -= interactable.Interact;
         }
     }
 
-    private void OnDisable()
+    protected virtual void OnDisable()
     {
-        GameplayInputManager.GameplayInputManagerInstance.interactEvent += interactable.Interact;
+        InputManager.InputManagerInstance.interactEvent -= interactable.Interact;
         interactable.InteractionPrompt(false);
     }
 }
