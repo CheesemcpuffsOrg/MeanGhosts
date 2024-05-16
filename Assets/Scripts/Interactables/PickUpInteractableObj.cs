@@ -3,15 +3,18 @@ using UnityEngine;
 public class PickUpInteractableObj : InteractableObjs, IInteractable
 {
     [SerializeField] ItemInfo itemInfo;
+    
 
     public void Interact()
     {
         InventoryManager.InventoryManagerInstance.AddItem(itemInfo);
+        Destroy(gameObject);
+
     }
 
     public void InteractionPrompt(bool hasCollided)
     {
-        
+        UIContainer.UIContainerInstance.PickUpItem(hasCollided);
     }
 
     /*private void Start()

@@ -10,8 +10,6 @@ namespace Interactable
 {
     public class TapeInteractableObj : InteractableObjs, IInteractable
     {
-        TMP_Text playTapeText;
-
         [Header ("Sounds")]
         [SerializeField] AudioScriptableObject tapeAudio;
 
@@ -22,26 +20,13 @@ namespace Interactable
         {
             base.Start();
 
-            playTapeText = UIContainer.UIContainerInstance.playTapeText;
-
             audioRangeDetection.OnTriggerEnter2D_Action += AudioDetectionOnTriggerEnter2D;
             audioRangeDetection.OnTriggerExit2D_Action += AudioDetectionOnTriggerExit2D;
         }
 
         public void InteractionPrompt(bool hasCollided)
         {
-            if (hasCollided)
-            {
-                playTapeText.enabled = true;
-            }
-            else
-            {
-                if(playTapeText != null)//to prevent weird error when game is ended
-                {
-                    playTapeText.enabled = false;
-                }
-                
-            }
+            UIContainer.UIContainerInstance.PlayTape(hasCollided);
         }
 
         void IInteractable.Interact()

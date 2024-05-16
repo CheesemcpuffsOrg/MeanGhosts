@@ -13,7 +13,6 @@ public class UIContainer : MonoBehaviour
 
     [SerializeField]
     TMP_Text _playTapeText;
-    public TMP_Text playTapeText => _playTapeText;
 
     TMP_Text graveNameText;
     Image itemImage;
@@ -46,9 +45,14 @@ public class UIContainer : MonoBehaviour
         }  
     }
 
-    public void PickUpItem()
+    public void PickUpItem(bool result)
     {
-        if (pickUpItemText.enabled == true)
+        if(pickUpItemText == null) 
+        {
+            return;
+        }
+
+        if (!result)
         {
             pickUpItemText.enabled = false;
         }
@@ -60,9 +64,7 @@ public class UIContainer : MonoBehaviour
 
     public void PlaceItemShowText()
     {
-
         placeItemText.enabled = true;
-
     }
 
     public void PlaceItemHideText()
@@ -72,9 +74,15 @@ public class UIContainer : MonoBehaviour
         
     }
 
-    public void PlayTape()
+    public void PlayTape(bool result)
     {
-        if (_playTapeText.enabled == true)
+
+        if(_playTapeText == null)
+        {
+            return;
+        }
+
+        if (!result)
         {
             _playTapeText.enabled = false;
         }

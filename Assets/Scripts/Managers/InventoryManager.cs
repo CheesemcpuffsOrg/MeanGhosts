@@ -39,8 +39,6 @@ public class InventoryManager : MonoBehaviour
 
         itemDictionary.Add(itemName, itemToAdd);
         ItemAddedEvent?.Invoke(itemToAdd);
-        var item = itemDictionary.Values.First();
-        Debug.Log(item.itemScriptableObject.name);
     }
 
     public void RemoveItem(ItemInfo itemToRemove)

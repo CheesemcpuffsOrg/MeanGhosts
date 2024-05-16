@@ -47,4 +47,10 @@ public class InteractableObjs : MonoBehaviour
         InputManager.InputManagerInstance.interactEvent -= interactable.Interact;
         interactable.InteractionPrompt(false);
     }
+
+    protected virtual void OnDestroy()
+    {
+        InputManager.InputManagerInstance.interactEvent -= interactable.Interact;
+        interactable.InteractionPrompt(false);
+    }
 }
