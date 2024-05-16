@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -15,27 +16,31 @@ public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager InventoryManagerInstance;
 
-    public event Action<ItemInfo> ItemAdded;
-    public event Action<ItemInfo> ItemRemoved;
+    public event Action<ItemInfo> ItemAddedEvent;
+    public event Action<ItemInfo> ItemRemovedEvent;
 
     private Dictionary<string, ItemInfo> itemDictionary = new Dictionary<string, ItemInfo>();
 
-    void Start()
+    private void Awake()
     {
         InventoryManagerInstance = this;
     }
 
     public void AddItem(ItemInfo itemToAdd)
     {
-        if (itemDictionary.TryGetValue(itemToAdd.itemScriptableObject.name, out ItemInfo existingItem))
+        var itemName = itemToAdd.itemScriptableObject.name;
+
+        if (itemDictionary.TryGetValue(itemName, out ItemInfo existingItem))
         {
             existingItem.amount += itemToAdd.amount;
-            ItemAdded?.Invoke(itemToAdd);
+            ItemAddedEvent?.Invoke(itemToAdd);
             return;
         }
 
-        itemDictionary.Add(itemToAdd.itemScriptableObject.name, itemToAdd);
-        ItemAdded?.Invoke(itemToAdd);
+        itemDictionary.Add(itemName, itemToAdd);
+        ItemAddedEvent?.Invoke(itemToAdd);
+        var item = itemDictionary.Values.First();
+        Debug.Log(item.itemScriptableObject.name);
     }
 
     public void RemoveItem(ItemInfo itemToRemove)
@@ -43,7 +48,7 @@ public class InventoryManager : MonoBehaviour
         if (itemDictionary.TryGetValue(itemToRemove.itemScriptableObject.name, out ItemInfo existingItem))
         {
             existingItem.amount -= itemToRemove.amount;
-            ItemRemoved?.Invoke(itemToRemove);
+            ItemRemovedEvent?.Invoke(itemToRemove);
             return;
         }
         return;

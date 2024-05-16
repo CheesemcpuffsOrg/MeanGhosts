@@ -14,7 +14,7 @@ public class UIInventory : MonoBehaviour
     }
 
     [SerializeField] List<InventorySlot> slots = new List<InventorySlot>();
-    bool started;
+    bool started = false;
 
     // Start is called before the first frame update
     void Start()
@@ -34,9 +34,9 @@ public class UIInventory : MonoBehaviour
                 slot.Image.enabled = true;
                 slot.Image.sprite = item.inventorySprite;
                 slot.ItemRef = item;
+                return;
             }
         }
-        return;
     }
 
     void ItemRemoved(ItemInfo itemInfo)
@@ -48,14 +48,15 @@ public class UIInventory : MonoBehaviour
                 slot.Image.enabled = false;
                 slot.Image.sprite = null;
                 slot.ItemRef = null;
+                return;
             }
         }
     }
 
     void OnStartOrEnable()
     {
-        InventoryManager.InventoryManagerInstance.ItemAdded += ItemAdded;
-        InventoryManager.InventoryManagerInstance.ItemRemoved += ItemRemoved;
+        InventoryManager.InventoryManagerInstance.ItemAddedEvent += ItemAdded;
+        InventoryManager.InventoryManagerInstance.ItemRemovedEvent += ItemRemoved;
     }
 
     private void OnEnable()
@@ -65,7 +66,7 @@ public class UIInventory : MonoBehaviour
 
     private void OnDisable()
     {
-        InventoryManager.InventoryManagerInstance.ItemAdded -= ItemAdded;
-        InventoryManager.InventoryManagerInstance.ItemRemoved -= ItemRemoved;
+        InventoryManager.InventoryManagerInstance.ItemAddedEvent -= ItemAdded;
+        InventoryManager.InventoryManagerInstance.ItemRemovedEvent -= ItemRemoved;
     }
 }

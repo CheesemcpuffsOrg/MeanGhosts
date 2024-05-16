@@ -11,7 +11,7 @@ public class PickUpInteractableObj : InteractableObjs, IInteractable
 
     public void InteractionPrompt(bool hasCollided)
     {
-        throw new System.NotImplementedException();
+        
     }
 
     /*private void Start()
