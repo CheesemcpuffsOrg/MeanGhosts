@@ -9,8 +9,9 @@ public class UIInventory : MonoBehaviour
     [Serializable]
     private class InventorySlot
     {
-        public Image Image;
-        public ItemScriptableObject ItemRef;
+        public GameObject slot;
+        [HideInInspector] public Image Image;
+        [HideInInspector] public ItemScriptableObject ItemRef;
     }
 
     [SerializeField] List<InventorySlot> slots = new List<InventorySlot>();
@@ -31,7 +32,8 @@ public class UIInventory : MonoBehaviour
         {
             if(slot.Image.sprite == null)
             {
-                slot.Image.enabled = true;
+                slot.slot.SetActive(true);
+                if(slot.Image == null) { slot.Image = slot.slot.GetComponent<Image>(); }
                 slot.Image.sprite = item.inventorySprite;
                 slot.ItemRef = item;
                 return;
@@ -39,13 +41,14 @@ public class UIInventory : MonoBehaviour
         }
     }
 
+    //Remove an item from the UI based off the item info
     void ItemRemoved(ItemInfo itemInfo)
     {
         foreach(InventorySlot slot in slots)
         {
             if (slot.Image.sprite != null && slot.ItemRef == itemInfo.itemScriptableObject)
             {
-                slot.Image.enabled = false;
+                slot.slot.SetActive(false);
                 slot.Image.sprite = null;
                 slot.ItemRef = null;
                 return;

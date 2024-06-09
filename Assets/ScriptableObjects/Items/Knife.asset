@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Knife
   m_EditorClassIdentifier: 
   name: KnifeTotem
+  type: 1
   itemPrefab: {fileID: 6020924666412757271, guid: ec6c7664d1ff31b43a5b8ab6167f0c99, type: 3}
   inventorySprite: {fileID: 21300000, guid: 4e4a5255c430c1f49ba4c6bf8b358fb8, type: 3}

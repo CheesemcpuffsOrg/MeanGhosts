@@ -6,12 +6,14 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 [Serializable]
-public struct ItemInfo
+public class ItemInfo
 {
     public ItemScriptableObject itemScriptableObject;
     public int amount;
 }
 
+//make a list of the totems whenever one is picked up, make this it's own class, pull from this list then map to the remove item call
+//https://forum.unity.com/threads/custom-events-and-non-monobehaviour-class.225774/
 public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager InventoryManagerInstance;
@@ -20,6 +22,7 @@ public class InventoryManager : MonoBehaviour
     public event Action<ItemInfo> ItemRemovedEvent;
 
     private Dictionary<string, ItemInfo> itemDictionary = new Dictionary<string, ItemInfo>();
+    List<ItemInfo> totems = new List<ItemInfo>();
 
     private void Awake()
     {
@@ -50,5 +53,10 @@ public class InventoryManager : MonoBehaviour
             return;
         }
         return;
+    }
+
+    public void RemoveTotemItem()
+    {
+
     }
 }

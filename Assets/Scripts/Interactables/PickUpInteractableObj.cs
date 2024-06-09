@@ -3,7 +3,6 @@ using UnityEngine;
 public class PickUpInteractableObj : InteractableObjs, IInteractable
 {
     [SerializeField] ItemInfo itemInfo;
-    
 
     public void Interact()
     {
