@@ -1,3 +1,4 @@
+using AudioSystem;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,12 +16,36 @@ public class FirePitInteractable : InteractableObjs, IInteractable
     [SerializeField]GameObject ghost;*/
 
     // bool standingOnGrave;
-
+    [Space]
+    [Space]
+    [Space]
+    [Space]
     [SerializeField] HeldTotems heldTotems;
+
+    [Header("Collision Proxies")]
+    [SerializeField] Collision2DProxy audioDetectionCollider;
+
+    [Header("Sounds")]
+    [SerializeField] AudioScriptableObject fireCrackling;
+    [SerializeField] AudioScriptableObject fireWhoosh; 
+
+    protected override void Start()
+    {
+
+        base.Start();
+
+        audioDetectionCollider.OnTriggerEnter2D_Action += AudioDetectionOntriggerEnter;
+        audioDetectionCollider.OnTriggerExit2D_Action += AudioDetectionOntriggerExit;
+    }
 
     public void Interact()
     {
+        if (AudioManager.AudioManagerInstance.IsSoundPlaying(fireWhoosh, this.gameObject) || heldTotems.NumberOfHeldTotems() <= 0)
+        {
+            return;
+        }
         heldTotems.RemoveFirstTotem();
+        AudioManager.AudioManagerInstance.PlaySound(fireWhoosh, gameObject);  
     }
 
     public void InteractionPrompt(bool hasCollided)
@@ -31,6 +56,32 @@ public class FirePitInteractable : InteractableObjs, IInteractable
         }
         
     }
+
+    void AudioDetectionOntriggerEnter(Collider2D other)
+    {
+        if (TagExtensions.HasTag(other.gameObject, playerColliderTag))
+        {
+            if (!AudioManager.AudioManagerInstance.IsSoundPlaying(fireCrackling, this.gameObject))
+            {
+                Debug.Log("play audio");
+                AudioManager.AudioManagerInstance.PlaySound(fireCrackling, gameObject);
+            }
+        }
+    }
+
+    void AudioDetectionOntriggerExit(Collider2D other)
+    {
+        if (TagExtensions.HasTag(other.gameObject, playerColliderTag))
+        {
+            if (AudioManager.AudioManagerInstance.IsSoundPlaying(fireCrackling, this.gameObject))
+            {
+                Debug.Log("stop audio");
+                AudioManager.AudioManagerInstance.StopSound(fireCrackling, gameObject);
+            }
+        }
+    }
+
+
 
     /* private void Update()
      {

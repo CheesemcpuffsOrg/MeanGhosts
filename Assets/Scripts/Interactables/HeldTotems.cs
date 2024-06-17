@@ -34,6 +34,11 @@ public class HeldTotems : MonoBehaviour
         heldTotems.RemoveAt(0);
     }
 
+    public int NumberOfHeldTotems()
+    {
+        return heldTotems.Count;
+    }
+
     void OnStartOrEnable()
     {
         InventoryManager.InventoryManagerInstance.ItemAddedEvent += TotemAdded;
