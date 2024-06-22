@@ -464,11 +464,19 @@ namespace AudioSystem
             audioSource.loop = sound.loop;
             audioSource.panStereo = sound.pan;
             audioSource.spatialBlend = sound.spatialBlend;
-            audioSource.rolloffMode = sound.rolloffMode;
             audioSource.minDistance = sound.minDistance;
             audioSource.maxDistance = sound.maxDistance;
             audioSource.dopplerLevel = sound.dopplerLevel;
-            
+
+            if (sound.volumeRollOffMode == AudioRolloffMode.Custom)
+            {
+                audioSource.SetCustomCurve(AudioSourceCurveType.CustomRolloff, sound.volumeRollOffCurve);
+            }
+            else
+            {
+                audioSource.rolloffMode = sound.volumeRollOffMode;
+            }
+
             if (audioSource.spatialBlend == 0)
             {
                 obj.transform.SetParent(activeSounds);
