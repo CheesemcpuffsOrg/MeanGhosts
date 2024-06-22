@@ -27,7 +27,7 @@ MonoBehaviour:
   spatialBlend: 0
   dopplerLevel: 0
   pan: 0
-  volumeRollOffMode: 2
+  volumeRollOffMode: 1
   volumeRollOffCurve:
     serializedVersion: 2
     m_Curve:

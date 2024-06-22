@@ -81,18 +81,16 @@ public class VolumeRollOffCurveDrawer : PropertyDrawer
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
         VolumeRollOffCurveAttribute curveAttr = attribute as VolumeRollOffCurveAttribute;
-
-        /*// Get the enum value from the serialized property
-        SerializedProperty enumProperty = property.serializedObject.FindProperty("rolloffMode");
-        if (enumProperty == null || enumProperty.enumValueIndex != (int)curveAttr.rolloffMode)
-            return; // Exit if enum value doesn't match*/
-
         var component = property.serializedObject.targetObject as AudioScriptableObject;
+
+        // Get the enum value from the serialized property
+        if (component.volumeRollOffMode != curveAttr.rolloffMode)
+            return; // Exit if enum value doesn't match
 
         // Ensure this attribute is only used with AnimationCurves
         if (property.propertyType != SerializedPropertyType.AnimationCurve)
         {
-            EditorGUI.LabelField(position, label.text, "Use [AnimationCurveSimple] with AnimationCurve.");
+            EditorGUI.LabelField(position, label.text, "Use [VolumeRollOffCurve] with AnimationCurve.");
             return;
         }
 
@@ -103,7 +101,7 @@ public class VolumeRollOffCurveDrawer : PropertyDrawer
         }
 
         // Get bbox from the component
-        Rect bbox = new Rect(component.minDistance, 0, component.maxDistance - component.minDistance, 1 - 0);
+        Rect bbox = new Rect(component.minDistance, 0, component.maxDistance - component.minDistance, 1);
 
         // Ensure the property has an assigned AnimationCurve with at least 2 keys
         if (property.animationCurveValue == null || property.animationCurveValue.keys.Length <= 1)
