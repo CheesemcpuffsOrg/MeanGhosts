@@ -37,11 +37,12 @@ public class AudioScriptableObject : ScriptableObject
     public float dopplerLevel = 0;
     [Range(-1f, 1f)]
     public float pan = 0;
+    public float minDistance = 1;
+    public float maxDistance = 30;
     public AudioRolloffMode volumeRollOffMode = AudioRolloffMode.Linear;
     [VolumeRollOffCurve(AudioRolloffMode.Custom)]
     public AnimationCurve volumeRollOffCurve;
-    public float minDistance = 1;
-    public float maxDistance = 30;
+    
     
     [Header("Advanced Controls")]
     [Range(1, 10), Tooltip("This determines the importance of the audio")]
