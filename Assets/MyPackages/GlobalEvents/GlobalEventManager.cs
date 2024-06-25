@@ -17,7 +17,6 @@ public class GlobalEventManager : MonoBehaviour
         globalEventManagerInstance = this;
     }
 
-    // Update is called once per frame
     void Update()
     {
         UpdateEvent?.Invoke();
