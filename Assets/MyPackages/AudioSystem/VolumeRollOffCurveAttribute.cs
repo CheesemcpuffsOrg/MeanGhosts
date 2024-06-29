@@ -17,67 +17,25 @@ public class VolumeRollOffCurveAttribute : PropertyAttribute
     {
         rolloffMode = mode;
     }
-    /*public Rect bbox = new Rect(0f, 0f, 1f, 1f);
-    public Color color = Color.green;
-
-    public AudioScriptableObjectVolumeRollOffAnimationCurveAttribute() { }
-
-    public AudioScriptableObjectVolumeRollOffAnimationCurveAttribute(Rect bbox)
-    {
-        this.bbox = bbox;
-    }
-
-    public AudioScriptableObjectVolumeRollOffAnimationCurveAttribute(float xmin, float xmax, float ymin, float ymax)
-    {
-        bbox = new Rect(xmin, ymin, xmax - xmin, ymax - ymin);
-    }
-
-    public AudioScriptableObjectVolumeRollOffAnimationCurveAttribute(Color color)
-    {
-        bbox = new Rect(0f, 0f, 1f, 1f);
-        this.color = color;
-    }
-
-    public AudioScriptableObjectVolumeRollOffAnimationCurveAttribute(float xmin, float xmax, float ymin, float ymax, Color color)
-    {
-        bbox = new Rect(xmin, ymin, xmax - xmin, ymax - ymin);
-        this.color = color;
-    }
-
-    public AudioScriptableObjectVolumeRollOffAnimationCurveAttribute(Rect bbox, Color color)
-    {
-        this.bbox = bbox;
-        this.color = color;
-    }*/
 }
 
+public class HideMinimumDistanceValueAttribute : PropertyAttribute
+{
+    public AudioRolloffMode rolloffMode;
 
+    public HideMinimumDistanceValueAttribute(AudioRolloffMode mode)
+    {
+        rolloffMode = mode;
+    }
+}
 
 #if UNITY_EDITOR
-/*[CustomPropertyDrawer(typeof(AnimationCurveSimpleAttribute))]
-public class AnimationCurveSimpleDrawer : PropertyDrawer
-{
-    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
-    {
-        AnimationCurveSimpleAttribute curve = attribute as AnimationCurveSimpleAttribute;
-
-        // This attribute should only be used with AnimationCurves
-        if (property.propertyType != SerializedPropertyType.AnimationCurve)
-            throw new System.Exception("AnimationCurveSimple attribute can only be used with AnimationCurve properties, not " + property.propertyType);
-
-        // Check if the property has an assigned AnimationCurve. Create one if it doesn't.
-        // If it does, then make sure it has at least 2 keys to avoid empty curves in the inspector.
-        if (property.animationCurveValue == null ? true : property.animationCurveValue.keys.Length <= 1)
-            property.animationCurveValue = new AnimationCurve(new Keyframe(curve.bbox.xMin, curve.bbox.center.y), new Keyframe(curve.bbox.xMax, curve.bbox.center.y));
-
-        // Draw the curve in the inspector (this is not the popup editor window)
-        EditorGUI.CurveField(position, property, curve.color, curve.bbox, label);
-    }
-}*/
 
 [CustomPropertyDrawer(typeof(VolumeRollOffCurveAttribute))]
 public class VolumeRollOffCurveDrawer : PropertyDrawer
 {
+    float previousMaxDistance;
+
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
         VolumeRollOffCurveAttribute curveAttr = attribute as VolumeRollOffCurveAttribute;
@@ -101,19 +59,53 @@ public class VolumeRollOffCurveDrawer : PropertyDrawer
         }
 
         // Get bbox from the component
-        Rect bbox = new Rect(component.minDistance, 0, component.maxDistance - component.minDistance, 1);
+        Rect bbox = new Rect(0, 0, component.maxDistance - 0, 1);
 
         // Ensure the property has an assigned AnimationCurve with at least 2 keys
         if (property.animationCurveValue == null || property.animationCurveValue.keys.Length <= 1)
         {
             property.animationCurveValue = new AnimationCurve(
-                new Keyframe(0, 1),
-                new Keyframe(component.maxDistance, component.minDistance)
+                new Keyframe(component.minDistance, 1),
+                new Keyframe(component.maxDistance, 0)
             );
+
+            previousMaxDistance = component.maxDistance;
+        }
+
+        var currentMaxDistance = component.maxDistance;
+
+        if (previousMaxDistance != currentMaxDistance)
+        {
+            property.animationCurveValue = ScaleCurve(component.volumeRollOffCurve, currentMaxDistance);
+
+            previousMaxDistance = currentMaxDistance;
+
         }
 
         // Draw the curve field
         property.animationCurveValue = EditorGUI.CurveField(position, label, property.animationCurveValue, Color.green, bbox);
+    }
+
+    private AnimationCurve ScaleCurve(AnimationCurve curve, float newMaxDistance)
+    {
+        float scaleFactor = newMaxDistance / previousMaxDistance;
+        AnimationCurve scaledCurve = new AnimationCurve();
+
+        for (int i = 0; i < curve.keys.Length; i++)
+        {
+            Keyframe key = curve.keys[i];
+
+            key.time *= scaleFactor;
+
+            // Adjust tangents proportionally to maintain the curve's shape
+            key.inTangent /= scaleFactor;
+            key.outTangent /= scaleFactor;
+
+            scaledCurve.AddKey(key);
+
+        }
+
+        return scaledCurve;
     }
 
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
@@ -121,4 +113,24 @@ public class VolumeRollOffCurveDrawer : PropertyDrawer
         return EditorGUIUtility.singleLineHeight * 2.5f; // Adjust the height to fit the label and the curve field
     }
 }
+
+
+[CustomPropertyDrawer(typeof(HideMinimumDistanceValueAttribute))]
+public class HideMinimumDistanceValueDrawer : PropertyDrawer
+{
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+    {
+        HideMinimumDistanceValueAttribute attr = attribute as HideMinimumDistanceValueAttribute;
+        var component = property.serializedObject.targetObject as AudioScriptableObject;
+
+
+        // Get the enum value from the serialized property
+        if (component.volumeRollOffMode == attr.rolloffMode)
+            return; // Exit if enum value doesn't match
+
+        // Otherwise, draw the property as usual
+        EditorGUI.PropertyField(position, property, label);
+    }
+}
+
 #endif

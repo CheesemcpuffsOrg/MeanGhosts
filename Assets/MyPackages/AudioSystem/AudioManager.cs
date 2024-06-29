@@ -464,8 +464,6 @@ namespace AudioSystem
             audioSource.loop = sound.loop;
             audioSource.panStereo = sound.pan;
             audioSource.spatialBlend = sound.spatialBlend;
-            audioSource.minDistance = sound.minDistance;
-            audioSource.maxDistance = sound.maxDistance;
             audioSource.dopplerLevel = sound.dopplerLevel;
 
             if (sound.volumeRollOffMode == AudioRolloffMode.Custom)
@@ -474,6 +472,8 @@ namespace AudioSystem
             }
             else
             {
+                audioSource.minDistance = sound.minDistance;
+                audioSource.maxDistance = sound.maxDistance;
                 audioSource.rolloffMode = sound.volumeRollOffMode;
             }
 

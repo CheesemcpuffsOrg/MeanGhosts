@@ -37,6 +37,7 @@ public class AudioScriptableObject : ScriptableObject
     public float dopplerLevel = 0;
     [Range(-1f, 1f)]
     public float pan = 0;
+    [HideMinimumDistanceValue(AudioRolloffMode.Custom)]
     public float minDistance = 1;
     public float maxDistance = 30;
     public AudioRolloffMode volumeRollOffMode = AudioRolloffMode.Linear;
