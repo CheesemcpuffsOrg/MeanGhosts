@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Objects")]
     [SerializeField] AnimationController animController;
-    [SerializeField] PlayerSO playerSO;
+    [SerializeField] PlayerScriptableObject playerSO;
     [SerializeField] Rigidbody2D rigidBody;
     [SerializeField] GameObject flashLightObj;
     [SerializeField] SpriteRenderer spriteRenderer;
