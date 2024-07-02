@@ -30,8 +30,16 @@ public class AudioScriptableObject : ScriptableObject
     public float fadeInDuration = 1;
     public bool fadeOut = false;
     public float fadeOutDuration = 1;
+    
+    [Header("Advanced Controls")]
+    [Range(1, 10), Tooltip("This determines the importance of the audio")]
+    public int audioPriority = 5;
+    [Tooltip("If this is set to true, only one instance of this audio can be active")]
+    public bool singleInstanceAudio = false;
+    [Tooltip("Allows the audio to play while the game is paused")]
+    public bool playWhilePaused = false;
 
-    [Range(0f, 1f) , Header ("3D Controls")]
+    [Range(0f, 1f), Header("3D Controls")]
     public float spatialBlend = 0;
     [Range(0f, 5f)]
     public float dopplerLevel = 0;
@@ -41,16 +49,6 @@ public class AudioScriptableObject : ScriptableObject
     public float minDistance = 1;
     public float maxDistance = 30;
     public AudioRolloffMode volumeRollOffMode = AudioRolloffMode.Linear;
-    [VolumeRollOffCurve(AudioRolloffMode.Custom)]
     public AnimationCurve volumeRollOffCurve;
-    
-    
-    [Header("Advanced Controls")]
-    [Range(1, 10), Tooltip("This determines the importance of the audio")]
-    public int audioPriority = 5;
-    [Tooltip("If this is set to true, only one instance of this audio can be active")]
-    public bool singleInstanceAudio = false;
-    [Tooltip("Allows the audio to play while the game is paused")]
-    public bool playWhilePaused = false;
 
 }

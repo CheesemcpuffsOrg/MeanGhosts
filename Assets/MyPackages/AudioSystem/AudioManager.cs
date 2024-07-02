@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -101,7 +102,7 @@ namespace AudioSystem
 
             CreateAudioReference(sound, gameObject, obj, audioSource, chosenAudioClip);
 
-            audioSource.Play();
+            audioSource.Play(); 
 
             if(fireEventWhenSoundFinished != null)
             {
@@ -465,17 +466,15 @@ namespace AudioSystem
             audioSource.panStereo = sound.pan;
             audioSource.spatialBlend = sound.spatialBlend;
             audioSource.dopplerLevel = sound.dopplerLevel;
+            audioSource.minDistance = sound.minDistance;
+            audioSource.maxDistance = sound.maxDistance;
+            audioSource.rolloffMode = sound.volumeRollOffMode;
 
             if (sound.volumeRollOffMode == AudioRolloffMode.Custom)
-            {
+            {  
                 audioSource.SetCustomCurve(AudioSourceCurveType.CustomRolloff, sound.volumeRollOffCurve);
             }
-            else
-            {
-                audioSource.minDistance = sound.minDistance;
-                audioSource.maxDistance = sound.maxDistance;
-                audioSource.rolloffMode = sound.volumeRollOffMode;
-            }
+
 
             if (audioSource.spatialBlend == 0)
             {
