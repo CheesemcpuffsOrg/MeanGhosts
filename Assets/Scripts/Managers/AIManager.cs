@@ -2,12 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+public enum GlobalAIBehaviourState
+{
+    Timid,
+    Curious,
+    Angry,
+    Aggresive
+}
+
 public class AIManager : MonoBehaviour
 {
-
     public static AIManager AIManagerInstance;
 
+    GlobalAIBehaviourState currentGlobalState;
+
     GameObject player;
+
+    [SerializeField] ReferenceScriptableObject playerReference;
 
     [Header("Tags")]
     [SerializeField]TagScriptableObject playerTag;
@@ -19,7 +31,9 @@ public class AIManager : MonoBehaviour
 
     void Start()
     {
-        player = TagExtensions.FindWithTag(gameObject, playerTag);
+       // player = TagExtensions.FindWithTag(gameObject, playerTag);
+        currentGlobalState = GlobalAIBehaviourState.Timid;
+        player = ReferenceManager.ReferenceManagerInstance.GetReference(playerReference);
     }
 
 
