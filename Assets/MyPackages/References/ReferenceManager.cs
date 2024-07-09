@@ -36,17 +36,34 @@ public class ReferenceManager : MonoBehaviour
 
     public void SetReference(ReferenceScriptableObject reference, GameObject obj)
     {
+        if (reference == null)
+        {
+            Debug.LogError($"A reference has not been provided");
+            return;
+        }
+        else if (references.ContainsKey(reference))
+        {
+            Debug.LogError($"The following reference '{reference}' already exists");
+            return;
+        }
+
         references.Add(reference, gameObject);
     }
 
     public GameObject GetReference(ReferenceScriptableObject reference)
     {
-        if (references.ContainsKey(reference))
-        {
-            return references[reference];
-        }
 
-        Debug.LogError($"The following reference {reference} does not exist");
-        return null;
+        if(reference == null)
+        {
+            Debug.LogError($"A reference has not been provided");
+            return null;
+        }
+        else if (!references.ContainsKey(reference))
+        {
+            Debug.LogError($"The following reference '{reference}' does not exist");
+            return null;
+        } 
+
+        return references[reference]; 
     }
 }
