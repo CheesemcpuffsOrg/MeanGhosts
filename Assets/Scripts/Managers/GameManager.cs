@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
     {
         player = TagExtensions.FindWithTag(gameObject, playerTag);
 
-       // PlaceItems();
+        PlaceItems();
 
         PlaceAudioTapes();
 

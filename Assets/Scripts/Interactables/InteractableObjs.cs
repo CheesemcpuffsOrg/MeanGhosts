@@ -7,10 +7,10 @@ public class InteractableObjs : MonoBehaviour
 {
     private IInteractable interactable;
 
-    [Header("Parent Collision Proxies")]
+    [Header("Inherited Collision Proxies")]
     [SerializeField] protected Collision2DProxy interactionCollider;
 
-    [Header ("Parent Tags")]
+    [Header ("Inherited Tags")]
     [SerializeField] protected TagScriptableObject playerColliderTag;
 
     protected virtual void Start()
@@ -43,6 +43,12 @@ public class InteractableObjs : MonoBehaviour
     }
 
     protected virtual void OnDisable()
+    {
+        InputManager.InputManagerInstance.interactEvent -= interactable.Interact;
+        interactable.InteractionPrompt(false);
+    }
+
+    protected virtual void OnDestroy()
     {
         InputManager.InputManagerInstance.interactEvent -= interactable.Interact;
         interactable.InteractionPrompt(false);

@@ -7,11 +7,13 @@ public class PickUpInteractableObj : InteractableObjs, IInteractable
     public void Interact()
     {
         InventoryManager.InventoryManagerInstance.AddItem(itemInfo);
+        Destroy(gameObject);
+
     }
 
     public void InteractionPrompt(bool hasCollided)
     {
-        throw new System.NotImplementedException();
+        UIContainer.UIContainerInstance.PickUpItem(hasCollided);
     }
 
     /*private void Start()

@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -15,9 +14,11 @@ public class AudioList
     public float pitch = 1;
 }
 
+
 [CreateAssetMenu(fileName = "Audio", menuName = "ScriptableObject/Audio")]
 public class AudioScriptableObject : ScriptableObject
 {
+
     public List<ObjectPool<AudioList>> audioClips;
 
     [Header ("Basic Controls")]
@@ -29,17 +30,7 @@ public class AudioScriptableObject : ScriptableObject
     public float fadeInDuration = 1;
     public bool fadeOut = false;
     public float fadeOutDuration = 1;
-
-    [Range(0f, 1f) , Header ("3D Controls")]
-    public float spatialBlend = 0;
-    [Range(0f, 5f)]
-    public float dopplerLevel = 0;
-    [Range(-1f, 1f)]
-    public float pan = 0;
-    public AudioRolloffMode rolloffMode = AudioRolloffMode.Linear;
-    public float minDistance = 1;
-    public float maxDistance = 30;
-
+    
     [Header("Advanced Controls")]
     [Range(1, 10), Tooltip("This determines the importance of the audio")]
     public int audioPriority = 5;
@@ -48,6 +39,16 @@ public class AudioScriptableObject : ScriptableObject
     [Tooltip("Allows the audio to play while the game is paused")]
     public bool playWhilePaused = false;
 
-    [HideInInspector]
-    public AudioSource source;
+    [Range(0f, 1f), Header("3D Controls")]
+    public float spatialBlend = 0;
+    [Range(0f, 5f)]
+    public float dopplerLevel = 0;
+    [Range(-1f, 1f)]
+    public float pan = 0;
+    [HideMinimumDistanceValue(AudioRolloffMode.Custom)]
+    public float minDistance = 1;
+    public float maxDistance = 30;
+    public AudioRolloffMode volumeRollOffMode = AudioRolloffMode.Linear;
+    public AnimationCurve volumeRollOffCurve;
+
 }

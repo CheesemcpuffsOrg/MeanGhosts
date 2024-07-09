@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: Beret
   m_EditorClassIdentifier: 
   name: BeretTotem
+  type: 1
   itemPrefab: {fileID: 4878385293999940333, guid: d751b69cfa638fb4b807462f3f824bb2, type: 3}
+  inventorySprite: {fileID: 21300000, guid: 9b14be14f1ed51f4f92da0183601fb79, type: 3}
