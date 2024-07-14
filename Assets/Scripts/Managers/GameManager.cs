@@ -25,7 +25,9 @@ public class GameManager : MonoBehaviour
     public GameObject[] audioTapes;
     [SerializeField] GameObject[] audioTapesSpawnPoints;
 
-    public int score = 0;
+    int score = 0;
+    public event Action<int> scoreChanged;
+
     public float timer;
 
     bool _isPaused = false;
@@ -127,6 +129,12 @@ public class GameManager : MonoBehaviour
                 removeItem += 1;
             }
         }
+    }
+
+    public void IncreaseScore()
+    {
+        score++;
+        scoreChanged?.Invoke(score);
     }
 
     public void GameOver()

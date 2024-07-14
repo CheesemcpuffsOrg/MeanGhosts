@@ -131,10 +131,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1dfb91fc78ddba34c8d35041ec1e8080, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _flashLightState: 0
   globalLight: {fileID: 0}
   normalBeam: {fileID: 1316690784}
   defaultNormalBeamIntensity: 0.3
+  torchSpriteMasks:
+  - {fileID: 1163263801}
+  - {fileID: 496340506}
   highBeam: {fileID: 1519881412}
   defaultHighBeamIntensity: 0.5
   highBeamDuration: 3

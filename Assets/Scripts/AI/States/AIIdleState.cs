@@ -7,7 +7,7 @@ using UnityEngine.InputSystem.XR;
 
 public class AIIdleState : AIState
 {
-    [SerializeField] AIStateManager stateManager;
+    [SerializeField] AIStateController stateManager;
     [SerializeField] AIController controller;
     [SerializeField] AIAnyState anyState;
 
@@ -19,14 +19,14 @@ public class AIIdleState : AIState
 
     [SerializeField]float agroRangeAdjusted;
 
-    public override void EnterState(AIStateManager state)
+    public override void EnterState(AIStateController state)
     {
         controller.anim.SetBool("isScary", false);
 
         destPoint = this.transform.position;
     }
 
-    public override void UpdateState(AIStateManager state)
+    public override void UpdateState(AIStateController state)
     {
         IdleMovement();
 
@@ -38,7 +38,7 @@ public class AIIdleState : AIState
         SwitchToChaseState(state);
     }
 
-    public override void ExitState(AIStateManager state)
+    public override void ExitState(AIStateController state)
     {
         
     }
@@ -97,30 +97,23 @@ public class AIIdleState : AIState
         }
     }
 
-    void SwitchToChaseState(AIStateManager state)
+    void SwitchToChaseState(AIStateController state)
     {
 
-        switch (GameManager.GameManagerInstance.score)
+        switch (AIManager.AIManagerInstance.GetCurrentState())
         {
-            case 0:
+            case GlobalAIBehaviourState.Timid:
                 agroRangeAdjusted = controller.stats.agroRange;
                 break;
-            case 1:
+            case GlobalAIBehaviourState.Curious:
                 agroRangeAdjusted = controller.stats.agroRange + 15;
                 break;
-            case 2:
+            case GlobalAIBehaviourState.Angry:
                 agroRangeAdjusted = controller.stats.agroRange + 30;
                 break;
-            case 3:
+            case GlobalAIBehaviourState.Aggresive:
                 agroRangeAdjusted = controller.stats.agroRange + 45;
-                break;
-            case 4:
-                agroRangeAdjusted = controller.stats.agroRange + 60;
-                break;
-            case 5:
-                agroRangeAdjusted = controller.stats.agroRange + 400;
-                break;
-
+                break;  
         }
 
         if (Vector3.Distance(this.transform.position, controller.player.transform.position) < agroRangeAdjusted && controller.player.GetComponent<PlayerController>().invisible == false)

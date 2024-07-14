@@ -1,72 +1,69 @@
 using System.Collections;
 using UnityEngine;
 
-public class AICaughtState : AIState
+public class AICaughtState : AIState, ISpotted
 {
 
     [SerializeField] AIController controller;
-    [SerializeField] AIStateManager stateManager;
-    [SerializeField] CaughtByBeam caughtByBeam;
+    [SerializeField] AIStateController stateManager;
 
     [SerializeField] float timeUntilExplode = 2;
 
     Coroutine caughtByBeamCoroutine;
 
+    FlashLightState flashLightState;
+    bool caughtByTorch;
+    bool caughtByHighBeam;
+
     [SerializeField]ParticleSystem poofPA;
 
-    public override void EnterState(AIStateManager state)
+    public override void EnterState(AIStateController state)
     {
-        caughtByBeam.caughtByHighBeamEvent.AddListener(HighBeamControl);
-        caughtByBeam.caughtEvent.AddListener(Freed);
+        if (AIManager.AIManagerInstance.GetCurrentState() == GlobalAIBehaviourState.Timid)
+        {
+            stateManager.SwitchToTheNextState(stateManager.FleeState);
+        }
 
         controller.flashLight.GhostHasBeenCaught(true);
 
-        if (controller.flashLight.flashLightState == FlashLight.FlashLightState.HIGHBEAM)
+        if (flashLightState == FlashLightState.HIGHBEAM)
         {
             caughtByBeamCoroutine = StartCoroutine(DeathTimer());
         }
     }
 
-    public override void UpdateState(AIStateManager state)
+    public override void UpdateState(AIStateController state)
     {
-
+        CheckFlashLight();
     }
 
-    public override void ExitState(AIStateManager state)
+    public override void ExitState(AIStateController state)
     {
-        
+        controller.flashLight.GhostHasBeenCaught(false);
 
-        caughtByBeam.caughtByHighBeamEvent.RemoveListener(HighBeamControl);
-        caughtByBeam.caughtEvent.RemoveListener(Freed);
-
-        
-    }
-
-    private void Freed(bool isCaught)
-    {
-        if (!isCaught)
+        if (caughtByBeamCoroutine != null)
         {
-            controller.flashLight.GhostHasBeenCaught(false);
+            StopCoroutine(caughtByBeamCoroutine);
+            caughtByBeamCoroutine = null;
+        }
+    }
 
+    private void CheckFlashLight()
+    {
+        if (flashLightState == FlashLightState.OFF || flashLightState == FlashLightState.COOLDOWN || !caughtByTorch || (!caughtByHighBeam && flashLightState == FlashLightState.HIGHBEAM))
+        {
+            //controller.flashLight.GhostHasBeenCaught(false);
             stateManager.SwitchToTheNextState(stateManager.IdleState);
-
+            
         }
-    }
-
-    //need to fix this
-    private void HighBeamControl(bool result)
-    {
-        if (result)
+        else if (caughtByHighBeam && flashLightState == FlashLightState.HIGHBEAM && caughtByBeamCoroutine == null)
         {
             caughtByBeamCoroutine = StartCoroutine(DeathTimer());
         }
-        else if(!result) 
+        else if ((!caughtByHighBeam || flashLightState != FlashLightState.HIGHBEAM) && caughtByBeamCoroutine != null)
         {
-            if(caughtByBeamCoroutine != null)
-            {
-                StopCoroutine(caughtByBeamCoroutine);
-            }
-
+            StopCoroutine(caughtByBeamCoroutine);
+            caughtByBeamCoroutine = null;
         }
     }
 
@@ -79,9 +76,35 @@ public class AICaughtState : AIState
         var poof = Instantiate(poofPA, this.transform.position, this.transform.rotation);
         poof.Play();
         transform.root.position = controller.spawn.position;
-        controller.flashLight.GhostHasBeenCaught(false);
+       // controller.flashLight.GhostHasBeenCaught(false);
+
+        caughtByBeamCoroutine = null;
 
         stateManager.SwitchToTheNextState(stateManager.IdleState);  
     }
- 
+
+    public void SpottedByTorch()
+    {
+        caughtByTorch = true;
+    }
+
+    public void NotSpottedByTorch()
+    {
+        caughtByTorch = false;
+    }
+
+    public void SpottedByHighBeam()
+    {
+        caughtByHighBeam = true;
+    }
+
+    public void NotSpottedByHighBeam()
+    {
+        caughtByHighBeam = false;
+    }
+
+    public void StateOfFlashLight(FlashLightState state)
+    {
+        flashLightState = state;   
+    }
 }

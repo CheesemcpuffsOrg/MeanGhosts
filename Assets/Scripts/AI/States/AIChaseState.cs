@@ -6,39 +6,54 @@ using UnityEngine.InputSystem.XR;
 
 public class AIChaseState : AIState
 {
-    [SerializeField] AIStateManager stateManager;
+    [SerializeField] AIStateController stateManager;
     [SerializeField] AIController controller;
+    [SerializeField] VisibleToCamera visibleToCamera;
 
-    bool scream = false;
+    GameObject player;
+    AIScriptableObject stats;
 
     [Header("Sounds")]
     [SerializeField] AudioScriptableObject giggleSFX;
     [SerializeField] AudioScriptableObject screamSFX;
 
-    public override void EnterState(AIStateManager state)
+    public override void EnterState(AIStateController state)
     {
-       
+        if(player == null)
+        {
+            player = controller.player;
+        }
+
+        if(stats == null)
+        {
+            stats = controller.stats;
+        }
     }
 
-    public override void UpdateState(AIStateManager state)
+    public override void UpdateState(AIStateController state)
     {
         ChasePlayer(state);
     }
 
-    private void GhostVisibilityControl(AIStateManager state)
+    public override void ExitState(AIStateController state)
     {
         
     }
 
-    public override void ExitState(AIStateManager state)
+    void ChasePlayer(AIStateController state)
     {
+
         
-    }
 
-    void ChasePlayer(AIStateManager state)
-    {
+        if (AIManager.AIManagerInstance.GetCurrentState() == GlobalAIBehaviourState.Timid)
+        {
+            if (!visibleToCamera.IsVisible)
+            {
+                MoveTowardsPlayer();
+            }
+        }
 
-        if (GameManager.GameManagerInstance.score > 2)
+        /*if (AIManager.AIManagerInstance.GetCurrentState() != GlobalAIBehaviourState.Timid)
         {
             controller.anim.SetBool("isScary", true);
             if (transform.right.x > 0)
@@ -53,14 +68,14 @@ public class AIChaseState : AIState
 
         if (controller.player.GetComponent<PlayerController>().invisible == false) 
         {
-            transform.root.position = Vector2.MoveTowards(transform.position, controller.player.transform.position, controller.stats.chaseSpeed * Time.deltaTime);
+            transform.root.position = Vector2.MoveTowards(transform.position, player.transform.position, stats.chaseSpeed * Time.deltaTime);
         }
         else
         {
             state.SwitchToTheNextState(state.IdleState);
         }
 
-        if (Vector3.Distance(this.transform.position, controller.player.transform.position) < 10 && !scream && GameManager.GameManagerInstance.score > 0)
+        if (Vector3.Distance(transform.position, player.transform.position) < 10 && !scream && AIManager.AIManagerInstance.GetCurrentState() != GlobalAIBehaviourState.Timid)
         {
             if (!AudioManager.AudioManagerInstance.IsSoundPlaying(screamSFX, gameObject))
             {
@@ -68,7 +83,7 @@ public class AIChaseState : AIState
                 scream = true;
             }          
         }
-        else if (Vector3.Distance(this.transform.position, controller.player.transform.position) < 10 && !scream && GameManager.GameManagerInstance.score == 0 && !scream)
+        else if (Vector3.Distance(transform.position, player.transform.position) < 10 && !scream && AIManager.AIManagerInstance.GetCurrentState() == GlobalAIBehaviourState.Timid && !scream)
         {
             if (!AudioManager.AudioManagerInstance.IsSoundPlaying(screamSFX, gameObject))
             {
@@ -76,12 +91,17 @@ public class AIChaseState : AIState
                 scream = true;
             }  
         }
-        else if (Vector3.Distance(this.transform.position, controller.player.transform.position) > 10)
+        else if (Vector3.Distance(transform.position, player.transform.position) > 10)
         {
             scream = false;
-        }
+        }*/
 
 
+    }
+
+    void MoveTowardsPlayer()
+    {
+        transform.root.position = Vector2.MoveTowards(transform.position, player.transform.position, stats.chaseSpeed * Time.deltaTime);
     }
 
 }

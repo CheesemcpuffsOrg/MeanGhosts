@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,12 +18,14 @@ public class AIManager : MonoBehaviour
 
     GlobalAIBehaviourState currentGlobalState;
 
+    public event Action <GlobalAIBehaviourState> StateChanged;
+
     GameObject player;
 
-    [SerializeField] ReferenceScriptableObject playerReference;
+    bool started = false;
 
-    [Header("Tags")]
-    [SerializeField]TagScriptableObject playerTag;
+    [Header("References")]
+    [SerializeField] ReferenceScriptableObject playerReference;
 
     private void Awake()
     {
@@ -31,10 +34,51 @@ public class AIManager : MonoBehaviour
 
     void Start()
     {
-       // player = TagExtensions.FindWithTag(gameObject, playerTag);
         currentGlobalState = GlobalAIBehaviourState.Timid;
         player = ReferenceManager.ReferenceManagerInstance.GetReference(playerReference);
+
+        started = true;
+        OnStartOrEnable();
+
     }
 
+    void ScoreChanged(int score)
+    {
+        switch (score)
+        {
+            case 0:
+                currentGlobalState = GlobalAIBehaviourState.Timid; 
+                break;
+            case 1:
+                currentGlobalState = GlobalAIBehaviourState.Curious; 
+                break;
+            case 3:
+                currentGlobalState = GlobalAIBehaviourState.Angry;
+                break;
+            case 5:
+                currentGlobalState= GlobalAIBehaviourState.Aggresive; 
+                break;
+        }
+    }  
+
+    public GlobalAIBehaviourState GetCurrentState()
+    {
+        return currentGlobalState;
+    }
+
+    void OnStartOrEnable()
+    {
+        GameManager.GameManagerInstance.scoreChanged += ScoreChanged;
+    }
+
+    private void OnEnable()
+    {
+        if (started) OnStartOrEnable();
+    }
+
+    private void OnDisable()
+    {
+        GameManager.GameManagerInstance.scoreChanged -= ScoreChanged;
+    }
 
 }

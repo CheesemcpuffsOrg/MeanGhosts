@@ -4,12 +4,11 @@ using UnityEngine;
 
 public class AIController : MonoBehaviour
 {
-    [SerializeField]AIScriptableObjects _stats;
+    [SerializeField]AIScriptableObject _stats;
 
-    public AIScriptableObjects stats => _stats;
+    public AIScriptableObject stats => _stats;
 
     GameObject _player;
-    GameObject _playerCollider;
 
     public GameObject player => _player;
 
@@ -20,27 +19,22 @@ public class AIController : MonoBehaviour
 
     public FlashLight flashLight => _flashLight;    
 
-    Camera _cam;
-
-    public Camera cam => _cam;
-
     [SerializeField]Animator _anim;
 
     public Animator anim => _anim;
 
+    [Header("References")]
+    [SerializeField] ReferenceScriptableObject playerReference;
+
     [Header ("Tags")]
-    [SerializeField] TagScriptableObject playerTag;
     [SerializeField] TagScriptableObject playerCollider;
 
     // Start is called before the first frame update
     void Start()
     {
-        _player = TagExtensions.FindWithTag(gameObject, playerTag);
-        _playerCollider = TagExtensions.FindWithTag(gameObject, playerCollider);
+        _player = ReferenceManager.ReferenceManagerInstance.GetReference(playerReference);
 
         _flashLight = player.GetComponentInChildren<FlashLight>();
-
-        _cam = Camera.main;
     }
 
     // Update is called once per frame
@@ -64,11 +58,11 @@ public class AIController : MonoBehaviour
         if (player.GetComponent<PlayerController>().safe == true) 
         {
             this.transform.position = _spawn.position;
-            this.gameObject.GetComponent<AIStateManager>().enabled = false;
+            this.gameObject.GetComponent<AIStateController>().enabled = false;
         }
         else
         {
-            this.gameObject.GetComponent<AIStateManager>().enabled = true;
+            this.gameObject.GetComponent<AIStateController>().enabled = true;
         }
     }
 }

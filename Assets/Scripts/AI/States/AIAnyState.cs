@@ -6,57 +6,70 @@ using UnityEngine;
 public class AIAnyState : AIState, ISpotted
 {
     [SerializeField] AIController controller;
-    [SerializeField] AIStateManager stateManager;
-    [SerializeField] CaughtByBeam caughtByBeam;
+    [SerializeField] AIStateController stateManager;
+    [SerializeField] VisibleToCamera visibleToCamera;
 
-    public override void EnterState(AIStateManager state)
+    bool caughtByTorch;
+    bool caughtByHighBeam;
+
+    FlashLightState flashLightState;
+
+    public override void EnterState(AIStateController state)
     {
 
     }
 
-    public override void UpdateState(AIStateManager state)
+    public override void UpdateState(AIStateController state)
     {
-
+        CheckIfCaught();
     }
 
-    public override void ExitState(AIStateManager state)
+
+    public override void ExitState(AIStateController state)
     {
         
     }
 
-    private void Caught(bool isCaught)
+    private void CheckIfCaught()
     {
-        if(isCaught)
+        if (caughtByTorch && visibleToCamera.IsVisible && (flashLightState == FlashLightState.ON || flashLightState == FlashLightState.FLICKER))
         {
-            if(stateManager.CurrentState != stateManager.CaughtState)
+            if (stateManager.CurrentState != stateManager.CaughtState || stateManager.CurrentState != stateManager.FleeState)
             {
                 stateManager.SwitchToTheNextState(stateManager.CaughtState);
             }
-            
+        }
+        else if (caughtByHighBeam && visibleToCamera.IsVisible && flashLightState == FlashLightState.HIGHBEAM)
+        {
+            if (stateManager.CurrentState != stateManager.CaughtState || stateManager.CurrentState != stateManager.FleeState)
+            {
+                stateManager.SwitchToTheNextState(stateManager.CaughtState);
+            }
         }
     }
 
-    public void SpottedByTorchInterface(bool isSpotted)
+    public void SpottedByTorch()
     {
-        if (isSpotted)
-        {
-            caughtByBeam.caughtEvent.AddListener(Caught);
-        }
-        else
-        {
-            caughtByBeam.caughtEvent.RemoveListener(Caught);
-        }
+        caughtByTorch = true;
     }
 
-    public void SpottedByHighBeamInterface(bool isSpotted)
+    public void NotSpottedByTorch()
     {
-        if (isSpotted)
-        {
-            caughtByBeam.caughtByHighBeamEvent.AddListener(Caught);
-        }
-        else
-        {
-            caughtByBeam.caughtByHighBeamEvent.RemoveListener(Caught);
-        }
+        caughtByTorch = false;
+    }
+
+    public void SpottedByHighBeam()
+    {
+        caughtByHighBeam = true;
+    }
+
+    public void NotSpottedByHighBeam()
+    {
+        caughtByHighBeam = false;
+    }
+
+    public void StateOfFlashLight(FlashLightState state)
+    {
+        flashLightState = state;
     }
 }
