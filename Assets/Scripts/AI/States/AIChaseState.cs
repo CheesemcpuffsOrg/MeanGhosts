@@ -43,8 +43,6 @@ public class AIChaseState : AIState
     void ChasePlayer(AIStateController state)
     {
 
-        
-
         if (AIManager.AIManagerInstance.GetCurrentState() == GlobalAIBehaviourState.Timid)
         {
             if (!visibleToCamera.IsVisible)

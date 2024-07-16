@@ -111,6 +111,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stateManager: {fileID: 6925159469005380709}
   controller: {fileID: 6925159469005380710}
+  fleeRange: 60
 --- !u!1 &541524720244647127
 GameObject:
   m_ObjectHideFlags: 0

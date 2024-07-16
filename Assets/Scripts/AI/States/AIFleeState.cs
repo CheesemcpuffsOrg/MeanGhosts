@@ -7,6 +7,8 @@ public class AIFleeState : AIState
     [SerializeField] AIStateController stateManager;
     [SerializeField] AIController controller;
 
+    [SerializeField] float fleeRange = 60;
+
     GameObject player;
     AIScriptableObject stats;
 
@@ -26,7 +28,15 @@ public class AIFleeState : AIState
 
     public override void UpdateState(AIStateController state)
     {
-        MoveAwayFromPlayer();
+        if(Vector2.Distance(this.transform.position, player.transform.position) <= fleeRange)
+        {
+            MoveAwayFromPlayer();
+        }
+        else
+        {
+            state.SwitchToTheNextState(state.IdleState);
+        }
+        
     }
 
     public override void ExitState(AIStateController state)
@@ -40,6 +50,6 @@ public class AIFleeState : AIState
         Vector3 directionAwayFromPlayer = (transform.position - player.transform.position).normalized;
 
         // Move the object towards the new target position
-        transform.root.position = Vector3.MoveTowards(transform.position, transform.position + directionAwayFromPlayer, stats.chaseSpeed * Time.deltaTime);
+        transform.root.position = Vector3.MoveTowards(transform.position, transform.position + directionAwayFromPlayer, stats.fleeSpeed * Time.deltaTime);
     }
 }
