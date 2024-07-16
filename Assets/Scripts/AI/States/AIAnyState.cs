@@ -34,14 +34,14 @@ public class AIAnyState : AIState, ISpotted
     {
         if (caughtByTorch && visibleToCamera.IsVisible && (flashLightState == FlashLightState.ON || flashLightState == FlashLightState.FLICKER))
         {
-            if (stateManager.CurrentState != stateManager.CaughtState || stateManager.CurrentState != stateManager.FleeState)
+            if (stateManager.CurrentState != stateManager.CaughtState && stateManager.CurrentState != stateManager.FleeState)
             {
                 stateManager.SwitchToTheNextState(stateManager.CaughtState);
             }
         }
         else if (caughtByHighBeam && visibleToCamera.IsVisible && flashLightState == FlashLightState.HIGHBEAM)
         {
-            if (stateManager.CurrentState != stateManager.CaughtState || stateManager.CurrentState != stateManager.FleeState)
+            if (stateManager.CurrentState != stateManager.CaughtState && stateManager.CurrentState != stateManager.FleeState)
             {
                 stateManager.SwitchToTheNextState(stateManager.CaughtState);
             }
@@ -51,11 +51,13 @@ public class AIAnyState : AIState, ISpotted
     public void SpottedByTorch()
     {
         caughtByTorch = true;
+        controller.flashLight.HasGhostBeenCaught(true);
     }
 
     public void NotSpottedByTorch()
     {
         caughtByTorch = false;
+        controller.flashLight.HasGhostBeenCaught(false);
     }
 
     public void SpottedByHighBeam()

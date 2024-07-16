@@ -49,6 +49,10 @@ public class AIChaseState : AIState
             {
                 MoveTowardsPlayer();
             }
+            else
+            {
+                MoveAwayFromPlayer();
+            }
         }
 
         /*if (AIManager.AIManagerInstance.GetCurrentState() != GlobalAIBehaviourState.Timid)
@@ -101,5 +105,14 @@ public class AIChaseState : AIState
     {
         transform.root.position = Vector2.MoveTowards(transform.position, player.transform.position, stats.chaseSpeed * Time.deltaTime);
     }
+    void MoveAwayFromPlayer()
+    {
+        // Calculate the direction vector from the player to the object, keeping it in 3D space
+        Vector3 directionAwayFromPlayer = (transform.position - player.transform.position).normalized;
+
+        // Move the object towards the new target position
+        transform.root.position = Vector3.MoveTowards(transform.position, transform.position + directionAwayFromPlayer, stats.fleeSpeed * Time.deltaTime);
+    }
+
 
 }

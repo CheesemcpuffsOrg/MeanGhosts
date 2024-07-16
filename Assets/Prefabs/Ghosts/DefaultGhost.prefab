@@ -62,7 +62,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f92e4ebed8ccb964799c3d9465f87353, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  screenPadding: {x: 0, y: 1}
+  screenPadding: {x: 0.05, y: 0.95}
   objectToTrack: {fileID: 6925159469005380706}
   cameraReference: {fileID: 11400000, guid: ff2ccaecf514f64458ca7a9db49b2dd6, type: 2}
 --- !u!1 &260407519081617738

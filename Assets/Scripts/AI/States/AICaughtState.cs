@@ -24,8 +24,6 @@ public class AICaughtState : AIState, ISpotted
             stateManager.SwitchToTheNextState(stateManager.FleeState);
         }
 
-        controller.flashLight.GhostHasBeenCaught(true);
-
         if (flashLightState == FlashLightState.HIGHBEAM)
         {
             caughtByBeamCoroutine = StartCoroutine(DeathTimer());
@@ -39,8 +37,6 @@ public class AICaughtState : AIState, ISpotted
 
     public override void ExitState(AIStateController state)
     {
-        controller.flashLight.GhostHasBeenCaught(false);
-
         if (caughtByBeamCoroutine != null)
         {
             StopCoroutine(caughtByBeamCoroutine);
@@ -52,7 +48,6 @@ public class AICaughtState : AIState, ISpotted
     {
         if (flashLightState == FlashLightState.OFF || flashLightState == FlashLightState.COOLDOWN || !caughtByTorch || (!caughtByHighBeam && flashLightState == FlashLightState.HIGHBEAM))
         {
-            //controller.flashLight.GhostHasBeenCaught(false);
             stateManager.SwitchToTheNextState(stateManager.IdleState);
             
         }
@@ -71,12 +66,12 @@ public class AICaughtState : AIState, ISpotted
     {
         yield return new WaitForSeconds(timeUntilExplode);
 
-        controller.flashLight.IsGhostWithinRange(false);
-
         var poof = Instantiate(poofPA, this.transform.position, this.transform.rotation);
         poof.Play();
         transform.root.position = controller.spawn.position;
-       // controller.flashLight.GhostHasBeenCaught(false);
+        
+        controller.flashLight.HasGhostBeenCaught(false);
+        controller.flashLight.IsGhostWithinRange(false);
 
         caughtByBeamCoroutine = null;
 

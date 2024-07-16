@@ -53,9 +53,11 @@ public class FlashLight : MonoBehaviour
     [SerializeField] float torchCooldownDuration = 2;
 
     [Header("Flicker")]
-    [SerializeField]int ghostsWithinRange = 0;
-    [SerializeField]int ghostHasBeenCaught = 0;
-    List<Coroutine> flickers = new List<Coroutine>();
+    [SerializeField] int ghostsVisibleToScreen = 0;
+    [SerializeField] int ghostsWithinRange = 0;
+    [SerializeField] int ghostHasBeenCaught = 0;
+    //List<Coroutine> flickers = new List<Coroutine>();
+    Coroutine flicker;
 
     [Header ("Sounds")]
     [SerializeField] AudioScriptableObject flashLightSwitch;
@@ -99,6 +101,8 @@ public class FlashLight : MonoBehaviour
                 normalBeam.intensity = defaultNormalBeamIntensity;
                 highBeam.intensity = 0;
                 flashLightState = FlashLightState.ON;
+                
+                FlickeringTorch();
 
                 foreach (var spriteMask in torchSpriteMasks)
                 {
@@ -112,12 +116,18 @@ public class FlashLight : MonoBehaviour
                 highBeam.intensity = 0;
                 flashLightState = FlashLightState.OFF;
 
-                if (flickers != null)
+                /*if (flickers != null)
                 {
                     foreach (var flicker in flickers)
                     {
                         StopCoroutine(flicker);
                     }
+                }*/
+
+                if(flicker != null)
+                {
+                    StopCoroutine(flicker);
+                    flicker = null;
                 }
 
                 if (highBeamPoweringUp != null)
@@ -147,14 +157,18 @@ public class FlashLight : MonoBehaviour
             highBeamIsActive.Invoke();
             flashLightState = FlashLightState.HIGHBEAM;
 
-            
-
-            if (flickers != null)
+            /*if (flickers != null)
             {
                 foreach (var flicker in flickers)
                 {
                     StopCoroutine(flicker);
                 }
+            }*/
+
+            if (flicker != null)
+            {
+                StopCoroutine(flicker);
+                flicker = null;
             }
         }
         else if (flashLightState == FlashLightState.HIGHBEAM)
@@ -166,10 +180,25 @@ public class FlashLight : MonoBehaviour
             normalBeam.intensity = defaultNormalBeamIntensity;
             highBeam.intensity = 0;
             StopCoroutine(highBeamPoweringUp);
-            flashLightState = FlashLightState.ON; 
+            flashLightState = FlashLightState.ON;
+            FlickeringTorch();
         }
 
     }
+
+    /*public void IsGhostOnScreen(bool result)
+    {
+        if (result)
+        {
+            ghostsVisibleToScreen++;
+            FlickeringTorch();
+        }
+        else
+        {
+            ghostsVisibleToScreen--;
+            FlickeringTorch();
+        }
+    }*/
 
     public void IsGhostWithinRange(bool result)
     {
@@ -185,7 +214,7 @@ public class FlashLight : MonoBehaviour
         }
     }
 
-    public void GhostHasBeenCaught(bool result)
+    public void HasGhostBeenCaught(bool result)
     {
         if (result)
         {
@@ -203,15 +232,11 @@ public class FlashLight : MonoBehaviour
     {
         if (flashLightState == FlashLightState.ON || flashLightState == FlashLightState.FLICKER)
         {
-            if (ghostHasBeenCaught != ghostsWithinRange)
-            {
-                flickers.Add(StartCoroutine(Flicker()));
-            }
-            else if (ghostHasBeenCaught == ghostsWithinRange)
+            if (ghostHasBeenCaught == ghostsWithinRange)
             {
                 flashLightState = FlashLightState.ON;
 
-                if (flickers != null)
+                /*if (flickers != null)
                 {
                     foreach (var flicker in flickers)
                     {
@@ -219,8 +244,23 @@ public class FlashLight : MonoBehaviour
                     }
 
                     normalBeam.intensity = defaultNormalBeamIntensity;
+                }*/
+
+                if (flicker != null)
+                {
+                    StopCoroutine(flicker);
+                    flicker = null;
                 }
+
+                normalBeam.intensity = defaultNormalBeamIntensity;
+
             }
+            else
+            {
+                // flickers.Add(StartCoroutine(Flicker()));
+                flicker = StartCoroutine(Flicker());
+            }
+            
         }  
     }
 
@@ -286,6 +326,7 @@ public class FlashLight : MonoBehaviour
                 globalLight.intensity = globalLightDefaultIntensity;
                 normalBeam.intensity = defaultNormalBeamIntensity;
                 flashLightState = FlashLightState.ON;
+                FlickeringTorch();
             }
         }
     }
