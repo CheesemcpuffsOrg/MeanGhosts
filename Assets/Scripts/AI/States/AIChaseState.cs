@@ -45,6 +45,7 @@ public class AIChaseState : AIState
 
         if (AIManager.AIManagerInstance.GetCurrentState() == GlobalAIBehaviourState.Timid)
         {
+            //this makes sure the ghost moves towards the player and backs off when the player gets closer
             if (!visibleToCamera.IsVisible)
             {
                 MoveTowardsPlayer();
@@ -53,6 +54,10 @@ public class AIChaseState : AIState
             {
                 MoveAwayFromPlayer();
             }
+        }
+        else if (AIManager.AIManagerInstance.GetCurrentState() == GlobalAIBehaviourState.Curious)
+        {
+              
         }
 
         /*if (AIManager.AIManagerInstance.GetCurrentState() != GlobalAIBehaviourState.Timid)

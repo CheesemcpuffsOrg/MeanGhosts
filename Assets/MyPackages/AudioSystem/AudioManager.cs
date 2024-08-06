@@ -9,7 +9,6 @@ using UnityEngine.Events;
 
 namespace AudioSystem
 {
-
     public class AudioManager : MonoBehaviour
     {
         [Serializable]

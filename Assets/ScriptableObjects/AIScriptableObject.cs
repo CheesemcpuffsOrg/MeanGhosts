@@ -9,4 +9,5 @@ public class AIScriptableObject : ScriptableObject
     public float chaseSpeed;
     public float fleeSpeed;
     public float agroRange;
+    public float fleeRange;
 }
