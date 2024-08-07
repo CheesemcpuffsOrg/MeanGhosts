@@ -55,61 +55,17 @@ public class AIChaseState : AIState
                 MoveAwayFromPlayer();
             }
         }
-        else if (AIManager.AIManagerInstance.GetCurrentState() == GlobalAIBehaviourState.Curious)
+        else if (AIManager.AIManagerInstance.GetCurrentState() == GlobalAIBehaviourState.Curious || AIManager.AIManagerInstance.GetCurrentState() == GlobalAIBehaviourState.Angry)
         {
-              
+            MoveTowardsPlayer();
         }
-
-        /*if (AIManager.AIManagerInstance.GetCurrentState() != GlobalAIBehaviourState.Timid)
-        {
-            controller.anim.SetBool("isScary", true);
-            if (transform.right.x > 0)
-            {
-                controller.GetComponent<SpriteRenderer>().flipX = true;
-            }
-            else if (transform.right.x < 0)
-            {
-                controller.GetComponent<SpriteRenderer>().flipX = false;
-            }
-        }
-
-        if (controller.player.GetComponent<PlayerController>().invisible == false) 
-        {
-            transform.root.position = Vector2.MoveTowards(transform.position, player.transform.position, stats.chaseSpeed * Time.deltaTime);
-        }
-        else
-        {
-            state.SwitchToTheNextState(state.IdleState);
-        }
-
-        if (Vector3.Distance(transform.position, player.transform.position) < 10 && !scream && AIManager.AIManagerInstance.GetCurrentState() != GlobalAIBehaviourState.Timid)
-        {
-            if (!AudioManager.AudioManagerInstance.IsSoundPlaying(screamSFX, gameObject))
-            {
-                AudioManager.AudioManagerInstance.PlaySound(screamSFX, gameObject);
-                scream = true;
-            }          
-        }
-        else if (Vector3.Distance(transform.position, player.transform.position) < 10 && !scream && AIManager.AIManagerInstance.GetCurrentState() == GlobalAIBehaviourState.Timid && !scream)
-        {
-            if (!AudioManager.AudioManagerInstance.IsSoundPlaying(screamSFX, gameObject))
-            {
-                AudioManager.AudioManagerInstance.PlaySound(screamSFX, gameObject);
-                scream = true;
-            }  
-        }
-        else if (Vector3.Distance(transform.position, player.transform.position) > 10)
-        {
-            scream = false;
-        }*/
-
-
     }
 
     void MoveTowardsPlayer()
     {
         transform.root.position = Vector2.MoveTowards(transform.position, player.transform.position, stats.chaseSpeed * Time.deltaTime);
     }
+
     void MoveAwayFromPlayer()
     {
         // Calculate the direction vector from the player to the object, keeping it in 3D space

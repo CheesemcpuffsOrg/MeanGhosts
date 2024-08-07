@@ -11,6 +11,9 @@ public class AICaughtState : AIState, ISpotted
 
     Coroutine caughtByBeamCoroutine;
 
+    GameObject player;
+    AIScriptableObject stats;
+
     FlashLightState flashLightState;
     bool caughtByTorch;
     bool caughtByHighBeam;
@@ -19,9 +22,20 @@ public class AICaughtState : AIState, ISpotted
 
     public override void EnterState(AIStateController state)
     {
-        if (AIManager.AIManagerInstance.GetCurrentState() == GlobalAIBehaviourState.Timid)
+
+        if (AIManager.AIManagerInstance.GetCurrentState() == GlobalAIBehaviourState.Timid || AIManager.AIManagerInstance.GetCurrentState() == GlobalAIBehaviourState.Curious)
         {
             stateManager.SwitchToTheNextState(stateManager.FleeState);
+        }
+
+        if (player == null)
+        {
+            player = controller.player;
+        }
+
+        if (stats == null)
+        {
+            stats = controller.stats;
         }
 
         if (flashLightState == FlashLightState.HIGHBEAM)
@@ -32,6 +46,11 @@ public class AICaughtState : AIState, ISpotted
 
     public override void UpdateState(AIStateController state)
     {
+        if(AIManager.AIManagerInstance.GetCurrentState() == GlobalAIBehaviourState.Aggresive && caughtByBeamCoroutine == null)
+        {
+            MoveTowardsPlayer();   
+        }
+
         CheckFlashLight();
     }
 
@@ -76,6 +95,11 @@ public class AICaughtState : AIState, ISpotted
         caughtByBeamCoroutine = null;
 
         stateManager.SwitchToTheNextState(stateManager.IdleState);  
+    }
+
+    void MoveTowardsPlayer()
+    {
+        transform.root.position = Vector2.MoveTowards(transform.position, player.transform.position, stats.reducedSpeed * Time.deltaTime);
     }
 
     public void SpottedByTorch()

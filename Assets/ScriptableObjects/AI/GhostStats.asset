@@ -15,5 +15,6 @@ MonoBehaviour:
   speed: 3
   chaseSpeed: 6
   fleeSpeed: 12
+  reducedSpeed: 1.5
   agroRange: 50
   fleeRange: 60

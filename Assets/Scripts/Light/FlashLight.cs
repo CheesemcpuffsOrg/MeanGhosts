@@ -258,7 +258,11 @@ public class FlashLight : MonoBehaviour
             else
             {
                 // flickers.Add(StartCoroutine(Flicker()));
-                flicker = StartCoroutine(Flicker());
+                if (gameObject.activeSelf)
+                {
+                    flicker = StartCoroutine(Flicker());
+                }   
+                
             }
             
         }  

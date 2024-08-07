@@ -16,7 +16,7 @@ public class AIManager : MonoBehaviour
 {
     public static AIManager AIManagerInstance;
 
-    GlobalAIBehaviourState currentGlobalState;
+    [SerializeField] GlobalAIBehaviourState currentGlobalState;
 
     public event Action <GlobalAIBehaviourState> StateChanged;
 
@@ -34,7 +34,7 @@ public class AIManager : MonoBehaviour
 
     void Start()
     {
-        currentGlobalState = GlobalAIBehaviourState.Timid;
+       // currentGlobalState = GlobalAIBehaviourState.Timid;
         player = ReferenceManager.ReferenceManagerInstance.GetReference(playerReference);
 
         started = true;
