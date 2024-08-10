@@ -122,7 +122,6 @@ namespace AudioSystem
         /// </summary>
         public void StopSound(AudioScriptableObject sound, GameObject gameObject)
         {
-
             foreach (var s in audioReferences)
             {
                 if (s.scriptableObjectReference == sound && s.gameObjectReference == gameObject)

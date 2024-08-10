@@ -16,13 +16,18 @@ public class AIManager : MonoBehaviour
 {
     public static AIManager AIManagerInstance;
 
-    [SerializeField] GlobalAIBehaviourState currentGlobalState;
+    [SerializeField] GlobalAIBehaviourState startingGlobalState;
+    GlobalAIBehaviourState currentGlobalState;
+
+    [SerializeField] List<GameObject> ghosts;
 
     public event Action <GlobalAIBehaviourState> StateChanged;
 
     GameObject player;
 
     bool started = false;
+
+    [SerializeField] bool logGlobalState;
 
     [Header("References")]
     [SerializeField] ReferenceScriptableObject playerReference;
@@ -34,12 +39,11 @@ public class AIManager : MonoBehaviour
 
     void Start()
     {
-       // currentGlobalState = GlobalAIBehaviourState.Timid;
+        currentGlobalState = startingGlobalState;
         player = ReferenceManager.ReferenceManagerInstance.GetReference(playerReference);
 
         started = true;
         OnStartOrEnable();
-
     }
 
     void ScoreChanged(int score)
@@ -59,6 +63,17 @@ public class AIManager : MonoBehaviour
                 currentGlobalState= GlobalAIBehaviourState.Aggresive; 
                 break;
         }
+
+        if (ghosts.Count != 0)
+        {
+            var ghostToKill = ghosts[0];
+            ghosts.RemoveAt(0);
+            Destroy(ghostToKill);
+        }
+
+#if UNITY_EDITOR
+        Debug.Log(currentGlobalState);
+#endif
     }  
 
     public GlobalAIBehaviourState GetCurrentState()

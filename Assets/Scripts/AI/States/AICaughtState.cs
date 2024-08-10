@@ -48,7 +48,11 @@ public class AICaughtState : AIState, ISpotted
     {
         if(AIManager.AIManagerInstance.GetCurrentState() == GlobalAIBehaviourState.Aggresive && caughtByBeamCoroutine == null)
         {
-            MoveTowardsPlayer();   
+            MoveTowardsPlayer(stats.speed);   
+        }
+        else if(AIManager.AIManagerInstance.GetCurrentState() == GlobalAIBehaviourState.Aggresive && caughtByBeamCoroutine != null)
+        {
+            MoveTowardsPlayer(stats.reducedSpeed);
         }
 
         CheckFlashLight();
@@ -97,9 +101,9 @@ public class AICaughtState : AIState, ISpotted
         stateManager.SwitchToTheNextState(stateManager.IdleState);  
     }
 
-    void MoveTowardsPlayer()
+    void MoveTowardsPlayer(float speed)
     {
-        transform.root.position = Vector2.MoveTowards(transform.position, player.transform.position, stats.reducedSpeed * Time.deltaTime);
+        transform.root.position = Vector2.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
     }
 
     public void SpottedByTorch()

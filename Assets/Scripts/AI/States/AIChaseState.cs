@@ -55,7 +55,7 @@ public class AIChaseState : AIState
                 MoveAwayFromPlayer();
             }
         }
-        else if (AIManager.AIManagerInstance.GetCurrentState() == GlobalAIBehaviourState.Curious || AIManager.AIManagerInstance.GetCurrentState() == GlobalAIBehaviourState.Angry)
+        else if (AIManager.AIManagerInstance.GetCurrentState() == GlobalAIBehaviourState.Curious || AIManager.AIManagerInstance.GetCurrentState() == GlobalAIBehaviourState.Angry || AIManager.AIManagerInstance.GetCurrentState() == GlobalAIBehaviourState.Aggresive)
         {
             MoveTowardsPlayer();
         }
