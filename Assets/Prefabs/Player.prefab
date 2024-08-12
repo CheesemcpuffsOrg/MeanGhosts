@@ -131,6 +131,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1dfb91fc78ddba34c8d35041ec1e8080, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soundComponentObj: {fileID: 5603956583811793880}
   globalLight: {fileID: 0}
   normalBeam: {fileID: 1316690784}
   defaultNormalBeamIntensity: 0.3
@@ -141,6 +142,7 @@ MonoBehaviour:
   defaultHighBeamIntensity: 0.5
   highBeamDuration: 3
   torchCooldownDuration: 2
+  ghostsVisibleToScreen: 0
   ghostsWithinRange: 0
   ghostHasBeenCaught: 0
   flashLightSwitch: {fileID: 11400000, guid: 88c86a800de58684a8272405c8d7a4a2, type: 2}
@@ -695,6 +697,7 @@ GameObject:
   - component: {fileID: 2202563623034097835}
   - component: {fileID: 5603956582273156422}
   - component: {fileID: 7343292460737189724}
+  - component: {fileID: 3910793794997668149}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -857,6 +860,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ce359435f3774e4088b0e327242ffcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soundComponentObj: {fileID: 5603956583811793880}
   animController: {fileID: 7343292460737189724}
   playerSO: {fileID: 11400000, guid: dd93b7730bf3f6c4d9be96e450a9a8b7, type: 2}
   rigidBody: {fileID: 5603956583811793887}
@@ -971,6 +975,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 1707787942}
+--- !u!114 &3910793794997668149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5603956583811793880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99070df2e7273984eac969fea8249fbf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6757774431255388121
 GameObject:
   m_ObjectHideFlags: 0

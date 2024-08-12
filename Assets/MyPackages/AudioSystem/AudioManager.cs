@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -15,7 +14,7 @@ namespace AudioSystem
         private class AudioReference
         {
             public AudioScriptableObject scriptableObjectReference;
-            public GameObject gameObjectReference;
+            public UniqueSoundID UUID;
             public GameObject audioSource;
             public Coroutine clipLength;
             public UnityEvent endOfClip;
@@ -48,11 +47,11 @@ namespace AudioSystem
         /// <summary>
         /// Play a sound.
         /// </summary>
-        public void PlaySound(AudioScriptableObject sound, GameObject gameObject, UnityAction fireEventWhenSoundFinished = null)
+        public void PlaySound(AudioScriptableObject sound, UniqueSoundID UUID, UnityAction fireEventWhenSoundFinished = null)
         {
             if (sound == null)
             {
-                Debug.LogError($"You are missing a sound SO from the gameobject {gameObject.name}");
+                Debug.LogError($"You are missing a sound scriptable object");
                 return;
             }
 
@@ -74,7 +73,7 @@ namespace AudioSystem
                 {
                     if(sound.audioPriority > reference.scriptableObjectReference.audioPriority)
                     {
-                        StopSound(reference.scriptableObjectReference, reference.gameObjectReference);
+                        StopSound(reference.scriptableObjectReference, reference.UUID);
                     }
                 }
             }
@@ -97,15 +96,15 @@ namespace AudioSystem
 
             var audioSource = obj.GetComponent<AudioSource>();
 
-            PopulateTheAudioSource(sound, gameObject, obj, chosenAudioClip, audioSource);
+            PopulateTheAudioSource(sound, UUID, obj, chosenAudioClip, audioSource);
 
-            CreateAudioReference(sound, gameObject, obj, audioSource, chosenAudioClip);
+            CreateAudioReference(sound, UUID, obj, audioSource, chosenAudioClip);
 
             audioSource.Play(); 
 
             if(fireEventWhenSoundFinished != null)
             {
-                FireEventWhenSoundFinished(sound, gameObject, fireEventWhenSoundFinished);
+                FireEventWhenSoundFinished(sound, UUID, fireEventWhenSoundFinished);
             }
             
             var fadeIn = sound.fadeIn;
@@ -120,11 +119,11 @@ namespace AudioSystem
         /// <summary>
         /// Stops an active sound.
         /// </summary>
-        public void StopSound(AudioScriptableObject sound, GameObject gameObject)
+        public void StopSound(AudioScriptableObject sound, UniqueSoundID UUID)
         {
             foreach (var s in audioReferences)
             {
-                if (s.scriptableObjectReference == sound && s.gameObjectReference == gameObject)
+                if (s.scriptableObjectReference == sound && s.UUID == UUID)
                 {
                     s.audioSource.transform.SetParent(audioPoolContainer);
                     audioPool.Enqueue(s.audioSource);
@@ -166,38 +165,22 @@ namespace AudioSystem
         {
             foreach (AudioReference s in audioReferences)
             {
-                StopSound(s.scriptableObjectReference, s.gameObjectReference);
-
-                /*s.audioSource.transform.SetParent(audioPoolContainer);
-                audioPool.Enqueue(s.audioSource);
-                s.audioSource.GetComponent<AudioSource>().Stop();
-
-                if (s.endOfClip != null)
-                {
-                    s.endOfClip.Invoke();
-                }
-
-                if (s.clipLength != null)
-                {
-                    StopCoroutine(s.clipLength);
-                }
-
-                audioReferences.Remove(s);*/
+                StopSound(s.scriptableObjectReference, s.UUID);
             }
         }
 
 
         /// <summary>
-        /// Call this method to stop all audio that has been called from a gameobject
+        /// Call this method to stop all audio that has been called from a UUID
         /// </summary>
-        /// <param name="gameObject"></param>
-        public void StopAllAudioFromGameObject(GameObject gameObject)
+        /// <param name="UUID"></param>
+        public void StopAllAudioFromUniqueSoundID(UniqueSoundID UUID)
         {
             foreach(AudioReference s in audioReferences)
             {
-                if(s.gameObjectReference == gameObject)
+                if(s.UUID == UUID)
                 {
-                    StopSound(s.scriptableObjectReference, s.gameObjectReference);
+                    StopSound(s.scriptableObjectReference, s.UUID);
                 }
             }
         }
@@ -233,31 +216,31 @@ namespace AudioSystem
         /// <summary>
         /// Allows you to delay the activation of a sound.
         /// </summary>
-        public void DelayedPlaySound(float delay, AudioScriptableObject sound, GameObject gameObject)
+        public void DelayedPlaySound(float delay, AudioScriptableObject sound, UniqueSoundID UUID)
         {
             if (sound == null)
             {
-                Debug.LogError($"You are missing a sound SO from the gameobject {gameObject.name}");
+                Debug.LogError($"You are missing a sound scriptable object");
                 return;
             }
 
-            StartCoroutine(SoundDelay(delay, sound, gameObject));
+            StartCoroutine(SoundDelay(delay, sound, UUID));
         }
 
         /// <summary>
         /// Checks to see if the requested sound exists and is playing.
         /// </summary>
-        public bool IsSoundPlaying(AudioScriptableObject sound, GameObject gameObject)
+        public bool IsSoundPlaying(AudioScriptableObject sound, UniqueSoundID UUID)
         {
             if (sound == null)
             {
-                Debug.LogError($"You are missing a sound SO from the gameobject {gameObject.name}");
+                Debug.LogError($"You are missing a sound scriptable object");
                 return false;
             }
 
             foreach (var s in audioReferences)
             {
-                if (s.scriptableObjectReference == sound && s.gameObjectReference == gameObject)
+                if (s.scriptableObjectReference == sound && s.UUID == UUID)
                 {
                     return true;
                 }
@@ -272,7 +255,7 @@ namespace AudioSystem
         {
             if (sound == null)
             {
-                Debug.LogError($"You are missing a sound SO from the gameobject {gameObject.name}");
+                Debug.LogError($"You are missing a sound scriptable object");
                 return;
             }
 
@@ -314,7 +297,7 @@ namespace AudioSystem
         /// <summary>
         /// Fires an event when an audio source stops playing.
         /// </summary>
-        private void FireEventWhenSoundFinished(AudioScriptableObject sound, GameObject gameObject, UnityAction reference)
+        private void FireEventWhenSoundFinished(AudioScriptableObject sound, UniqueSoundID UUID, UnityAction reference)
         {
             //reverse the list so it grabs the most recent sound that was added for tracking
             var reversableList = audioReferences;
@@ -322,7 +305,7 @@ namespace AudioSystem
 
             foreach (var s in reversableList)
             {
-                if (s.scriptableObjectReference == sound && s.gameObjectReference == gameObject)
+                if (s.scriptableObjectReference == sound && s.UUID == UUID)
                 {
                     s.endOfClip.AddListener(reference);
                     return;
@@ -339,7 +322,7 @@ namespace AudioSystem
 
             foreach(var s in audioReferences)
             {
-                if (s.scriptableObjectReference == reference.scriptableObjectReference && s.gameObjectReference == reference.gameObjectReference)
+                if (s.scriptableObjectReference == reference.scriptableObjectReference && s.UUID == reference.UUID)
                 {
                     s.audioSource.transform.SetParent(audioPoolContainer);
 
@@ -356,11 +339,11 @@ namespace AudioSystem
             }
         }
 
-        private IEnumerator SoundDelay(float delay, AudioScriptableObject sound, GameObject gameObject)
+        private IEnumerator SoundDelay(float delay, AudioScriptableObject sound, UniqueSoundID UUID)
         {
             yield return new WaitForSeconds(delay);
 
-            PlaySound(sound, gameObject);
+            PlaySound(sound, UUID);
         }
 
         /// <summary>
@@ -423,20 +406,7 @@ namespace AudioSystem
                 {
                     if (s.audioSource == audioListVariable.audioClip)
                     {
-                        StopSound(s.scriptableObjectReference, s.gameObjectReference);
-
-                        /*s.audioSource.transform.SetParent(audioPoolContainer);
-                        audioPool.Enqueue(s.audioSource);
-
-                        var audioSource = s.audioSource.GetComponent<AudioSource>();
-
-                        audioSource.Stop();
-                        
-                        if (s.clipLength != null)
-                        {
-                            StopCoroutine(s.clipLength);
-                        }
-                        audioReferences.Remove(s);*/
+                        StopSound(s.scriptableObjectReference, s.UUID);
 
                         return;
                     }
@@ -444,7 +414,7 @@ namespace AudioSystem
             }
         }
 
-        private void PopulateTheAudioSource(AudioScriptableObject sound, GameObject gameObject, GameObject obj, AudioList audioListVariable, AudioSource audioSource)
+        private void PopulateTheAudioSource(AudioScriptableObject sound, UniqueSoundID UUID, GameObject obj, AudioList audioListVariable, AudioSource audioSource)
         {
             audioSource.clip = audioListVariable.audioClip;
             
@@ -481,17 +451,18 @@ namespace AudioSystem
             }
             else
             {
+                //THIS NEEDS TO BE UPDATED SO THAT YOU CHOOSE WHETHER AN AUDIO SOURCE FOLLOWS OR NOT
                 obj.transform.SetParent(gameObject.transform);
                 obj.transform.position = gameObject.transform.position;
             }
         }
 
-        private void CreateAudioReference(AudioScriptableObject sound, GameObject gameObject, GameObject obj, AudioSource audioSource, AudioList audioListVariable)
+        private void CreateAudioReference(AudioScriptableObject sound, UniqueSoundID UUID, GameObject obj, AudioSource audioSource, AudioList audioListVariable)
         {
             var createdObjReference = new AudioReference();
 
             createdObjReference.scriptableObjectReference = sound;
-            createdObjReference.gameObjectReference = gameObject;
+            createdObjReference.UUID = UUID;
             createdObjReference.audioSource = obj;
             createdObjReference.volume = audioListVariable.volume;
 
@@ -511,15 +482,5 @@ namespace AudioSystem
         }
 
         #endregion
-
-
-
-
-
-
-
-
-
-
     }
 }

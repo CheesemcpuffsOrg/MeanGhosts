@@ -34,6 +34,9 @@ public class FlashLight : MonoBehaviour
         }
     }
 
+    [SerializeField] GameObject soundComponentObj;
+    ISoundComponent soundComponent;
+
     public event Action<FlashLightState> FlashLightStateChange;
 
     float globalLightDefaultIntensity = 0.04f;
@@ -69,6 +72,9 @@ public class FlashLight : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+        soundComponent = soundComponentObj.GetComponent<ISoundComponent>();
+
         normalBeam.intensity = 0;
         highBeam.intensity = 0;
 
@@ -93,7 +99,7 @@ public class FlashLight : MonoBehaviour
     {
         if (flashLightState != FlashLightState.COOLDOWN)
         {
-            AudioManager.AudioManagerInstance.PlaySound(flashLightSwitch, this.gameObject);
+            soundComponent.PlaySound(flashLightSwitch);
 
             if (flashLightState == FlashLightState.OFF)
             {
@@ -147,8 +153,8 @@ public class FlashLight : MonoBehaviour
     {
         if (flashLightState == FlashLightState.ON || flashLightState == FlashLightState.FLICKER)
         {
-            AudioManager.AudioManagerInstance.PlaySound(flashLightSwitch, this.gameObject);
-            AudioManager.AudioManagerInstance.PlaySound(flashLightCharge, this.gameObject);
+            soundComponent.PlaySound(flashLightSwitch);
+            soundComponent.PlaySound(flashLightCharge);
 
             normalBeam.intensity = 0;
             highBeam.intensity = defaultHighBeamIntensity;
@@ -173,8 +179,8 @@ public class FlashLight : MonoBehaviour
         }
         else if (flashLightState == FlashLightState.HIGHBEAM)
         {
-            AudioManager.AudioManagerInstance.PlaySound(flashLightSwitch, this.gameObject);
-            AudioManager.AudioManagerInstance.StopSound(flashLightCharge, this.gameObject);
+            soundComponent.PlaySound(flashLightSwitch);
+            soundComponent.StopSound(flashLightCharge);
 
             globalLight.intensity = globalLightDefaultIntensity;
             normalBeam.intensity = defaultNormalBeamIntensity;
@@ -277,13 +283,13 @@ public class FlashLight : MonoBehaviour
         normalBeam.intensity = 0.1f;
         highBeam.intensity = 0;
 
-        AudioManager.AudioManagerInstance.PlaySound(flashLightFlicker, this.gameObject);
+        soundComponent.PlaySound(flashLightFlicker);
 
         yield return new WaitForSeconds(UnityEngine.Random.Range(.1f,.2f));
 
         normalBeam.intensity = defaultNormalBeamIntensity;
 
-        AudioManager.AudioManagerInstance.PlaySound(flashLightFlicker, this.gameObject);
+        soundComponent.PlaySound(flashLightFlicker);
 
         yield return new WaitForSeconds(UnityEngine.Random.Range(.2f, 3f));
 
@@ -299,7 +305,7 @@ public class FlashLight : MonoBehaviour
         normalBeam.intensity = 0;
         highBeam.intensity = 0;
 
-        AudioManager.AudioManagerInstance.StopSound(flashLightCharge, this.gameObject);
+        soundComponent.StopSound(flashLightCharge);
 
         yield return new WaitForSeconds(torchCooldownDuration);
 
@@ -319,7 +325,7 @@ public class FlashLight : MonoBehaviour
             {
                 StopCoroutine(highBeamPoweringUp);
                 flashLightState = FlashLightState.OFF;
-                AudioManager.AudioManagerInstance.StopSound(flashLightCharge, this.gameObject);
+                soundComponent.StopSound(flashLightCharge);
             }
         }
         else

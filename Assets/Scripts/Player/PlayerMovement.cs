@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [SerializeField] GameObject soundComponentObj;
+    ISoundComponent soundComponent;
 
     [Header("Objects")]
     [SerializeField] AnimationController animController;
@@ -92,6 +94,9 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+        soundComponent = soundComponentObj.GetComponent<ISoundComponent>();
+
         currentSpeed = playerSO.speed;
         defaultSpeed = playerSO.speed;
 
@@ -143,12 +148,12 @@ public class PlayerMovement : MonoBehaviour
       
         if (isMoving && !footsteps)
         {
-            AudioManager.AudioManagerInstance.PlaySound(footSteps, this.gameObject);
+            soundComponent.PlaySound(footSteps);
             footsteps = true;
         }
         else if (!isMoving && footsteps)
         {
-            AudioManager.AudioManagerInstance.StopSound(footSteps, this.gameObject);
+            soundComponent.StopSound(footSteps);
             footsteps = false;
         }
     }

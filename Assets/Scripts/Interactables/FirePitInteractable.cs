@@ -7,11 +7,15 @@ using UnityEngine.SocialPlatforms.Impl;
 
 public class FirePitInteractable : InteractableObjs, IInteractable
 {
-    
+
     [Space]
     [Space]
     [Space]
     [Space]
+
+    [SerializeField] GameObject soundComponentObj;
+    ISoundComponent soundComponent;
+
     [SerializeField] HeldTotems heldTotems;
 
     [Header("Collision Proxies")]
@@ -23,8 +27,9 @@ public class FirePitInteractable : InteractableObjs, IInteractable
 
     protected override void Start()
     {
-
         base.Start();
+
+        soundComponent = soundComponentObj.GetComponent<ISoundComponent>();
 
         audioDetectionCollider.OnTriggerEnter2D_Action += AudioDetectionOntriggerEnter;
         audioDetectionCollider.OnTriggerExit2D_Action += AudioDetectionOntriggerExit;
@@ -32,13 +37,13 @@ public class FirePitInteractable : InteractableObjs, IInteractable
 
     public void Interact()
     {
-        if (AudioManager.AudioManagerInstance.IsSoundPlaying(fireWhoosh, this.gameObject) || heldTotems.NumberOfHeldTotems() <= 0)
+        if (soundComponent.IsSoundPlaying(fireWhoosh) || heldTotems.NumberOfHeldTotems() <= 0)
         {
             Debug.Log("No held totems");
             return;
         }
         heldTotems.RemoveFirstTotem();
-        AudioManager.AudioManagerInstance.PlaySound(fireWhoosh, gameObject);
+        soundComponent.PlaySound(fireWhoosh);
         GameManager.GameManagerInstance.IncreaseScore();
     }
 
@@ -54,10 +59,10 @@ public class FirePitInteractable : InteractableObjs, IInteractable
     {
         if (TagExtensions.HasTag(other.gameObject, playerColliderTag))
         {
-            if (!AudioManager.AudioManagerInstance.IsSoundPlaying(fireCrackling, this.gameObject))
+            if (!soundComponent.IsSoundPlaying(fireCrackling))
             {
                 Debug.Log("play audio");
-                AudioManager.AudioManagerInstance.PlaySound(fireCrackling, gameObject);
+                soundComponent.PlaySound(fireCrackling);
             }
         }
     }
@@ -66,10 +71,10 @@ public class FirePitInteractable : InteractableObjs, IInteractable
     {
         if (TagExtensions.HasTag(other.gameObject, playerColliderTag))
         {
-            if (AudioManager.AudioManagerInstance.IsSoundPlaying(fireCrackling, this.gameObject))
+            if (soundComponent.IsSoundPlaying(fireCrackling))
             {
                 Debug.Log("stop audio");
-                AudioManager.AudioManagerInstance.StopSound(fireCrackling, gameObject);
+                soundComponent.StopSound(fireCrackling);
             }
         }
     }

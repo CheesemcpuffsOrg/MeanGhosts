@@ -9,6 +9,9 @@ public class SoundDesignTesting : MonoBehaviour
 {
     public ControlScheme controlScheme;
 
+    [SerializeField] GameObject soundComponentObj;
+    ISoundComponent soundComponent;
+
     bool shiftIsHeld;
 
     [Header("Sounds")]
@@ -45,13 +48,15 @@ public class SoundDesignTesting : MonoBehaviour
 
     void PlaySoundOne(InputAction.CallbackContext playOne)
     {
+        soundComponent = soundComponentObj.GetComponent<ISoundComponent>();
+
         if(!shiftIsHeld)
         {
-            AudioManager.AudioManagerInstance.PlaySound(one, this.gameObject, PleaseFireMe);
+            soundComponent.PlaySound(one, PleaseFireMe);
         }
         else
         {
-            AudioManager.AudioManagerInstance.StopSound(one, this.gameObject);
+            soundComponent.StopSound(one);
         }
         
     }
@@ -65,11 +70,11 @@ public class SoundDesignTesting : MonoBehaviour
     {
         if (!shiftIsHeld)
         {
-            AudioManager.AudioManagerInstance.PlaySound(two, this.gameObject);
+            soundComponent.PlaySound(two);
         }
         else
         {
-            AudioManager.AudioManagerInstance.StopSound(two, this.gameObject);
+            soundComponent.StopSound(two);
         }
 
     }
@@ -78,11 +83,11 @@ public class SoundDesignTesting : MonoBehaviour
     {
         if (!shiftIsHeld)
         {
-            AudioManager.AudioManagerInstance.PlaySound(three, this.gameObject);
+            soundComponent.PlaySound(three);
         }
         else
         {
-            AudioManager.AudioManagerInstance.StopSound(three, this.gameObject);
+            soundComponent.StopSound(three);
         }
 
     }
@@ -91,11 +96,11 @@ public class SoundDesignTesting : MonoBehaviour
     {
         if (!shiftIsHeld)
         {
-            AudioManager.AudioManagerInstance.PlaySound(four, this.gameObject);
+            soundComponent.PlaySound(four);
         }
         else
         {
-            AudioManager.AudioManagerInstance.StopSound(four, this.gameObject);
+            soundComponent.StopSound(four);
         }
 
     }
@@ -104,11 +109,11 @@ public class SoundDesignTesting : MonoBehaviour
     {
         if (!shiftIsHeld)
         {
-            AudioManager.AudioManagerInstance.PlaySound(five, this.gameObject);
+            soundComponent.PlaySound(five);
         }
         else
         {
-            AudioManager.AudioManagerInstance.StopSound(five, this.gameObject);
+            soundComponent.StopSound(five);
         }
 
     }
@@ -117,11 +122,11 @@ public class SoundDesignTesting : MonoBehaviour
     {
         if (!shiftIsHeld)
         {
-            AudioManager.AudioManagerInstance.PlaySound(six, this.gameObject);
+            soundComponent.PlaySound(six);
         }
         else
         {
-            AudioManager.AudioManagerInstance.StopSound(six, this.gameObject);
+            soundComponent.StopSound(six);
         }
 
     }
@@ -130,11 +135,11 @@ public class SoundDesignTesting : MonoBehaviour
     {
         if (!shiftIsHeld)
         {
-            AudioManager.AudioManagerInstance.PlaySound(seven, this.gameObject);
+            soundComponent.PlaySound(seven);
         }
         else
         {
-            AudioManager.AudioManagerInstance.StopSound(seven, this.gameObject);
+            soundComponent.StopSound(seven);
         }
 
     }
@@ -143,11 +148,11 @@ public class SoundDesignTesting : MonoBehaviour
     {
         if (!shiftIsHeld)
         {
-            AudioManager.AudioManagerInstance.PlaySound(eight, this.gameObject);
+            soundComponent.PlaySound(eight);
         }
         else
         {
-            AudioManager.AudioManagerInstance.StopSound(eight, this.gameObject);
+            soundComponent.StopSound(eight);
         }
 
     }
@@ -156,11 +161,11 @@ public class SoundDesignTesting : MonoBehaviour
     {
         if (!shiftIsHeld)
         {
-            AudioManager.AudioManagerInstance.PlaySound(nine, this.gameObject);
+            soundComponent.PlaySound(nine);
         }
         else
         {
-            AudioManager.AudioManagerInstance.StopSound(nine, this.gameObject);
+            soundComponent.StopSound(nine);
         }
 
     }

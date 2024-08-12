@@ -5,6 +5,10 @@ using UnityEngine;
 
 public class AmbientSounds : MonoBehaviour
 {
+
+    [SerializeField] GameObject soundComponentObj;
+    ISoundComponent soundComponent;
+
     [Header("Sounds")]
     [SerializeField] AudioScriptableObject crickets;
     [SerializeField] AudioScriptableObject cicadas;
@@ -13,8 +17,10 @@ public class AmbientSounds : MonoBehaviour
 
     private void Start()
     {
-        AudioManager.AudioManagerInstance.PlaySound(crickets, this.gameObject);
-        AudioManager.AudioManagerInstance.PlaySound(cicadas, this.gameObject);
-        AudioManager.AudioManagerInstance.PlaySound(wind, this.gameObject);
+        soundComponent = soundComponentObj.GetComponent<ISoundComponent>();
+
+        soundComponent.PlaySound(crickets);
+        soundComponent.PlaySound(cicadas);
+        soundComponent.PlaySound(wind);
     }
 }
