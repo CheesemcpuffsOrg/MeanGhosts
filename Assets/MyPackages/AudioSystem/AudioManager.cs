@@ -123,7 +123,7 @@ namespace AudioSystem
         {
             foreach (var s in audioReferences)
             {
-                if (s.scriptableObjectReference == sound && s.UUID == UUID)
+                if (s.scriptableObjectReference == sound && s.UUID.soundID == UUID.soundID)
                 {
                     s.audioSource.transform.SetParent(audioPoolContainer);
                     audioPool.Enqueue(s.audioSource);
@@ -178,7 +178,7 @@ namespace AudioSystem
         {
             foreach(AudioReference s in audioReferences)
             {
-                if(s.UUID == UUID)
+                if(s.UUID.soundID == UUID.soundID)
                 {
                     StopSound(s.scriptableObjectReference, s.UUID);
                 }
@@ -240,7 +240,7 @@ namespace AudioSystem
 
             foreach (var s in audioReferences)
             {
-                if (s.scriptableObjectReference == sound && s.UUID == UUID)
+                if (s.scriptableObjectReference == sound && s.UUID.soundID == UUID.soundID)
                 {
                     return true;
                 }
