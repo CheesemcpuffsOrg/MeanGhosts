@@ -305,7 +305,7 @@ namespace AudioSystem
 
             foreach (var s in reversableList)
             {
-                if (s.scriptableObjectReference == sound && s.UUID == UUID)
+                if (s.scriptableObjectReference == sound && s.UUID.soundID == UUID.soundID)
                 {
                     s.endOfClip.AddListener(reference);
                     return;
@@ -322,7 +322,7 @@ namespace AudioSystem
 
             foreach(var s in audioReferences)
             {
-                if (s.scriptableObjectReference == reference.scriptableObjectReference && s.UUID == reference.UUID)
+                if (s.scriptableObjectReference == reference.scriptableObjectReference && s.UUID.soundID == reference.UUID.soundID)
                 {
                     s.audioSource.transform.SetParent(audioPoolContainer);
 
