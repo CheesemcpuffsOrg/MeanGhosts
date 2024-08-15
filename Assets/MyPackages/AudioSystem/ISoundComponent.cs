@@ -5,11 +5,10 @@ using UnityEngine.Events;
 
 public interface ISoundComponent
 {
-    public void PlaySound(AudioScriptableObject audioScriptableObject);
-    public void PlaySound(AudioScriptableObject audioScriptableObject, UnityAction fireEventWhenSoundFinished = null);
-    public void PlaySound(AudioScriptableObject audioScriptableObject, UniqueSoundID UUID, Transform playLocation, bool followTransform = false);
+    public void PlaySound(AudioScriptableObject audioScriptableObject, Vector3 location, UnityAction fireEventWhenSoundFinished = null);
+    public void PlaySound(AudioScriptableObject audioScriptableObject, Transform transformLocation, bool followTransform = false, UnityAction fireEventWhenSoundFinished = null);
     public void StopSound(AudioScriptableObject audioScriptableObject);
     public bool IsSoundPlaying(AudioScriptableObject audioScriptableObject);
     public void DynamicVolumePrioritySystem(AudioScriptableObject audioScriptableObject, bool systemIsActive);
-    public void DelayedPlaySound(float delay, AudioScriptableObject sound);
+    public void DelayedPlaySound(float delay, AudioScriptableObject audioScriptableObject, Vector3 location);
 }

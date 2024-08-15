@@ -148,7 +148,7 @@ public class PlayerMovement : MonoBehaviour
       
         if (isMoving && !footsteps)
         {
-            soundComponent.PlaySound(footSteps);
+            soundComponent.PlaySound(footSteps, transform, true);
             footsteps = true;
         }
         else if (!isMoving && footsteps)

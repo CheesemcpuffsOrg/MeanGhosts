@@ -24,6 +24,6 @@ public class LevelManager : MonoBehaviour
     {
         soundComponent = soundComponentObj.GetComponent<ISoundComponent>();
 
-        soundComponent.DelayedPlaySound(0.1f, bgSound);
+        soundComponent.DelayedPlaySound(0.1f, bgSound, transform.position);
     }
 }

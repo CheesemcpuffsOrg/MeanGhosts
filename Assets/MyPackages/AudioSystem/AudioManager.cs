@@ -17,7 +17,7 @@ namespace AudioSystem
         {
             public AudioScriptableObject scriptableObjectReference;
             public UniqueSoundID UUID;
-            public GameObject audioSource;
+            public GameObject audioSourceObject;
             public AudioObjType type;
             public Coroutine clipLength;
             public UnityEvent endOfClip;
@@ -32,12 +32,10 @@ namespace AudioSystem
         Queue<GameObject> staticAudioPool = new Queue<GameObject>();
         Queue<GameObject> followAudioPool = new Queue<GameObject>();
 
-        [SerializeField] GameObject staticAudioObjPrefab;
-        [SerializeField] GameObject followAudioObjPrefab;
-
         [SerializeField] Transform audioPoolContainer;
         [SerializeField] Transform activeSounds;
 
+        //move this onto individual objects
         [SerializeField, Tooltip("This int controls the max number of one type of audio clip that can be played before the oldest audio clip is cancelled")] 
         int StackingAudioLimiter = 5;
 
@@ -51,26 +49,12 @@ namespace AudioSystem
 
         #region -- PUBLIC METHODS --
 
-        //I THINK YOU SHOULD ALWAYS DEFINE AN AUDIOS LOCATION, TO ALLOW FOR SEAMLESS SWITCH BETWEEN 3D AND 2D
-
-
-        /// <summary>
-        /// Play a sound.
-        /// </summary>
-        public void PlaySound(AudioScriptableObject sound, UniqueSoundID UUID)
-        {
-            if(!BasePlaySound(sound, UUID, AudioObjType.STATIC))
-            {
-                return;
-            }
-        }
-
         /// <summary>
         /// Play a sound and fire an event when the sound finishes or is stopped.
         /// </summary>
-        public void PlaySound(AudioScriptableObject sound, UniqueSoundID UUID, UnityAction fireEventWhenSoundFinished = null)
+        public void PlaySound(AudioScriptableObject sound, UniqueSoundID UUID, Vector3 location, UnityAction fireEventWhenSoundFinished = null)
         {
-            var soundPlayedSuccessfully = BasePlaySound(sound, UUID, AudioObjType.STATIC);
+            var soundPlayedSuccessfully = BasePlaySound(sound, UUID, location, AudioObjType.STATIC);
 
             if (!soundPlayedSuccessfully)
             {
@@ -84,9 +68,9 @@ namespace AudioSystem
         }
 
         /// <summary>
-        /// Play a sound and position the audio source at a transforms location.
+        /// Play a sound and position the audio source at a transforms location, define if it follows and fire event when finished.
         /// </summary>
-        public void PlaySound(AudioScriptableObject sound, UniqueSoundID UUID, Transform playLocation, bool followTransform = false)
+        public void PlaySound(AudioScriptableObject sound, UniqueSoundID UUID, Transform transformLocation, bool followTransform = false, UnityAction fireEventWhenSoundFinished = null)
         {
             var type = AudioObjType.STATIC;
 
@@ -95,14 +79,15 @@ namespace AudioSystem
                 type = AudioObjType.FOLLOW;
             }
 
-            var soundPlayedSuccessfully = BasePlaySound(sound, UUID, type);
-
-            if (!soundPlayedSuccessfully)
+            if (!BasePlaySound(sound, UUID, transformLocation.position, type, transformLocation))
             {
                 return;
             }
 
-            PositionAudioSourceAtTransform(sound, UUID, playLocation, followTransform);
+            if (fireEventWhenSoundFinished != null)
+            {
+                FireEventWhenSoundFinished(sound, UUID, fireEventWhenSoundFinished);
+            }
         }
 
         /// <summary>
@@ -114,18 +99,19 @@ namespace AudioSystem
             {
                 if (audioReference.scriptableObjectReference == sound && audioReference.UUID.soundID == UUID.soundID)
                 {
-                    audioReference.audioSource.transform.SetParent(audioPoolContainer);
+                    audioReference.audioSourceObject.transform.SetParent(audioPoolContainer);
 
                     if(audioReference.type == AudioObjType.STATIC)
                     {
-                        staticAudioPool.Enqueue(audioReference.audioSource);
+                        staticAudioPool.Enqueue(audioReference.audioSourceObject);
                     }
                     else
                     {
-                        followAudioPool.Enqueue(audioReference.audioSource);
+                        audioReference.audioSourceObject.GetComponent<AudioFollowTransform>().RemoveTransform();
+                        followAudioPool.Enqueue(audioReference.audioSourceObject);
                     }
                     
-                    var audioSource = audioReference.audioSource.GetComponent<AudioSource>();
+                    var audioSource = audioReference.audioSourceObject.GetComponent<AudioSource>();
 
                     if (sound.fadeOut)
                     {
@@ -191,7 +177,7 @@ namespace AudioSystem
             {
                 if (!audioReference.scriptableObjectReference.playWhilePaused)
                 {
-                    audioReference.audioSource.GetComponent<AudioSource>().Pause();
+                    audioReference.audioSourceObject.GetComponent<AudioSource>().Pause();
                 }
             }
         }
@@ -205,7 +191,7 @@ namespace AudioSystem
             {
                 if (!audioReference.scriptableObjectReference.playWhilePaused)
                 {
-                    audioReference.audioSource.GetComponent<AudioSource>().Play();
+                    audioReference.audioSourceObject.GetComponent<AudioSource>().Play();
                 }
             }
         }
@@ -213,7 +199,7 @@ namespace AudioSystem
         /// <summary>
         /// Allows you to delay the activation of a sound.
         /// </summary>
-        public void DelayedPlaySound(float delay, AudioScriptableObject sound, UniqueSoundID UUID)
+        public void DelayedPlaySound(float delay, AudioScriptableObject sound, UniqueSoundID UUID, Vector3 location)
         {
             if (sound == null)
             {
@@ -221,7 +207,7 @@ namespace AudioSystem
                 return;
             }
 
-            StartCoroutine(SoundDelay(delay, sound, UUID));
+            StartCoroutine(SoundDelay(delay, sound, UUID, location));
         }
 
         /// <summary>
@@ -266,7 +252,7 @@ namespace AudioSystem
                 {
                     if(audioReference.scriptableObjectReference.audioPriority < activeAudioPriority)
                     {
-                        var audioSource = audioReference.audioSource.GetComponent<AudioSource>();
+                        var audioSource = audioReference.audioSourceObject.GetComponent<AudioSource>();
                         var volume = audioSource.volume;
                         StartCoroutine(FadeOut(audioSource, fadeDuration, (volume * reductionAmount)));
                     }
@@ -278,8 +264,8 @@ namespace AudioSystem
                 {
                     if (audioReference.scriptableObjectReference.audioPriority < activeAudioPriority)
                     {
-                        var audioSource = audioReference.audioSource.GetComponent<AudioSource>();
-                        StartCoroutine(FadeIn(audioReference.audioSource.GetComponent<AudioSource>(), fadeDuration, audioReference.volume, audioSource.volume));
+                        var audioSource = audioReference.audioSourceObject.GetComponent<AudioSource>();
+                        StartCoroutine(FadeIn(audioReference.audioSourceObject.GetComponent<AudioSource>(), fadeDuration, audioReference.volume, audioSource.volume));
                     }
                 }
 
@@ -290,42 +276,6 @@ namespace AudioSystem
         #endregion
 
         #region -- PRIVATE METHODS --
-
-        /// <summary>
-        /// Positions the audio source at the transform.  
-        /// </summary>
-        private void PositionAudioSourceAtTransform(AudioScriptableObject sound, UniqueSoundID UUID, Transform playLocation, bool followTransform)
-        {
-            var audioGameObject = audioReferences[audioReferences.Count - 1];
-
-            if (audioGameObject != null && audioGameObject.scriptableObjectReference == sound && audioGameObject.UUID.soundID == UUID.soundID)
-            {
-                audioGameObject.audioSource.transform.position = playLocation.transform.position;
-            }
-            else
-            {
-                var reverseOrder = audioReferences;
-
-                reverseOrder.Reverse();
-
-                foreach (var audioReference in reverseOrder)
-                {
-                    if (audioReference.scriptableObjectReference == sound && audioReference.UUID.soundID == UUID.soundID)
-                    {
-                        audioGameObject.audioSource.transform.position = playLocation.transform.position;
-                        break;
-                    }
-                }
-            }
-
-            if (followTransform)
-            {
-                audioGameObject.audioSource.GetComponent<AudioFollowTransform>().AssignTransform(playLocation);
-                return;
-            }
-
-            Debug.LogError("Failed to position object at transform " + playLocation);
-        }
 
         /// <summary>
         /// Fires an event when an audio source stops playing.
@@ -357,7 +307,7 @@ namespace AudioSystem
             {
                 if (audioReference.scriptableObjectReference == reference.scriptableObjectReference && audioReference.UUID.soundID == reference.UUID.soundID)
                 {
-                    audioReference.audioSource.transform.SetParent(audioPoolContainer);
+                    audioReference.audioSourceObject.transform.SetParent(audioPoolContainer);
 
                     if(audioReference.endOfClip != null)
                     {
@@ -366,11 +316,12 @@ namespace AudioSystem
 
                     if (audioReference.type == AudioObjType.STATIC)
                     {
-                        staticAudioPool.Enqueue(audioReference.audioSource);
+                        staticAudioPool.Enqueue(audioReference.audioSourceObject);
                     }
                     else
                     {
-                        followAudioPool.Enqueue(audioReference.audioSource);
+                        audioReference.audioSourceObject.GetComponent<AudioFollowTransform>().RemoveTransform();
+                        followAudioPool.Enqueue(audioReference.audioSourceObject);
                     }
 
                     audioReferences.Remove(audioReference);
@@ -380,11 +331,11 @@ namespace AudioSystem
             }
         }
 
-        private IEnumerator SoundDelay(float delay, AudioScriptableObject sound, UniqueSoundID UUID)
+        private IEnumerator SoundDelay(float delay, AudioScriptableObject sound, UniqueSoundID UUID, Vector3 location)
         {
             yield return new WaitForSeconds(delay);
 
-            PlaySound(sound, UUID);
+            PlaySound(sound, UUID, location);
         }
 
         /// <summary>
@@ -429,7 +380,7 @@ namespace AudioSystem
         /// <summary>
         /// Base functionality required when calling a sound
         /// </summary>
-        private bool BasePlaySound(AudioScriptableObject sound, UniqueSoundID UUID, AudioObjType type)
+        private bool BasePlaySound(AudioScriptableObject sound, UniqueSoundID UUID, Vector3 location, AudioObjType type, Transform transformLocation = null)
         {
             if (sound == null)
             {
@@ -468,10 +419,13 @@ namespace AudioSystem
                 if (staticAudioPool.Count > 0)
                 {
                     obj = staticAudioPool.Dequeue();
+                    obj.transform.position = location;
                 }
                 else
                 {
-                    obj = Instantiate(staticAudioObjPrefab);
+                    obj = new GameObject("StaticAudioObject");
+                    obj.transform.position = location;
+                    obj.AddComponent<AudioSource>();
                 }
             }
             else
@@ -480,10 +434,16 @@ namespace AudioSystem
                 if (followAudioPool.Count > 0)
                 {
                     obj = followAudioPool.Dequeue();
+                    obj.transform.position = location;
+                    obj.GetComponent<AudioFollowTransform>().AssignTransform(transformLocation);
                 }
                 else
                 {
-                    obj = Instantiate(followAudioObjPrefab);
+                    obj = new GameObject("FollowAudioObject");
+                    obj.transform.position = location;
+                    obj.AddComponent<AudioSource>();
+                    obj.AddComponent<AudioFollowTransform>();
+                    obj.GetComponent<AudioFollowTransform>().AssignTransform(transformLocation);
                 }
             }
 
@@ -519,7 +479,7 @@ namespace AudioSystem
 
             foreach (AudioReference s in audioReferences)
             {
-                if (s.audioSource == audioListVariable.audioClip)
+                if (s.audioSourceObject == audioListVariable.audioClip)
                 {
                     stack++;
                 }
@@ -529,7 +489,7 @@ namespace AudioSystem
             {
                 foreach (AudioReference s in audioReferences)
                 {
-                    if (s.audioSource == audioListVariable.audioClip)
+                    if (s.audioSourceObject == audioListVariable.audioClip)
                     {
                         StopSound(s.scriptableObjectReference, s.UUID);
 
@@ -542,6 +502,8 @@ namespace AudioSystem
         private void PopulateTheAudioSource(AudioScriptableObject sound, UniqueSoundID UUID, GameObject obj, AudioList audioListVariable, AudioSource audioSource)
         {
             audioSource.clip = audioListVariable.audioClip;
+                
+            audioSource.playOnAwake = false;
             
             //check if a high priority sound has been played.
             if (activeAudioPriority > 0 && sound.audioPriority < activeAudioPriority)
@@ -589,7 +551,7 @@ namespace AudioSystem
             createdObjReference.scriptableObjectReference = sound;
             createdObjReference.UUID = UUID;
             createdObjReference.type = type;
-            createdObjReference.audioSource = obj;
+            createdObjReference.audioSourceObject = obj;
             createdObjReference.volume = audioListVariable.volume;
 
             Coroutine clipLength = null;

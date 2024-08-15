@@ -41,7 +41,7 @@ namespace Interactable
         {
             if(!soundComponent.IsSoundPlaying(tapeAudio))
             {
-                soundComponent.PlaySound(tapeAudio, ReturnAudioToNormal);
+                soundComponent.PlaySound(tapeAudio, transform.position, ReturnAudioToNormal);
                 soundComponent.DynamicVolumePrioritySystem(tapeAudio, true);
             }
         }

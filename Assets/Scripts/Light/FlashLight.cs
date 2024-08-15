@@ -99,7 +99,7 @@ public class FlashLight : MonoBehaviour
     {
         if (flashLightState != FlashLightState.COOLDOWN)
         {
-            soundComponent.PlaySound(flashLightSwitch);
+            soundComponent.PlaySound(flashLightSwitch, transform, true);
 
             if (flashLightState == FlashLightState.OFF)
             {
@@ -153,8 +153,8 @@ public class FlashLight : MonoBehaviour
     {
         if (flashLightState == FlashLightState.ON || flashLightState == FlashLightState.FLICKER)
         {
-            soundComponent.PlaySound(flashLightSwitch);
-            soundComponent.PlaySound(flashLightCharge);
+            soundComponent.PlaySound(flashLightSwitch, transform, true);
+            soundComponent.PlaySound(flashLightCharge, transform, true);
 
             normalBeam.intensity = 0;
             highBeam.intensity = defaultHighBeamIntensity;
@@ -179,7 +179,7 @@ public class FlashLight : MonoBehaviour
         }
         else if (flashLightState == FlashLightState.HIGHBEAM)
         {
-            soundComponent.PlaySound(flashLightSwitch);
+            soundComponent.PlaySound(flashLightSwitch, transform, true);
             soundComponent.StopSound(flashLightCharge);
 
             globalLight.intensity = globalLightDefaultIntensity;
@@ -283,13 +283,13 @@ public class FlashLight : MonoBehaviour
         normalBeam.intensity = 0.1f;
         highBeam.intensity = 0;
 
-        soundComponent.PlaySound(flashLightFlicker);
+        soundComponent.PlaySound(flashLightFlicker, transform, true);
 
         yield return new WaitForSeconds(UnityEngine.Random.Range(.1f,.2f));
 
         normalBeam.intensity = defaultNormalBeamIntensity;
 
-        soundComponent.PlaySound(flashLightFlicker);
+        soundComponent.PlaySound(flashLightFlicker, transform, true);
 
         yield return new WaitForSeconds(UnityEngine.Random.Range(.2f, 3f));
 

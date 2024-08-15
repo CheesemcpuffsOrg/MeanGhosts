@@ -43,7 +43,7 @@ public class FirePitInteractable : InteractableObjs, IInteractable
             return;
         }
         heldTotems.RemoveFirstTotem();
-        soundComponent.PlaySound(fireWhoosh);
+        soundComponent.PlaySound(fireWhoosh, transform.position);
         GameManager.GameManagerInstance.IncreaseScore();
     }
 
@@ -62,7 +62,7 @@ public class FirePitInteractable : InteractableObjs, IInteractable
             if (!soundComponent.IsSoundPlaying(fireCrackling))
             {
                 Debug.Log("play audio");
-                soundComponent.PlaySound(fireCrackling);
+                soundComponent.PlaySound(fireCrackling, transform.position);
             }
         }
     }

@@ -24,8 +24,8 @@ public class VanNoise : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player" && playSound)
         {
-            soundComponent.PlaySound(bangingSFX);
-            soundComponent.PlaySound(screamSFX);
+            soundComponent.PlaySound(bangingSFX, transform.position);
+            soundComponent.PlaySound(screamSFX, transform.position);
             playSound = false;
         }
     }

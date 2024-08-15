@@ -11,6 +11,11 @@ public class AudioFollowTransform : MonoBehaviour
         this.transformToFollow = transformToFollow;
     }
 
+    public void RemoveTransform()
+    {
+        this.transformToFollow = null;
+    }
+
     private void LateUpdate()
     {
         if (transformToFollow != null)

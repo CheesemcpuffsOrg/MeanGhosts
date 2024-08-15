@@ -52,7 +52,7 @@ public class SoundDesignTesting : MonoBehaviour
 
         if(!shiftIsHeld)
         {
-            soundComponent.PlaySound(one, PleaseFireMe);
+            soundComponent.PlaySound(one, transform.position, PleaseFireMe);
         }
         else
         {
@@ -70,7 +70,7 @@ public class SoundDesignTesting : MonoBehaviour
     {
         if (!shiftIsHeld)
         {
-            soundComponent.PlaySound(two);
+            soundComponent.PlaySound(two, transform.position);
         }
         else
         {
@@ -83,7 +83,7 @@ public class SoundDesignTesting : MonoBehaviour
     {
         if (!shiftIsHeld)
         {
-            soundComponent.PlaySound(three);
+            soundComponent.PlaySound(three, transform.position);
         }
         else
         {
@@ -96,7 +96,7 @@ public class SoundDesignTesting : MonoBehaviour
     {
         if (!shiftIsHeld)
         {
-            soundComponent.PlaySound(four);
+            soundComponent.PlaySound(four, transform.position);
         }
         else
         {
@@ -109,7 +109,7 @@ public class SoundDesignTesting : MonoBehaviour
     {
         if (!shiftIsHeld)
         {
-            soundComponent.PlaySound(five);
+            soundComponent.PlaySound(five, transform.position);
         }
         else
         {
@@ -122,7 +122,7 @@ public class SoundDesignTesting : MonoBehaviour
     {
         if (!shiftIsHeld)
         {
-            soundComponent.PlaySound(six);
+            soundComponent.PlaySound(six, transform.position);
         }
         else
         {
@@ -135,7 +135,7 @@ public class SoundDesignTesting : MonoBehaviour
     {
         if (!shiftIsHeld)
         {
-            soundComponent.PlaySound(seven);
+            soundComponent.PlaySound(seven, transform.position);
         }
         else
         {
@@ -148,7 +148,7 @@ public class SoundDesignTesting : MonoBehaviour
     {
         if (!shiftIsHeld)
         {
-            soundComponent.PlaySound(eight);
+            soundComponent.PlaySound(eight, transform.position);
         }
         else
         {
@@ -161,7 +161,7 @@ public class SoundDesignTesting : MonoBehaviour
     {
         if (!shiftIsHeld)
         {
-            soundComponent.PlaySound(nine);
+            soundComponent.PlaySound(nine, transform.position);
         }
         else
         {

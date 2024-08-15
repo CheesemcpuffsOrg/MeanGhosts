@@ -9,19 +9,14 @@ public class SoundComponent : MonoBehaviour, ISoundComponent
 
     UniqueSoundID UUID = new UniqueSoundID();
 
-    public void PlaySound(AudioScriptableObject audioScriptableObject)
+    public void PlaySound(AudioScriptableObject audioScriptableObject, Vector3 location, UnityAction fireEventWhenSoundFinished = null)
     {
-        AudioManager.AudioManagerInstance.PlaySound(audioScriptableObject, UUID);
+        AudioManager.AudioManagerInstance.PlaySound(audioScriptableObject, UUID, location, fireEventWhenSoundFinished);
     }
 
-    public void PlaySound(AudioScriptableObject audioScriptableObject, UnityAction fireEventWhenSoundFinished = null)
+    public void PlaySound(AudioScriptableObject audioScriptableObject, Transform transformLocation, bool followTransform = false, UnityAction fireEventWhenSoundFinished = null)
     {
-        AudioManager.AudioManagerInstance.PlaySound(audioScriptableObject, UUID, fireEventWhenSoundFinished);
-    }
-
-    public void PlaySound(AudioScriptableObject audioScriptableObject, UniqueSoundID UUID, Transform playLocation, bool followTransform = false)
-    {
-        AudioManager.AudioManagerInstance.PlaySound(audioScriptableObject, UUID, playLocation, followTransform);
+        AudioManager.AudioManagerInstance.PlaySound(audioScriptableObject, UUID, transformLocation, followTransform, fireEventWhenSoundFinished);
     }
 
     public void StopSound(AudioScriptableObject audioScriptableObject)
@@ -39,8 +34,10 @@ public class SoundComponent : MonoBehaviour, ISoundComponent
         AudioManager.AudioManagerInstance.DynamicVolumePrioritySystem(audioScriptableObject, systemIsActive);
     }
 
-    public void DelayedPlaySound(float delay, AudioScriptableObject sound)
+    public void DelayedPlaySound(float delay, AudioScriptableObject audioScriptableObject, Vector3 location)
     {
-        AudioManager.AudioManagerInstance.DelayedPlaySound(delay, sound, UUID);
+        AudioManager.AudioManagerInstance.DelayedPlaySound(delay, audioScriptableObject, UUID, location);
     }
+
+    
 }

@@ -19,8 +19,8 @@ public class AmbientSounds : MonoBehaviour
     {
         soundComponent = soundComponentObj.GetComponent<ISoundComponent>();
 
-        soundComponent.PlaySound(crickets);
-        soundComponent.PlaySound(cicadas);
-        soundComponent.PlaySound(wind);
+        soundComponent.PlaySound(crickets, transform.position);
+        soundComponent.PlaySound(cicadas, transform.position);
+        soundComponent.PlaySound(wind, transform.position);
     }
 }
