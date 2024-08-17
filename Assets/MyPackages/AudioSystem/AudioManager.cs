@@ -10,8 +10,6 @@ namespace AudioSystem
 {
     public class AudioManager : MonoBehaviour
     {
-        
-
         [Serializable]
         private class AudioReference
         {
@@ -32,8 +30,8 @@ namespace AudioSystem
         Queue<GameObject> staticAudioPool = new Queue<GameObject>();
         Queue<GameObject> followAudioPool = new Queue<GameObject>();
 
-        [SerializeField] Transform audioPoolContainer;
-        [SerializeField] Transform activeSounds;
+        Transform audioPoolContainer;
+        Transform activeSounds;
 
         //move this onto individual objects
         [SerializeField, Tooltip("This int controls the max number of one type of audio clip that can be played before the oldest audio clip is cancelled")] 
@@ -45,6 +43,12 @@ namespace AudioSystem
         private void Awake()
         {
             AudioManagerInstance = this;
+
+            audioPoolContainer = new GameObject("AudioPoolContainer").transform;
+            audioPoolContainer.SetParent(this.transform, false);
+
+            activeSounds = new GameObject("ActiveSounds").transform;
+            activeSounds.SetParent(this.transform, false);
         }
 
         #region -- PUBLIC METHODS --
