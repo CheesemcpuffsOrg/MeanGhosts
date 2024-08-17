@@ -28,6 +28,8 @@ namespace Interactable
         {
             base.Start();
 
+            soundComponent = GetComponent<SoundComponent>();
+
             audioRangeDetection.OnTriggerEnter2D_Action += AudioDetectionOnTriggerEnter2D;
             audioRangeDetection.OnTriggerExit2D_Action += AudioDetectionOnTriggerExit2D;
         }

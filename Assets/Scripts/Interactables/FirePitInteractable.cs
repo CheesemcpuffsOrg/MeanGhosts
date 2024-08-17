@@ -39,7 +39,6 @@ public class FirePitInteractable : InteractableObjs, IInteractable
     {
         if (soundComponent.IsSoundPlaying(fireWhoosh) || heldTotems.NumberOfHeldTotems() <= 0)
         {
-            Debug.Log("No held totems");
             return;
         }
         heldTotems.RemoveFirstTotem();
@@ -61,7 +60,6 @@ public class FirePitInteractable : InteractableObjs, IInteractable
         {
             if (!soundComponent.IsSoundPlaying(fireCrackling))
             {
-                Debug.Log("play audio");
                 soundComponent.PlaySound(fireCrackling, transform.position);
             }
         }
@@ -73,7 +71,6 @@ public class FirePitInteractable : InteractableObjs, IInteractable
         {
             if (soundComponent.IsSoundPlaying(fireCrackling))
             {
-                Debug.Log("stop audio");
                 soundComponent.StopSound(fireCrackling);
             }
         }

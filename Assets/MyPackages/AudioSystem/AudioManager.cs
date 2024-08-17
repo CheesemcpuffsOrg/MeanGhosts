@@ -58,7 +58,7 @@ namespace AudioSystem
         /// </summary>
         public void PlaySound(AudioScriptableObject sound, UniqueSoundID UUID, Vector3 location, UnityAction fireEventWhenSoundFinished = null)
         {
-            var soundPlayedSuccessfully = BasePlaySound(sound, UUID, location, AudioObjType.STATIC);
+            var soundPlayedSuccessfully = SoundPlayed(sound, UUID, location, AudioObjType.STATIC);
 
             if (!soundPlayedSuccessfully)
             {
@@ -83,7 +83,7 @@ namespace AudioSystem
                 type = AudioObjType.FOLLOW;
             }
 
-            if (!BasePlaySound(sound, UUID, transformLocation.position, type, transformLocation))
+            if (!SoundPlayed(sound, UUID, transformLocation.position, type, transformLocation))
             {
                 return;
             }
@@ -384,7 +384,7 @@ namespace AudioSystem
         /// <summary>
         /// Base functionality required when calling a sound
         /// </summary>
-        private bool BasePlaySound(AudioScriptableObject sound, UniqueSoundID UUID, Vector3 location, AudioObjType type, Transform transformLocation = null)
+        private bool SoundPlayed(AudioScriptableObject sound, UniqueSoundID UUID, Vector3 location, AudioObjType type, Transform transformLocation = null)
         {
             if (sound == null)
             {
@@ -415,41 +415,7 @@ namespace AudioSystem
                 }
             }
 
-            GameObject obj;
-            
-            if(type == AudioObjType.STATIC)
-            {
-                //take obj from audio pool, if there are none create a new object.
-                if (staticAudioPool.Count > 0)
-                {
-                    obj = staticAudioPool.Dequeue();
-                    obj.transform.position = location;
-                }
-                else
-                {
-                    obj = new GameObject("StaticAudioObject");
-                    obj.transform.position = location;
-                    obj.AddComponent<AudioSource>();
-                }
-            }
-            else
-            {
-                //take obj from audio pool, if there are none create a new object.
-                if (followAudioPool.Count > 0)
-                {
-                    obj = followAudioPool.Dequeue();
-                    obj.transform.position = location;
-                    obj.GetComponent<AudioFollowTransform>().AssignTransform(transformLocation);
-                }
-                else
-                {
-                    obj = new GameObject("FollowAudioObject");
-                    obj.transform.position = location;
-                    obj.AddComponent<AudioSource>();
-                    obj.AddComponent<AudioFollowTransform>();
-                    obj.GetComponent<AudioFollowTransform>().AssignTransform(transformLocation);
-                }
-            }
+            GameObject obj = AudioObjectType(location, type, transformLocation);
 
             var chosenAudioClip = RandomUtility.ObjectPoolCalculator(sound.audioClips);
 
@@ -463,6 +429,8 @@ namespace AudioSystem
 
             audioSource.Play();
 
+            Debug.Log("Play sound");
+
             var fadeIn = sound.fadeIn;
             var fadeInDuration = sound.fadeInDuration;
 
@@ -472,6 +440,53 @@ namespace AudioSystem
             }
 
             return true;
+        }
+
+
+        /// <summary>
+        /// Creates or re-uses an audio object.
+        /// </summary>
+        private GameObject AudioObjectType(Vector3 location, AudioObjType type, Transform transformLocation)
+        {
+            GameObject obj;
+
+            if (type == AudioObjType.STATIC)
+            {
+                //take obj from audio pool, if there are none create a new object.
+                if (staticAudioPool.Count > 0)
+                {
+                    obj = staticAudioPool.Dequeue();
+                }
+                else
+                {
+                    obj = new GameObject("StaticAudioObject");
+                    obj.AddComponent<AudioSource>();
+                }
+
+                obj.transform.position = location;
+            }
+            else
+            {
+                //take obj from audio pool, if there are none create a new object.
+                if (followAudioPool.Count > 0)
+                {
+                    obj = followAudioPool.Dequeue();
+
+                }
+                else
+                {
+                    obj = new GameObject("FollowAudioObject");
+                    obj.AddComponent<AudioSource>();
+                    obj.AddComponent<AudioFollowTransform>();
+                }
+
+                obj.transform.position = location;
+                obj.GetComponent<AudioFollowTransform>().AssignTransform(transformLocation);
+            }
+
+            obj.transform.SetParent(activeSounds);
+
+            return obj;
         }
 
         /// <summary>
@@ -532,19 +547,6 @@ namespace AudioSystem
             if (sound.volumeRollOffMode == AudioRolloffMode.Custom)
             {  
                 audioSource.SetCustomCurve(AudioSourceCurveType.CustomRolloff, sound.volumeRollOffCurve);
-            }
-
-
-            if (audioSource.spatialBlend == 0)
-            {
-                obj.transform.SetParent(activeSounds);
-                obj.transform.position = activeSounds.position;
-            }
-            else
-            {
-                //THIS NEEDS TO BE UPDATED SO THAT YOU CHOOSE WHETHER AN AUDIO SOURCE FOLLOWS OR NOT
-                obj.transform.SetParent(gameObject.transform);
-                obj.transform.position = gameObject.transform.position;
             }
         }
 
