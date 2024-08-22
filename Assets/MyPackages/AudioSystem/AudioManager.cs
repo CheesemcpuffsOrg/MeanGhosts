@@ -429,8 +429,6 @@ namespace AudioSystem
 
             audioSource.Play();
 
-            Debug.Log("Play sound");
-
             var fadeIn = sound.fadeIn;
             var fadeInDuration = sound.fadeInDuration;
 
