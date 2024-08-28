@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -33,9 +34,13 @@ namespace AudioSystem
         Transform audioPoolContainer;
         Transform activeSounds;
 
+        StackTraceLogging stackTraceLogging = new StackTraceLogging();
+
         //move this onto individual objects
         [SerializeField, Tooltip("This int controls the max number of one type of audio clip that can be played before the oldest audio clip is cancelled")] 
         int StackingAudioLimiter = 5;
+
+        [SerializeField] bool logStackTrace;
 
         int activeAudioPriority = 0;
         float reductionAmount = 0.5f;
@@ -142,7 +147,7 @@ namespace AudioSystem
                 }
             }
 
-            Debug.LogError("Sound: " + sound + " is not active.");
+            UnityEngine.Debug.LogError("Sound: " + sound + " is not active.");
         }
 
         /// <summary>
@@ -207,7 +212,7 @@ namespace AudioSystem
         {
             if (sound == null)
             {
-                Debug.LogError($"You are missing a sound scriptable object");
+                UnityEngine.Debug.LogError($"You are missing a sound scriptable object");
                 return;
             }
 
@@ -221,7 +226,7 @@ namespace AudioSystem
         {
             if (sound == null)
             {
-                Debug.LogError($"You are missing a sound scriptable object");
+                UnityEngine.Debug.LogError($"You are missing a sound scriptable object");
                 return false;
             }
 
@@ -242,7 +247,7 @@ namespace AudioSystem
         {
             if (sound == null)
             {
-                Debug.LogError($"You are missing a sound scriptable object");
+                UnityEngine.Debug.LogError($"You are missing a sound scriptable object");
                 return;
             }
 
@@ -388,7 +393,7 @@ namespace AudioSystem
         {
             if (sound == null)
             {
-                Debug.LogError($"You are missing a sound scriptable object");
+                UnityEngine.Debug.LogError($"You are missing a sound scriptable object");
                 return false;
             }
 
@@ -428,6 +433,19 @@ namespace AudioSystem
             CreateAudioReference(sound, UUID, obj, audioSource, chosenAudioClip, type);
 
             audioSource.Play();
+
+#if UNITY_EDITOR
+            if (logStackTrace)
+            {
+                stackTraceLogging.LogCleanedUpSTackTrace($"STACKTRACE FOR SOUND: { sound.name}");
+
+                /*StackTrace stackTrace = new StackTrace();
+                StackFrame frame = stackTrace.GetFrame(stackTrace.GetFrames().Length - 1);
+                var method = frame.GetMethod();
+                var className = method.DeclaringType.Name;
+                var methodName = method.Name;*/
+            }
+#endif
 
             var fadeIn = sound.fadeIn;
             var fadeInDuration = sound.fadeInDuration;
