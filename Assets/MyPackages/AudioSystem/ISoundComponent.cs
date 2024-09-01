@@ -10,5 +10,4 @@ public interface ISoundComponent
     public void StopSound(AudioScriptableObject audioScriptableObject);
     public bool IsSoundPlaying(AudioScriptableObject audioScriptableObject);
     public void DynamicVolumePrioritySystem(AudioScriptableObject audioScriptableObject, bool systemIsActive);
-    public void DelayedPlaySound(float delay, AudioScriptableObject audioScriptableObject, Vector3 location);
 }

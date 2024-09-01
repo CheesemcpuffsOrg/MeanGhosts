@@ -1,4 +1,4 @@
-using AudioSystem;
+
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -24,6 +24,7 @@ public class LevelManager : MonoBehaviour
     {
         soundComponent = soundComponentObj.GetComponent<ISoundComponent>();
 
-        soundComponent.DelayedPlaySound(0.1f, bgSound, transform.position);
+        soundComponent.PlaySound(bgSound, transform.position);
+
     }
 }

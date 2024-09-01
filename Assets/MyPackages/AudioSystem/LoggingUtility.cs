@@ -3,16 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 #if UNITY_EDITOR
-public class StackTraceLogging
+public class LoggingUtility
 {
 
     /// <summary>
     /// Log a stack trace that has removed most of the information that is not a script.
     /// </summary>
-    public void LogCleanedUpSTackTrace(string MessageToLogWithTrace)
+    public void LogCleanedUpStackTrace(string MessageToLogWithTrace, string fullStackTrace)
     {
-        string fullStackTrace = UnityEngine.StackTraceUtility.ExtractStackTrace();
-
         string[] stackLines = fullStackTrace.Split('\n'); // Split stack trace into lines
         string scriptStackTrace = "";
 

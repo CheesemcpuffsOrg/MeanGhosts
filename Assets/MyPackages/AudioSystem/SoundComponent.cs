@@ -1,4 +1,3 @@
-using AudioSystem;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -33,11 +32,4 @@ public class SoundComponent : MonoBehaviour, ISoundComponent
     {
         AudioManager.AudioManagerInstance.DynamicVolumePrioritySystem(audioScriptableObject, systemIsActive);
     }
-
-    public void DelayedPlaySound(float delay, AudioScriptableObject audioScriptableObject, Vector3 location)
-    {
-        AudioManager.AudioManagerInstance.DelayedPlaySound(delay, audioScriptableObject, UUID, location);
-    }
-
-    
 }
