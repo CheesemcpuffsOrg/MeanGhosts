@@ -38,6 +38,7 @@ public class AudioScriptableObject : ScriptableObject
     public bool singleInstanceAudio = false;
     [Tooltip("Allows the audio to play while the game is paused")]
     public bool playWhilePaused = false;
+    public bool logStackTrace;
 
     [Range(0f, 1f), Header("3D Controls")]
     public float spatialBlend = 0;

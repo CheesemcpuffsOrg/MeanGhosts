@@ -449,17 +449,9 @@ public class AudioManager : MonoBehaviour
         audioSource.Play();
 
 
-        if (logStackTrace)
+        if (logStackTrace || sound.logStackTrace)
         {
-            loggingUtility.LogCleanedUpStackTrace($"STACKTRACE FOR PLAYED SOUND: { sound.name}", fullStackTrace);
-
-            //UnityEngine.Debug.Log("Audio is playing");
-
-            /*StackTrace stackTrace = new StackTrace();
-            StackFrame frame = stackTrace.GetFrame(stackTrace.GetFrames().Length - 1);
-            var method = frame.GetMethod();
-            var className = method.DeclaringType.Name;
-            var methodName = method.Name;*/
+            loggingUtility.LogCleanedUpStackTrace($"STACKTRACE FOR PLAYED SOUND: {sound.name}", fullStackTrace);
         }
 
 
