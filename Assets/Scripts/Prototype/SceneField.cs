@@ -1,14 +1,15 @@
 using UnityEngine;
+using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
 [System.Serializable]
-public class SceneField
+public class SceneField : IEquatable<SceneField>
 {
     [SerializeField]
-    private Object m_SceneAsset;
+    private UnityEngine.Object m_SceneAsset;
 
     [SerializeField]
     private string m_SceneName = "";
@@ -21,6 +22,35 @@ public class SceneField
     public static implicit operator string(SceneField sceneField)
     {
         return sceneField.SceneName;
+    }
+
+    //By default, List<T>.Contains checks for equality using the Equals method.
+    //For user-defined types like SceneField, Equals compares object references unless overridden.
+    //This means that .Contains will only return true if the exact same instance is present in the list.
+
+    //If you want .Contains to check for equality based on the SceneName property (e.g., comparing the scene names), you need to override the Equals and GetHashCode methods in the SceneField class.
+
+    // Implement IEquatable<SceneField>
+    public bool Equals(SceneField other)
+    {
+        if (other == null)
+            return false;
+
+        return this.SceneName == other.SceneName;
+    }
+
+    public override bool Equals(object obj)
+    {
+        if (obj is SceneField)
+        {
+            return Equals((SceneField)obj);
+        }
+        return false;
+    }
+
+    public override int GetHashCode()
+    {
+        return SceneName.GetHashCode();
     }
 }
 

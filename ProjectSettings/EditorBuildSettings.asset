@@ -8,4 +8,31 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Forest_Level.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
+  - enabled: 1
+    path: Assets/Scenes/Environment/Test_(0,0).unity
+    guid: 969529daaa50ad3458eaf8c96bceb9a7
+  - enabled: 1
+    path: Assets/Scenes/Environment/Test_(0,1).unity
+    guid: d8124d6f071d5814ba42abea9b4d261d
+  - enabled: 1
+    path: Assets/Scenes/Environment/Test_(0,2).unity
+    guid: 889c1c2bb2042144caa71811e8d87e56
+  - enabled: 1
+    path: Assets/Scenes/Environment/Test_(1,0).unity
+    guid: df124707fb7ce0c41a847ab7dafc4ef1
+  - enabled: 1
+    path: Assets/Scenes/Environment/Test_(1,1).unity
+    guid: be9a56ab30d867d4c9191aa240ab59df
+  - enabled: 1
+    path: Assets/Scenes/Environment/Test_(1,2).unity
+    guid: 03cc59e66259cad48975145d4e6694e6
+  - enabled: 1
+    path: Assets/Scenes/Environment/Test_(2,0).unity
+    guid: d3bc9cc698d353347900d01ec36bb23e
+  - enabled: 1
+    path: Assets/Scenes/Environment/Test_(2,1).unity
+    guid: 5f25633635f8af647882f05ba65d10cf
+  - enabled: 1
+    path: Assets/Scenes/Environment/Test_(2,2).unity
+    guid: 142a0fdc4722cd7438a29c9e73d8397b
   m_configObjects: {}

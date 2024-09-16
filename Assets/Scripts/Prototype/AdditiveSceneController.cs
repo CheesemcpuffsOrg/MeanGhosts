@@ -7,20 +7,13 @@ public class AdditiveSceneController : MonoBehaviour
 
     [SerializeField] List<SceneField> scenesToLoad = new List<SceneField>();
 
-    [SerializeField] bool isStartingScene;
-
     [SerializeField] Collision2DProxy interactionCollider;
 
     [Header("Tags")]
     [SerializeField] TagScriptableObject playerColliderTag;
 
-    private async void Start()
+    private void Start()
     {
-        if(isStartingScene)
-        {
-            await AdditiveSceneManager.additiveSceneManagerInstance.LoadScenes(scenesToLoad);
-        }
-
         if (interactionCollider != null)
         {
             interactionCollider.OnTriggerEnter2D_Action += InteractionColliderOnTriggerEnter2D;
@@ -34,8 +27,4 @@ public class AdditiveSceneController : MonoBehaviour
             await AdditiveSceneManager.additiveSceneManagerInstance.LoadScenes(scenesToLoad);
         }
     }
-
-
-
-
 }
