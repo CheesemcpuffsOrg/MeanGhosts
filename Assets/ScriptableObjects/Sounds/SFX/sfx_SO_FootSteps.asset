@@ -19,17 +19,41 @@ MonoBehaviour:
       pitch: 1
     weight: 100
   audioMixerGroup: {fileID: -9123715879687149167, guid: d8dd63bf224bdc8468fb34784cf4b2fa, type: 2}
-  pan: 0
-  audioPriority: 5
   loop: 1
-  playWhilePaused: 0
   fadeIn: 0
   fadeInDuration: 1
   fadeOut: 0
   fadeOutDuration: 1
+  audioPriority: 2
+  singleInstanceAudio: 0
+  playWhilePaused: 0
   spatialBlend: 0
   dopplerLevel: 0
-  rolloffMode: 1
+  pan: 0
   minDistance: 0
   maxDistance: 0
-  source: {fileID: 0}
+  volumeRollOffMode: 1
+  volumeRollOffCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
