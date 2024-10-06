@@ -19,7 +19,7 @@ public class AdditiveSceneLoadingUtility
                 await Task.Yield(); // Await until the scene is loaded
             }
 
-            Debug.Log($"Scene {sceneField.SceneName} loaded successfully.");
+            //Debug.Log($"Scene {sceneField.SceneName} loaded successfully.");
         }
         catch (Exception ex)
         {
@@ -45,7 +45,7 @@ public class AdditiveSceneLoadingUtility
                     await Task.Yield(); // Await until the scene is loaded
                 }
 
-                Debug.Log($"Scene {sceneField.SceneName} unloaded successfully.");
+                //Debug.Log($"Scene {sceneField.SceneName} unloaded successfully.");
             }
             catch (Exception ex)
             {
@@ -75,7 +75,7 @@ public class AdditiveSceneLoadingUtility
                 await Task.Yield(); // Await until the scene is loaded
             }
 
-            Debug.Log("Assets unloaded successfully.");
+            //Debug.Log("Assets unloaded successfully.");
         }
         catch (Exception ex)
         {
