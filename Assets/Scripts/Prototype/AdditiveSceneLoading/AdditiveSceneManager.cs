@@ -4,20 +4,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class AdditiveSceneManager : MonoBehaviour
 {
 
-    [Serializable]
     private class ActiveScenesMapping
     {
-        [SerializeField] SceneField scene;
+        SceneField scene;
         public SceneField Scene => scene;
 
-        [SerializeField] int count;
+        int count;
         public int Count => count;
 
         public ActiveScenesMapping(SceneField scene)
@@ -46,6 +44,8 @@ public class AdditiveSceneManager : MonoBehaviour
 
     [SerializeField] SceneField startScene;
 
+    public static AdditiveSceneManager additiveSceneManagerInstance;
+
     // Queue for individual scene loading/unloading requests
     private Queue<SceneField> sceneLoadQueue = new Queue<SceneField>();
     private Queue<SceneField> sceneUnloadQueue = new Queue<SceneField>();
@@ -53,12 +53,9 @@ public class AdditiveSceneManager : MonoBehaviour
     // Semaphore to ensure only one scene loading/unloading operation at a time
     private SemaphoreSlim semaphore = new SemaphoreSlim(1, 1);
 
-    //private Queue<List<SceneField>> sceneLoadQueue = new Queue<List<SceneField>>();
     private bool isProcessingQueue = false;
 
-    [SerializeField] List<ActiveScenesMapping> activeScenesMapping = new List<ActiveScenesMapping>();
-
-    public static AdditiveSceneManager additiveSceneManagerInstance;
+    List<ActiveScenesMapping> activeScenesMapping = new List<ActiveScenesMapping>();
 
     AdditiveSceneLoadingUtility additiveSceneLoadingUtility = new AdditiveSceneLoadingUtility();
 
