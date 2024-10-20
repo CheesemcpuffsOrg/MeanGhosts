@@ -77,6 +77,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] string RightAlteredwalkRightDownReversed;
     [SerializeField] string RightAlteredwalkRightUpReversed;
 
+    [SerializeField] string UpRightAlteredwalkUp;
+    [SerializeField] string UpRightAlteredwalkUpReversed;
+    [SerializeField] string UpRightAlteredwalkRight;
+    [SerializeField] string UpRightAlteredwalkRightReversed;
+
 
     [Header("Sounds")]
     [SerializeField] AudioScriptableObject footSteps;
@@ -248,7 +253,7 @@ public class PlayerMovement : MonoBehaviour
             }
             else if (torchRotation.z > 292.6f && torchRotation.z < 337.5f)
             {
-                WalkAnimationModifiers(false, walkUpRight, defaultSpeedModifier);
+                WalkAnimationModifiers(false, UpRightAlteredwalkUp, defaultSpeedModifier);
             }
         }
         // walk up left
@@ -392,7 +397,7 @@ public class PlayerMovement : MonoBehaviour
             }
             else if (torchRotation.z > 292.6f && torchRotation.z < 337.5f)
             {
-                WalkAnimationModifiers(false, walkUpRightReversed, speedReductionModifier);
+                WalkAnimationModifiers(false, UpRightAlteredwalkUpReversed, speedReductionModifier);
             }
         }
         //walk down right

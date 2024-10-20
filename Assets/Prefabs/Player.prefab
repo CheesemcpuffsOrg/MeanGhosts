@@ -768,7 +768,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 2.048, y: 4.096}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -906,6 +906,10 @@ MonoBehaviour:
   RightAlteredwalkRightUp: Anim_PlayerRightAlteredUpRightWalk
   RightAlteredwalkRightDownReversed: Anim_PlayerRightAlteredDownRightWalkReversed
   RightAlteredwalkRightUpReversed: Anim_PlayerRightAlteredUpRightWalkReversed
+  UpRightAlteredwalkUp: Anim_PlayerUpRightAlteredUpWalk
+  UpRightAlteredwalkUpReversed: Anim_PlayerUpRightAlteredUpWalkReversed
+  UpRightAlteredwalkRight: Anim_PlayerUpRightAlteredRightWalk
+  UpRightAlteredwalkRightReversed: Anim_PlayerUpRightAlteredRightWalkReversed
   footSteps: {fileID: 11400000, guid: 2fe13ab7ce7d98344be17daa805bbdcc, type: 2}
 --- !u!114 &5603956583811793890
 MonoBehaviour:
