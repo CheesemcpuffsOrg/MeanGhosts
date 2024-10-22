@@ -325,7 +325,7 @@ public class PlayerMovement : MonoBehaviour
             }
             else if (torchRotation.z > 292.6f && torchRotation.z < 337.5f)
             {
-                WalkAnimationModifiers(false, walkUpRightReversed, speedReductionModifier);
+                WalkAnimationModifiers(false, UpRightAlteredwalkRightReversed, speedReductionModifier);
             }
         }
         //walk down left
@@ -469,7 +469,7 @@ public class PlayerMovement : MonoBehaviour
             }
             else if (torchRotation.z > 292.6f && torchRotation.z < 337.5f)
             {
-                WalkAnimationModifiers(false, walkUpRight, defaultSpeedModifier);
+                WalkAnimationModifiers(false, UpRightAlteredwalkRight, defaultSpeedModifier);
             }
         }
         //walk right up
