@@ -131,14 +131,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1dfb91fc78ddba34c8d35041ec1e8080, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _flashLightState: 0
+  soundComponentObj: {fileID: 5603956583811793880}
   globalLight: {fileID: 0}
   normalBeam: {fileID: 1316690784}
   defaultNormalBeamIntensity: 0.3
+  torchSpriteMasks:
+  - {fileID: 1163263801}
+  - {fileID: 496340506}
   highBeam: {fileID: 1519881412}
   defaultHighBeamIntensity: 0.5
   highBeamDuration: 3
   torchCooldownDuration: 2
+  ghostsVisibleToScreen: 0
   ghostsWithinRange: 0
   ghostHasBeenCaught: 0
   flashLightSwitch: {fileID: 11400000, guid: 88c86a800de58684a8272405c8d7a4a2, type: 2}
@@ -685,7 +689,6 @@ GameObject:
   - component: {fileID: 5603956583811793884}
   - component: {fileID: 5603956583811793885}
   - component: {fileID: 5603956583811793887}
-  - component: {fileID: 5603956583811793891}
   - component: {fileID: 1707787942}
   - component: {fileID: 5603956583811793886}
   - component: {fileID: 4603961167251739283}
@@ -693,7 +696,7 @@ GameObject:
   - component: {fileID: 2202563623034097835}
   - component: {fileID: 5603956582273156422}
   - component: {fileID: 7343292460737189724}
-  - component: {fileID: 5109596887957877267}
+  - component: {fileID: 3910793794997668149}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -798,14 +801,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!81 &5603956583811793891
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5603956583811793880}
-  m_Enabled: 1
 --- !u!95 &1707787942
 Animator:
   serializedVersion: 5
@@ -856,6 +851,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ce359435f3774e4088b0e327242ffcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soundComponentObj: {fileID: 5603956583811793880}
   animController: {fileID: 7343292460737189724}
   playerSO: {fileID: 11400000, guid: dd93b7730bf3f6c4d9be96e450a9a8b7, type: 2}
   rigidBody: {fileID: 5603956583811793887}
@@ -894,6 +890,22 @@ MonoBehaviour:
   UpAlteredwalkUpRightReversed: Anim_PlayerUpAlteredUpRightWalkReversed
   DownAlteredwalkLeft: Anim_PlayerDownAlteredLeftWalk
   DownAlteredwalkRight: Anim_PlayerDownAlteredRightWalk
+  DownAlteredwalkDownLeft: Anim_PlayerDownAlteredDownLeftWalk
+  DownAlteredwalkDownRight: Anim_PlayerDownAlteredDownRightWalk
+  DownAlteredwalkDownLeftReversed: Anim_PlayerDownAlteredDownLeftWalkReversed
+  DownAlteredwalkDownRightReversed: Anim_PlayerDownAlteredDownRightWalkReversed
+  LeftAlteredwalkDown: Anim_PlayerLeftAlteredDownWalk
+  LeftAlteredwalkUp: Anim_PlayerLeftAlteredUpWalk
+  LeftAlteredwalkLeftDown: Anim_PlayerLeftAlteredLeftDownWalk
+  LeftAlteredwalkLeftUp: Anim_PlayerLeftAlteredLeftUpWalk
+  LeftAlteredwalkLeftDownReversed: Anim_PlayerLeftAlteredLeftDownWalkReversed
+  LeftAlteredwalkLeftUpReversed: Anim_PlayerLeftAlteredLeftUpWalkReversed
+  RightAlteredwalkDown: Anim_PlayerRightAlteredDownWalk
+  RightAlteredwalkUp: Anim_PlayerRightAlteredUpWalk
+  RightAlteredwalkRightDown: Anim_PlayerRightAlteredDownRightWalk
+  RightAlteredwalkRightUp: Anim_PlayerRightAlteredUpRightWalk
+  RightAlteredwalkRightDownReversed: Anim_PlayerRightAlteredDownRightWalkReversed
+  RightAlteredwalkRightUpReversed: Anim_PlayerRightAlteredUpRightWalkReversed
   footSteps: {fileID: 11400000, guid: 2fe13ab7ce7d98344be17daa805bbdcc, type: 2}
 --- !u!114 &5603956583811793890
 MonoBehaviour:
@@ -954,7 +966,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 1707787942}
---- !u!114 &5109596887957877267
+--- !u!114 &3910793794997668149
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -963,10 +975,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 5603956583811793880}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de229c61c2cdad14ebd5e2e8860a7776, type: 3}
+  m_Script: {fileID: 11500000, guid: 99070df2e7273984eac969fea8249fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reference: {fileID: 11400000, guid: d69688682a141fc48ab1d47bf4875eba, type: 2}
 --- !u!1 &6757774431255388121
 GameObject:
   m_ObjectHideFlags: 0

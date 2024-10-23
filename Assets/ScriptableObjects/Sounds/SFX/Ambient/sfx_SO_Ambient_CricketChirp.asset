@@ -32,7 +32,7 @@ MonoBehaviour:
   pan: -0.94
   minDistance: 1
   maxDistance: 50
-  volumeRollOffMode: 2
+  volumeRollOffMode: 1
   volumeRollOffCurve:
     serializedVersion: 2
     m_Curve:

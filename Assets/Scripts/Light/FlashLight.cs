@@ -1,4 +1,5 @@
-using AudioSystem;
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,12 +7,37 @@ using UnityEngine.Events;
 using UnityEngine.Rendering.Universal;
 
 //Joshua 2023/12/02
+public enum FlashLightState 
+{ 
+    OFF, 
+    ON, 
+    HIGHBEAM, 
+    COOLDOWN, 
+    FLICKER 
+}
 
 public class FlashLight : MonoBehaviour
 {
-    public enum FlashLightState { OFF, ON, HIGHBEAM, COOLDOWN, FLICKER }
-    [SerializeField] FlashLightState _flashLightState;
-    public FlashLightState flashLightState => _flashLightState;
+
+    private FlashLightState _flashLightState;
+    FlashLightState flashLightState
+    {
+        get { return _flashLightState; }
+
+        set
+        {
+            if (_flashLightState != value)
+            {
+                _flashLightState = value;
+                FlashLightStateChange?.Invoke(_flashLightState);
+            }
+        }
+    }
+
+    [SerializeField] GameObject soundComponentObj;
+    ISoundComponent soundComponent;
+
+    public event Action<FlashLightState> FlashLightStateChange;
 
     float globalLightDefaultIntensity = 0.04f;
     [SerializeField] Light2D globalLight;
@@ -19,6 +45,7 @@ public class FlashLight : MonoBehaviour
     [Header ("Default Beam")]
     [SerializeField] Light2D normalBeam;
     [SerializeField] float defaultNormalBeamIntensity = 0.3f;
+    [SerializeField] List<SpriteMask> torchSpriteMasks;
 
     [Header ("High Beam")]
     [SerializeField] Light2D highBeam;
@@ -29,9 +56,11 @@ public class FlashLight : MonoBehaviour
     [SerializeField] float torchCooldownDuration = 2;
 
     [Header("Flicker")]
-    [SerializeField]int ghostsWithinRange = 0;
-    [SerializeField]int ghostHasBeenCaught = 0;
-    List<Coroutine> flickers = new List<Coroutine>();
+    [SerializeField] int ghostsVisibleToScreen = 0;
+    [SerializeField] int ghostsWithinRange = 0;
+    [SerializeField] int ghostHasBeenCaught = 0;
+    //List<Coroutine> flickers = new List<Coroutine>();
+    Coroutine flicker;
 
     [Header ("Sounds")]
     [SerializeField] AudioScriptableObject flashLightSwitch;
@@ -43,16 +72,24 @@ public class FlashLight : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+        soundComponent = soundComponentObj.GetComponent<ISoundComponent>();
+
         normalBeam.intensity = 0;
         highBeam.intensity = 0;
 
         started = true;
         OnStartOrEnable();
+
+        foreach (var spriteMask in torchSpriteMasks)
+        {
+            spriteMask.enabled = false;
+        }
     }
 
     private void Update()
     {
-        if (_flashLightState == FlashLightState.HIGHBEAM && !GameManager.GameManagerInstance.isPaused)
+        if (flashLightState == FlashLightState.HIGHBEAM && !GameManager.GameManagerInstance.isPaused)
         {
             highBeam.intensity += 0.01f;
         }
@@ -60,81 +97,114 @@ public class FlashLight : MonoBehaviour
 
     private void DefaultLightSwitch()
     {
-        if (_flashLightState != FlashLightState.COOLDOWN)
+        if (flashLightState != FlashLightState.COOLDOWN)
         {
-            AudioManager.AudioManagerInstance.PlaySound(flashLightSwitch, this.gameObject);
+            soundComponent.PlaySound(flashLightSwitch, transform, true);
 
-            //DefaultLightSwitch();
-
-            if (_flashLightState == FlashLightState.OFF)
+            if (flashLightState == FlashLightState.OFF)
             {
                 globalLight.intensity = globalLightDefaultIntensity;
                 normalBeam.intensity = defaultNormalBeamIntensity;
                 highBeam.intensity = 0;
-                _flashLightState = FlashLightState.ON;
+                flashLightState = FlashLightState.ON;
+                
+                FlickeringTorch();
+
+                foreach (var spriteMask in torchSpriteMasks)
+                {
+                    spriteMask.enabled = true;
+                }
             }
-            else if (_flashLightState == FlashLightState.ON || _flashLightState == FlashLightState.HIGHBEAM || _flashLightState == FlashLightState.FLICKER)
+            else if (flashLightState == FlashLightState.ON || flashLightState == FlashLightState.HIGHBEAM || flashLightState == FlashLightState.FLICKER)
             {
                 globalLight.intensity = 0;
                 normalBeam.intensity = 0;
                 highBeam.intensity = 0;
-                _flashLightState = FlashLightState.OFF;
+                flashLightState = FlashLightState.OFF;
 
-                if (flickers != null)
+                /*if (flickers != null)
                 {
                     foreach (var flicker in flickers)
                     {
                         StopCoroutine(flicker);
                     }
+                }*/
+
+                if(flicker != null)
+                {
+                    StopCoroutine(flicker);
+                    flicker = null;
                 }
 
                 if (highBeamPoweringUp != null)
                 {
                     StopCoroutine(highBeamPoweringUp);
                 }
+
+                foreach(var spriteMask in torchSpriteMasks)
+                {
+                    spriteMask.enabled = false;
+                }
             }
         }
-
-        
     }
 
     public void HighBeamControl()
     {
-        if (_flashLightState == FlashLightState.ON || _flashLightState == FlashLightState.FLICKER)
+        if (flashLightState == FlashLightState.ON || flashLightState == FlashLightState.FLICKER)
         {
-            AudioManager.AudioManagerInstance.PlaySound(flashLightSwitch, this.gameObject);
-            AudioManager.AudioManagerInstance.PlaySound(flashLightCharge, this.gameObject);
+            soundComponent.PlaySound(flashLightSwitch, transform, true);
+            soundComponent.PlaySound(flashLightCharge, transform, true);
 
             normalBeam.intensity = 0;
             highBeam.intensity = defaultHighBeamIntensity;
             globalLight.intensity = 0;
             highBeamPoweringUp = StartCoroutine(HighBeamOverCharge());
             highBeamIsActive.Invoke();
-            _flashLightState = FlashLightState.HIGHBEAM;
+            flashLightState = FlashLightState.HIGHBEAM;
 
-            
-
-            if (flickers != null)
+            /*if (flickers != null)
             {
                 foreach (var flicker in flickers)
                 {
                     StopCoroutine(flicker);
                 }
+            }*/
+
+            if (flicker != null)
+            {
+                StopCoroutine(flicker);
+                flicker = null;
             }
         }
-        else if (_flashLightState == FlashLightState.HIGHBEAM)
+        else if (flashLightState == FlashLightState.HIGHBEAM)
         {
-            AudioManager.AudioManagerInstance.PlaySound(flashLightSwitch, this.gameObject);
-            AudioManager.AudioManagerInstance.StopSound(flashLightCharge, this.gameObject);
+            soundComponent.PlaySound(flashLightSwitch, transform, true);
+            soundComponent.StopSound(flashLightCharge);
 
             globalLight.intensity = globalLightDefaultIntensity;
             normalBeam.intensity = defaultNormalBeamIntensity;
             highBeam.intensity = 0;
             StopCoroutine(highBeamPoweringUp);
-            _flashLightState = FlashLightState.ON; 
+            flashLightState = FlashLightState.ON;
+            FlickeringTorch();
         }
 
     }
+
+    /*public void IsGhostOnScreen(bool result)
+    {
+        if (result)
+        {
+            ghostsVisibleToScreen++;
+            FlickeringTorch();
+        }
+        else
+        {
+            ghostsVisibleToScreen--;
+            FlickeringTorch();
+        }
+    }*/
 
     public void IsGhostWithinRange(bool result)
     {
@@ -150,7 +220,7 @@ public class FlashLight : MonoBehaviour
         }
     }
 
-    public void GhostHasBeenCaught(bool result)
+    public void HasGhostBeenCaught(bool result)
     {
         if (result)
         {
@@ -166,17 +236,13 @@ public class FlashLight : MonoBehaviour
 
     private void FlickeringTorch()
     {
-        if (_flashLightState == FlashLightState.ON || _flashLightState == FlashLightState.FLICKER)
+        if (flashLightState == FlashLightState.ON || flashLightState == FlashLightState.FLICKER)
         {
-            if (ghostHasBeenCaught != ghostsWithinRange)
+            if (ghostHasBeenCaught == ghostsWithinRange)
             {
-                flickers.Add(StartCoroutine(Flicker()));
-            }
-            else if (ghostHasBeenCaught == ghostsWithinRange)
-            {
-                _flashLightState = FlashLightState.ON;
+                flashLightState = FlashLightState.ON;
 
-                if (flickers != null)
+                /*if (flickers != null)
                 {
                     foreach (var flicker in flickers)
                     {
@@ -184,8 +250,27 @@ public class FlashLight : MonoBehaviour
                     }
 
                     normalBeam.intensity = defaultNormalBeamIntensity;
+                }*/
+
+                if (flicker != null)
+                {
+                    StopCoroutine(flicker);
+                    flicker = null;
                 }
+
+                normalBeam.intensity = defaultNormalBeamIntensity;
+
             }
+            else
+            {
+                // flickers.Add(StartCoroutine(Flicker()));
+                if (gameObject.activeSelf)
+                {
+                    flicker = StartCoroutine(Flicker());
+                }   
+                
+            }
+            
         }  
     }
 
@@ -193,20 +278,20 @@ public class FlashLight : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
 
-        _flashLightState = FlashLightState.FLICKER;
+        flashLightState = FlashLightState.FLICKER;
 
         normalBeam.intensity = 0.1f;
         highBeam.intensity = 0;
 
-        AudioManager.AudioManagerInstance.PlaySound(flashLightFlicker, this.gameObject);
+        soundComponent.PlaySound(flashLightFlicker, transform, true);
 
-        yield return new WaitForSeconds(Random.Range(.1f,.2f));
+        yield return new WaitForSeconds(UnityEngine.Random.Range(.1f,.2f));
 
         normalBeam.intensity = defaultNormalBeamIntensity;
 
-        AudioManager.AudioManagerInstance.PlaySound(flashLightFlicker, this.gameObject);
+        soundComponent.PlaySound(flashLightFlicker, transform, true);
 
-        yield return new WaitForSeconds(Random.Range(.2f, 3f));
+        yield return new WaitForSeconds(UnityEngine.Random.Range(.2f, 3f));
 
         FlickeringTorch(); 
     }
@@ -215,16 +300,16 @@ public class FlashLight : MonoBehaviour
     {
         yield return new WaitForSeconds(highBeamDuration);
 
-        _flashLightState = FlashLightState.COOLDOWN;
+        flashLightState = FlashLightState.COOLDOWN;
 
         normalBeam.intensity = 0;
         highBeam.intensity = 0;
 
-        AudioManager.AudioManagerInstance.StopSound(flashLightCharge, this.gameObject);
+        soundComponent.StopSound(flashLightCharge);
 
         yield return new WaitForSeconds(torchCooldownDuration);
 
-        _flashLightState = FlashLightState.OFF;
+        flashLightState = FlashLightState.OFF;
 
     }
 
@@ -239,18 +324,19 @@ public class FlashLight : MonoBehaviour
             if (highBeamPoweringUp != null)
             {
                 StopCoroutine(highBeamPoweringUp);
-                _flashLightState = FlashLightState.OFF;
-                AudioManager.AudioManagerInstance.StopSound(flashLightCharge, this.gameObject);
+                flashLightState = FlashLightState.OFF;
+                soundComponent.StopSound(flashLightCharge);
             }
         }
         else
         {
-            if(_flashLightState != FlashLightState.OFF)
+            if(flashLightState != FlashLightState.OFF)
             {
                 highBeam.intensity = 0;
                 globalLight.intensity = globalLightDefaultIntensity;
                 normalBeam.intensity = defaultNormalBeamIntensity;
-                _flashLightState = FlashLightState.ON;
+                flashLightState = FlashLightState.ON;
+                FlickeringTorch();
             }
         }
     }

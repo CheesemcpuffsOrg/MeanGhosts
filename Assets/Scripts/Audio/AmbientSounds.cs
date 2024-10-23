@@ -1,10 +1,14 @@
-using AudioSystem;
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class AmbientSounds : MonoBehaviour
 {
+
+    [SerializeField] GameObject soundComponentObj;
+    ISoundComponent soundComponent;
+
     [Header("Sounds")]
     [SerializeField] AudioScriptableObject crickets;
     [SerializeField] AudioScriptableObject cicadas;
@@ -13,8 +17,10 @@ public class AmbientSounds : MonoBehaviour
 
     private void Start()
     {
-        AudioManager.AudioManagerInstance.PlaySound(crickets, this.gameObject);
-        AudioManager.AudioManagerInstance.PlaySound(cicadas, this.gameObject);
-        AudioManager.AudioManagerInstance.PlaySound(wind, this.gameObject);
+        soundComponent = soundComponentObj.GetComponent<ISoundComponent>();
+
+        soundComponent.PlaySound(crickets, transform.position);
+        soundComponent.PlaySound(cicadas, transform.position);
+        soundComponent.PlaySound(wind, transform.position);
     }
 }

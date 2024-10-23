@@ -10,7 +10,7 @@ public class AudioList
     public AudioClip audioClip;
     [Range(0f, 1f)]
     public float volume = 1;
-    [Range(.1f, 3f)]
+    [Range(-3f, 3f)]
     public float pitch = 1;
 }
 
@@ -38,6 +38,7 @@ public class AudioScriptableObject : ScriptableObject
     public bool singleInstanceAudio = false;
     [Tooltip("Allows the audio to play while the game is paused")]
     public bool playWhilePaused = false;
+    public bool logStackTrace;
 
     [Range(0f, 1f), Header("3D Controls")]
     public float spatialBlend = 0;

@@ -4,6 +4,9 @@ using UnityEngine;
 
 interface ISpotted
 {
-    void SpottedByTorchInterface(bool isSpotted);
-    void SpottedByHighBeamInterface(bool isSpotted);
+    void SpottedByTorch();
+    void NotSpottedByTorch();
+    void SpottedByHighBeam();
+    void NotSpottedByHighBeam();
+    void StateOfFlashLight(FlashLightState state);
 }

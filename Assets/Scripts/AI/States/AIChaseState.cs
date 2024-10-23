@@ -1,4 +1,3 @@
-using AudioSystem;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,82 +5,74 @@ using UnityEngine.InputSystem.XR;
 
 public class AIChaseState : AIState
 {
-    [SerializeField] AIStateManager stateManager;
+    [SerializeField] AIStateController stateManager;
     [SerializeField] AIController controller;
+    [SerializeField] VisibleToCamera visibleToCamera;
 
-    bool scream = false;
+    GameObject player;
+    AIScriptableObject stats;
 
     [Header("Sounds")]
     [SerializeField] AudioScriptableObject giggleSFX;
     [SerializeField] AudioScriptableObject screamSFX;
 
-    public override void EnterState(AIStateManager state)
+    public override void EnterState(AIStateController state)
     {
-       
+        if(player == null)
+        {
+            player = controller.player;
+        }
+
+        if(stats == null)
+        {
+            stats = controller.stats;
+        }
     }
 
-    public override void UpdateState(AIStateManager state)
+    public override void UpdateState(AIStateController state)
     {
         ChasePlayer(state);
     }
 
-    private void GhostVisibilityControl(AIStateManager state)
+    public override void ExitState(AIStateController state)
     {
         
     }
 
-    public override void ExitState(AIStateManager state)
-    {
-        
-    }
-
-    void ChasePlayer(AIStateManager state)
+    void ChasePlayer(AIStateController state)
     {
 
-        if (GameManager.GameManagerInstance.score > 2)
+        if (AIManager.AIManagerInstance.GetCurrentState() == GlobalAIBehaviourState.Timid)
         {
-            controller.anim.SetBool("isScary", true);
-            if (transform.right.x > 0)
+            //this makes sure the ghost moves towards the player and backs off when the player gets closer
+            if (!visibleToCamera.IsVisible)
             {
-                controller.GetComponent<SpriteRenderer>().flipX = true;
+                MoveTowardsPlayer();
             }
-            else if (transform.right.x < 0)
+            else
             {
-                controller.GetComponent<SpriteRenderer>().flipX = false;
+                MoveAwayFromPlayer();
             }
         }
-
-        if (controller.player.GetComponent<PlayerController>().invisible == false) 
+        else if (AIManager.AIManagerInstance.GetCurrentState() == GlobalAIBehaviourState.Curious || AIManager.AIManagerInstance.GetCurrentState() == GlobalAIBehaviourState.Angry || AIManager.AIManagerInstance.GetCurrentState() == GlobalAIBehaviourState.Aggresive)
         {
-            transform.root.position = Vector2.MoveTowards(transform.position, controller.player.transform.position, controller.stats.chaseSpeed * Time.deltaTime);
+            MoveTowardsPlayer();
         }
-        else
-        {
-            state.SwitchToTheNextState(state.IdleState);
-        }
-
-        if (Vector3.Distance(this.transform.position, controller.player.transform.position) < 10 && !scream && GameManager.GameManagerInstance.score > 0)
-        {
-            if (!AudioManager.AudioManagerInstance.IsSoundPlaying(screamSFX, gameObject))
-            {
-                AudioManager.AudioManagerInstance.PlaySound(screamSFX, gameObject);
-                scream = true;
-            }          
-        }
-        else if (Vector3.Distance(this.transform.position, controller.player.transform.position) < 10 && !scream && GameManager.GameManagerInstance.score == 0 && !scream)
-        {
-            if (!AudioManager.AudioManagerInstance.IsSoundPlaying(screamSFX, gameObject))
-            {
-                AudioManager.AudioManagerInstance.PlaySound(screamSFX, gameObject);
-                scream = true;
-            }  
-        }
-        else if (Vector3.Distance(this.transform.position, controller.player.transform.position) > 10)
-        {
-            scream = false;
-        }
-
-
     }
+
+    void MoveTowardsPlayer()
+    {
+        transform.root.position = Vector2.MoveTowards(transform.position, player.transform.position, stats.chaseSpeed * Time.deltaTime);
+    }
+
+    void MoveAwayFromPlayer()
+    {
+        // Calculate the direction vector from the player to the object, keeping it in 3D space
+        Vector3 directionAwayFromPlayer = (transform.position - player.transform.position).normalized;
+
+        // Move the object towards the new target position
+        transform.root.position = Vector3.MoveTowards(transform.position, transform.position + directionAwayFromPlayer, stats.fleeSpeed * Time.deltaTime);
+    }
+
 
 }

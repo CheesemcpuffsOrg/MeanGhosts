@@ -1,4 +1,4 @@
-using AudioSystem;
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +10,14 @@ namespace Interactable
 {
     public class TapeInteractableObj : InteractableObjs, IInteractable
     {
+        [Space]
+        [Space]
+        [Space]
+        [Space]
+
+        [SerializeField] GameObject soundComponentObj;
+        ISoundComponent soundComponent;
+
         [Header ("Sounds")]
         [SerializeField] AudioScriptableObject tapeAudio;
 
@@ -19,6 +27,8 @@ namespace Interactable
         protected override void Start()
         {
             base.Start();
+
+            soundComponent = GetComponent<SoundComponent>();
 
             audioRangeDetection.OnTriggerEnter2D_Action += AudioDetectionOnTriggerEnter2D;
             audioRangeDetection.OnTriggerExit2D_Action += AudioDetectionOnTriggerExit2D;
@@ -31,25 +41,25 @@ namespace Interactable
 
         void IInteractable.Interact()
         {
-            if(!AudioManager.AudioManagerInstance.IsSoundPlaying(tapeAudio, this.gameObject))
+            if(!soundComponent.IsSoundPlaying(tapeAudio))
             {
-                AudioManager.AudioManagerInstance.PlaySound(tapeAudio, this.gameObject, ReturnAudioToNormal);
-                AudioManager.AudioManagerInstance.DynamicVolumePrioritySystem(tapeAudio, true);
+                soundComponent.PlaySound(tapeAudio, transform.position, ReturnAudioToNormal);
+                soundComponent.DynamicVolumePrioritySystem(tapeAudio, true);
             }
         }
 
         void ReturnAudioToNormal()
         {
-            AudioManager.AudioManagerInstance.DynamicVolumePrioritySystem(tapeAudio, false);
+            soundComponent.DynamicVolumePrioritySystem(tapeAudio, false);
         }
 
         private void AudioDetectionOnTriggerEnter2D(Collider2D other)
         {
             if(TagExtensions.HasTag(other.gameObject, playerColliderTag))
             {
-                if (AudioManager.AudioManagerInstance.IsSoundPlaying(tapeAudio, this.gameObject))
+                if (soundComponent.IsSoundPlaying(tapeAudio))
                 {
-                    AudioManager.AudioManagerInstance.DynamicVolumePrioritySystem(tapeAudio, true);
+                    soundComponent.DynamicVolumePrioritySystem(tapeAudio, true);
                 }
             }
         }
@@ -58,9 +68,9 @@ namespace Interactable
         {
             if (TagExtensions.HasTag(other.gameObject, playerColliderTag))
             {
-                if (AudioManager.AudioManagerInstance.IsSoundPlaying(tapeAudio, this.gameObject))
+                if (soundComponent.IsSoundPlaying(tapeAudio))
                 {   
-                    AudioManager.AudioManagerInstance.DynamicVolumePrioritySystem(tapeAudio, false);
+                    soundComponent .DynamicVolumePrioritySystem(tapeAudio, false);
                 }
             }
         }

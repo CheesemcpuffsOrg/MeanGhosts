@@ -1,10 +1,14 @@
-using AudioSystem;
+
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
+
+    [SerializeField] GameObject soundComponentObj;
+    ISoundComponent soundComponent;
 
     public static LevelManager levelManagerInstance;
 
@@ -18,6 +22,9 @@ public class LevelManager : MonoBehaviour
 
     void Start()
     {
-        AudioManager.AudioManagerInstance.DelayedPlaySound(0.1f, bgSound, this.gameObject);
+        soundComponent = soundComponentObj.GetComponent<ISoundComponent>();
+
+        soundComponent.PlaySound(bgSound, transform.position);
+
     }
 }
