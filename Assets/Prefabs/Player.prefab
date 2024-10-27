@@ -914,6 +914,14 @@ MonoBehaviour:
   UpLeftAlteredwalkUpReversed: Anim_PlayerUpLeftAlteredUpWalkReversed
   UpLeftAlteredwalkLeft: Anim_PlayerUpLeftAlteredLeftWalk
   UpLeftAlteredwalkLeftReversed: Anim_PlayerUpLeftAlteredLeftWalkReversed
+  DownRightAlteredwalkDown: Anim_PlayerDownRightAlteredDownWalk
+  DownRightAlteredwalkDownReversed: Anim_PlayerDownRightAlteredDownWalkReversed
+  DownRightAlteredwalkRight: Anim_PlayerDownRightAlteredRightWalk
+  DownRightAlteredwalkRightReversed: Anim_PlayerDownRightAlteredRightWalkReversed
+  DownLeftAlteredwalkDown: Anim_PlayerDownLeftAlteredDownWalk
+  DownLeftAlteredwalkDownReversed: Anim_PlayerDownLeftAlteredDownWalkReversed
+  DownLeftAlteredwalkLeft: Anim_PlayerDownLeftAlteredLeftWalk
+  DownLeftAlteredwalkLeftReversed: Anim_PlayerDownLeftAlteredLeftWalkReversed
   footSteps: {fileID: 11400000, guid: 2fe13ab7ce7d98344be17daa805bbdcc, type: 2}
 --- !u!114 &5603956583811793890
 MonoBehaviour:
