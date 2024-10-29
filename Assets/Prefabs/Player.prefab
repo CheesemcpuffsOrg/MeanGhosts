@@ -131,6 +131,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1dfb91fc78ddba34c8d35041ec1e8080, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  globalLightDefaultIntensity: 0.01
   globalLight: {fileID: 0}
   normalBeam: {fileID: 1316690784}
   defaultNormalBeamIntensity: 0.3
@@ -141,6 +142,7 @@ MonoBehaviour:
   defaultHighBeamIntensity: 0.5
   highBeamDuration: 3
   torchCooldownDuration: 2
+  ghostsVisibleToScreen: 0
   ghostsWithinRange: 0
   ghostHasBeenCaught: 0
   flashLightSwitch: {fileID: 11400000, guid: 88c86a800de58684a8272405c8d7a4a2, type: 2}

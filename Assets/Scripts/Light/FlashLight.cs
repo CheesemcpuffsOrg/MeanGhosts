@@ -36,7 +36,7 @@ public class FlashLight : MonoBehaviour
 
     public event Action<FlashLightState> FlashLightStateChange;
 
-    float globalLightDefaultIntensity = 0.04f;
+    [SerializeField] float globalLightDefaultIntensity = 0.04f;
     [SerializeField] Light2D globalLight;
 
     [Header ("Default Beam")]
