@@ -81,21 +81,29 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] string UpRightAlteredwalkUpReversed;
     [SerializeField] string UpRightAlteredwalkRight;
     [SerializeField] string UpRightAlteredwalkRightReversed;
+    [SerializeField] string UpRightAlteredwalkDownRight;
+    [SerializeField] string UpRightAlteredwalkUpLeft;
 
     [SerializeField] string UpLeftAlteredwalkUp;
     [SerializeField] string UpLeftAlteredwalkUpReversed;
     [SerializeField] string UpLeftAlteredwalkLeft;
     [SerializeField] string UpLeftAlteredwalkLeftReversed;
+    [SerializeField] string UpLeftAlteredwalkDownLeft;
+    [SerializeField] string UpLeftAlteredwalkUpRight;
 
     [SerializeField] string DownRightAlteredwalkDown;
     [SerializeField] string DownRightAlteredwalkDownReversed;
     [SerializeField] string DownRightAlteredwalkRight;
     [SerializeField] string DownRightAlteredwalkRightReversed;
+    [SerializeField] string DownRightAlteredwalkDownLeft;
+    [SerializeField] string DownRightAlteredwalkUpRight;
 
     [SerializeField] string DownLeftAlteredwalkDown;
     [SerializeField] string DownLeftAlteredwalkDownReversed;
     [SerializeField] string DownLeftAlteredwalkLeft;
     [SerializeField] string DownLeftAlteredwalkLeftReversed;
+    [SerializeField] string DownLeftAlteredwalkDownRight;
+    [SerializeField] string DownLeftAlteredwalkUpLeft;
 
 
     [Header("Sounds")]
@@ -288,7 +296,7 @@ public class PlayerMovement : MonoBehaviour
             }
             else if (torchRotation.z > 112.6f && torchRotation.z < 157.5f)
             {
-                WalkAnimationModifiers(true, walkDownLeft, defaultSpeedModifier);
+                WalkAnimationModifiers(false, DownLeftAlteredwalkUpLeft, defaultSpeedModifier);
             }
             else if (torchRotation.z > 157.6f && torchRotation.z < 202.5f)
             {
@@ -304,7 +312,7 @@ public class PlayerMovement : MonoBehaviour
             }
             else if (torchRotation.z > 292.6f && torchRotation.z < 337.5f)
             {
-                WalkAnimationModifiers(false, walkUpRight, defaultSpeedModifier);
+                WalkAnimationModifiers(false, UpRightAlteredwalkUpLeft, defaultSpeedModifier);
             }
         }
         //walk left
@@ -352,7 +360,7 @@ public class PlayerMovement : MonoBehaviour
             }
             else if (torchRotation.z > 22.6f && torchRotation.z < 67.5f)
             {
-                WalkAnimationModifiers(true, walkUpLeft, defaultSpeedModifier);
+                WalkAnimationModifiers(false, UpLeftAlteredwalkDownLeft, defaultSpeedModifier);
             }
             else if (torchRotation.z > 67.6f && torchRotation.z < 112.5f)
             {
@@ -368,7 +376,7 @@ public class PlayerMovement : MonoBehaviour
             }
             else if (torchRotation.z > 202.6f && torchRotation.z < 247.5f)
             {
-                WalkAnimationModifiers(false, walkDownRight, defaultSpeedModifier);
+                WalkAnimationModifiers(false, DownRightAlteredwalkDownLeft, defaultSpeedModifier);
             }
             else if (torchRotation.z > 247.6f && torchRotation.z < 292.5f)
             {
@@ -432,7 +440,7 @@ public class PlayerMovement : MonoBehaviour
             }
             else if (torchRotation.z > 112.6f && torchRotation.z < 157.5f)
             {
-                WalkAnimationModifiers(true, walkDownLeft, defaultSpeedModifier);
+                WalkAnimationModifiers(false, DownLeftAlteredwalkDownRight, defaultSpeedModifier);
             }
             else if (torchRotation.z > 157.6f && torchRotation.z < 202.5f)
             {
@@ -448,7 +456,7 @@ public class PlayerMovement : MonoBehaviour
             }
             else if (torchRotation.z > 292.6f && torchRotation.z < 337.5f)
             {
-                WalkAnimationModifiers(false, walkUpRight, defaultSpeedModifier);
+                WalkAnimationModifiers(false, UpRightAlteredwalkDownRight, defaultSpeedModifier);
             }
         }
         //walk right
@@ -496,7 +504,7 @@ public class PlayerMovement : MonoBehaviour
             }
             else if (torchRotation.z > 22.6f && torchRotation.z < 67.5f)
             {
-                WalkAnimationModifiers(true, walkUpLeft, defaultSpeedModifier);
+                WalkAnimationModifiers(false, UpLeftAlteredwalkUpRight, defaultSpeedModifier);
             }
             else if (torchRotation.z > 67.6f && torchRotation.z < 112.5f)
             {
@@ -512,7 +520,7 @@ public class PlayerMovement : MonoBehaviour
             }
             else if (torchRotation.z > 202.6f && torchRotation.z < 247.5f)
             {
-                WalkAnimationModifiers(false, walkDownRight, defaultSpeedModifier);
+                WalkAnimationModifiers(false, DownRightAlteredwalkUpRight, defaultSpeedModifier);
             }
             else if (torchRotation.z > 247.6f && torchRotation.z < 292.5f)
             {

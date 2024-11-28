@@ -689,7 +689,6 @@ GameObject:
   - component: {fileID: 5603956583811793884}
   - component: {fileID: 5603956583811793885}
   - component: {fileID: 5603956583811793887}
-  - component: {fileID: 1707787942}
   - component: {fileID: 5603956583811793886}
   - component: {fileID: 4603961167251739283}
   - component: {fileID: 5603956583811793890}
@@ -697,6 +696,7 @@ GameObject:
   - component: {fileID: 5603956582273156422}
   - component: {fileID: 7343292460737189724}
   - component: {fileID: 3910793794997668149}
+  - component: {fileID: 1032550367592599679}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -801,27 +801,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!95 &1707787942
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5603956583811793880}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: d82bba47076c00b4a9e9492bf1024562, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &5603956583811793886
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -910,18 +889,26 @@ MonoBehaviour:
   UpRightAlteredwalkUpReversed: Anim_PlayerUpRightAlteredUpWalkReversed
   UpRightAlteredwalkRight: Anim_PlayerUpRightAlteredRightWalk
   UpRightAlteredwalkRightReversed: Anim_PlayerUpRightAlteredRightWalkReversed
+  UpRightAlteredwalkDownRight: Anim_PlayerUpRightAlteredDownRightWalk
+  UpRightAlteredwalkUpLeft: Anim_PlayerUpRightAlteredUpLeftWalk
   UpLeftAlteredwalkUp: Anim_PlayerUpLeftAlteredUpWalk
   UpLeftAlteredwalkUpReversed: Anim_PlayerUpLeftAlteredUpWalkReversed
   UpLeftAlteredwalkLeft: Anim_PlayerUpLeftAlteredLeftWalk
   UpLeftAlteredwalkLeftReversed: Anim_PlayerUpLeftAlteredLeftWalkReversed
+  UpLeftAlteredwalkDownLeft: Anim_PlayerUpLeftAlteredDownLeftWalk
+  UpLeftAlteredwalkUpRight: Anim_PlayerUpLeftAlteredUpRightWalk
   DownRightAlteredwalkDown: Anim_PlayerDownRightAlteredDownWalk
   DownRightAlteredwalkDownReversed: Anim_PlayerDownRightAlteredDownWalkReversed
   DownRightAlteredwalkRight: Anim_PlayerDownRightAlteredRightWalk
   DownRightAlteredwalkRightReversed: Anim_PlayerDownRightAlteredRightWalkReversed
+  DownRightAlteredwalkDownLeft: Anim_PlayerDownRightAlteredDownLeftWalk
+  DownRightAlteredwalkUpRight: Anim_PlayerDownRightAlteredUpRightWalk
   DownLeftAlteredwalkDown: Anim_PlayerDownLeftAlteredDownWalk
   DownLeftAlteredwalkDownReversed: Anim_PlayerDownLeftAlteredDownWalkReversed
   DownLeftAlteredwalkLeft: Anim_PlayerDownLeftAlteredLeftWalk
   DownLeftAlteredwalkLeftReversed: Anim_PlayerDownLeftAlteredLeftWalkReversed
+  DownLeftAlteredwalkDownRight: Anim_PlayerDownLeftAlteredDownRightWalk
+  DownLeftAlteredwalkUpLeft: Anim_PlayerDownLeftAlteredUpLeftWalk
   footSteps: {fileID: 11400000, guid: 2fe13ab7ce7d98344be17daa805bbdcc, type: 2}
 --- !u!114 &5603956583811793890
 MonoBehaviour:
@@ -981,7 +968,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3fafe65204294747af87f407a724555, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 1707787942}
+  animator: {fileID: 1032550367592599679}
 --- !u!114 &3910793794997668149
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -994,6 +981,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99070df2e7273984eac969fea8249fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &1032550367592599679
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5603956583811793880}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d82bba47076c00b4a9e9492bf1024562, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &6757774431255388121
 GameObject:
   m_ObjectHideFlags: 0
