@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -33,7 +32,9 @@ public class AudioManager : MonoBehaviour
     Transform audioPoolContainer;
     Transform activeSounds;
 
+#if UNITY_EDITOR
     LoggingUtility loggingUtility = new LoggingUtility();
+#endif
 
     //move this onto individual objects
     [SerializeField, Tooltip("This int controls the max number of one type of audio clip that can be played before the oldest audio clip is cancelled")] 
@@ -157,11 +158,12 @@ public class AudioManager : MonoBehaviour
                 audioReference.audioSourceObject.GetComponent<AudioSource>().Pause();     
             }
         }
-
+#if UNITY_EDITOR
         if (logStackTrace)
         {
             loggingUtility.LogCleanedUpStackTrace($"STACK TRACE FOR PAUSING ALL AUDIO", fullStackTrace);
         }
+#endif
     }
 
     /// <summary>
@@ -180,10 +182,12 @@ public class AudioManager : MonoBehaviour
             }
         }
 
+#if UNITY_EDITOR
         if (logStackTrace)
         {
             loggingUtility.LogCleanedUpStackTrace($"STACK TRACE FOR UNPAUSING ALL AUDIO", fullStackTrace);
         }
+#endif
     }
 
     /// <summary>
@@ -281,11 +285,13 @@ public class AudioManager : MonoBehaviour
                 {
                     audioSource.Stop();
 
+#if UNITY_EDITOR
                     if(logStackTrace)
                     {
                         loggingUtility.LogCleanedUpStackTrace($"STACKTRACE FOR STOPPED SOUND: {sound.name}", fullStackTrace);
                     }
-                    
+#endif
+
                 }
 
                 if (audioReference.clipLength != null)
@@ -448,12 +454,12 @@ public class AudioManager : MonoBehaviour
 
         audioSource.Play();
 
-
+#if UNITY_EDITOR
         if (logStackTrace || sound.logStackTrace)
         {
             loggingUtility.LogCleanedUpStackTrace($"STACKTRACE FOR PLAYED SOUND: {sound.name}", fullStackTrace);
         }
-
+#endif
 
         var fadeIn = sound.fadeIn;
         var fadeInDuration = sound.fadeInDuration;
