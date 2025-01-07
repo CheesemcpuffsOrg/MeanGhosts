@@ -137,27 +137,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1994032253204305638, guid: 031af25da67132243b7f88fee9ffcfa1, type: 3}
       propertyPath: scenesToLoad.Array.data[0].m_SceneName
-      value: Test_(0,2)
+      value: Scene_(0,2)
       objectReference: {fileID: 0}
     - target: {fileID: 1994032253204305638, guid: 031af25da67132243b7f88fee9ffcfa1, type: 3}
       propertyPath: scenesToLoad.Array.data[1].m_SceneName
-      value: Test_(0,1)
+      value: Scene_(0,1)
       objectReference: {fileID: 0}
     - target: {fileID: 1994032253204305638, guid: 031af25da67132243b7f88fee9ffcfa1, type: 3}
       propertyPath: scenesToLoad.Array.data[2].m_SceneName
-      value: Test_(1,1)
+      value: Scene_(1,1)
       objectReference: {fileID: 0}
     - target: {fileID: 1994032253204305638, guid: 031af25da67132243b7f88fee9ffcfa1, type: 3}
       propertyPath: scenesToLoad.Array.data[3].m_SceneName
-      value: Test_(1,2)
+      value: Scene_(1,2)
       objectReference: {fileID: 0}
     - target: {fileID: 1994032253204305638, guid: 031af25da67132243b7f88fee9ffcfa1, type: 3}
       propertyPath: scenesToLoad.Array.data[4].m_SceneName
-      value: Test_(2,2)
+      value: Scene_(2,2)
       objectReference: {fileID: 0}
     - target: {fileID: 1994032253204305638, guid: 031af25da67132243b7f88fee9ffcfa1, type: 3}
       propertyPath: scenesToLoad.Array.data[5].m_SceneName
-      value: Test_(2,1)
+      value: Scene_(2,1)
       objectReference: {fileID: 0}
     - target: {fileID: 1994032253204305638, guid: 031af25da67132243b7f88fee9ffcfa1, type: 3}
       propertyPath: scenesToLoad.Array.data[0].m_SceneAsset
